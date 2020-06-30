@@ -12,9 +12,10 @@ import org.w3c.dom.Text;
 
 import java.util.ArrayList;
 
-public class ExhibitionAdapter extends RecyclerView.Adapter<ExhibitionAdapter.ViewHolder> {
-
+public class ExhibitionAdapter extends RecyclerView.Adapter<ExhibitionAdapter.ViewHolder>
+        implements OnItemClickListener {
     ArrayList<Exhibitions> items = new ArrayList<>();
+    OnItemClickListener onItemClickListener;
 
     @NonNull
     @Override
@@ -22,7 +23,7 @@ public class ExhibitionAdapter extends RecyclerView.Adapter<ExhibitionAdapter.Vi
         LayoutInflater inflater = LayoutInflater.from(parent.getContext());
         View itemView = inflater.inflate(R.layout.item, parent, false);
 
-        return new ViewHolder(itemView);
+        return new ViewHolder(itemView, this);
     }
 
     @Override
@@ -36,14 +37,35 @@ public class ExhibitionAdapter extends RecyclerView.Adapter<ExhibitionAdapter.Vi
         return items.size();
     }
 
+    @Override
+    public void onItemClick(ViewHolder holder, View view, int position) {
+        if (onItemClickListener != null) {
+            onItemClickListener.onItemClick(holder, view, position);
+        }
+    }
+
+    public void setOnItemClickListener(OnItemClickListener listener) {
+        this.onItemClickListener = listener;
+    }
+
     public class ViewHolder extends RecyclerView.ViewHolder {
         TextView textTitle;
         TextView textDescription;
 
-        public ViewHolder(@NonNull View itemView) {
+        public ViewHolder(@NonNull View itemView, final OnItemClickListener listener) {
             super(itemView);
             textTitle = itemView.findViewById(R.id.text_title);
             textDescription = itemView.findViewById(R.id.text_description);
+
+            itemView.setOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View v) {
+                    int position = getAdapterPosition();
+                    if (listener != null) {
+                        listener.onItemClick(ViewHolder.this, v, position);
+                    }
+                }
+            });
         }
 
         public void setItem(Exhibitions item) {

@@ -1,40 +1,30 @@
 package com.ici.myproject73029;
 
 import androidx.appcompat.app.AppCompatActivity;
-import androidx.recyclerview.widget.LinearLayoutManager;
-import androidx.recyclerview.widget.RecyclerView;
 
 import android.os.Bundle;
-import android.widget.LinearLayout;
+import android.widget.Toast;
 
 public class MainActivity extends AppCompatActivity {
+    HomeFragment homeFragment;
+    ItemFragment itemFragment;
+
+    @Override
+    public void onBackPressed() {
+        getSupportFragmentManager().beginTransaction().remove(itemFragment).commit();
+    }
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
 
-        RecyclerView recyclerView = findViewById(R.id.recyclerView);
+        homeFragment = (HomeFragment) getSupportFragmentManager().findFragmentById(R.id.main_fragment);
+        itemFragment = new ItemFragment();
+    }
 
-        LinearLayoutManager layoutManager = new LinearLayoutManager(this,
-                LinearLayoutManager.VERTICAL, false);
-        recyclerView.setLayoutManager(layoutManager);
-        ExhibitionAdapter adapter = new ExhibitionAdapter();
-
-        adapter.addItem(new Exhibitions("전시1", "전시1입니다"));
-        adapter.addItem(new Exhibitions("전시2", "새로운 전시입니다."));
-        adapter.addItem(new Exhibitions("전시1", "전시1입니다"));
-        adapter.addItem(new Exhibitions("전시2", "새로운 전시입니다."));
-        adapter.addItem(new Exhibitions("전시1", "전시1입니다"));
-        adapter.addItem(new Exhibitions("전시2", "새로운 전시입니다."));
-        adapter.addItem(new Exhibitions("전시1", "전시1입니다"));
-        adapter.addItem(new Exhibitions("전시2", "새로운 전시입니다."));
-        adapter.addItem(new Exhibitions("전시1", "전시1입니다"));
-        adapter.addItem(new Exhibitions("전시2", "새로운 전시입니다."));
-        adapter.addItem(new Exhibitions("전시1", "전시1입니다"));
-        adapter.addItem(new Exhibitions("전시2", "새로운 전시입니다."));
-
-        recyclerView.setAdapter(adapter);
-
+    public void onItemFragmentChanged(String title) {
+        Toast.makeText(this, "전시제목 : " + title, Toast.LENGTH_SHORT).show();
+        getSupportFragmentManager().beginTransaction().replace(R.id.main_fragment, itemFragment).commit();
     }
 }
