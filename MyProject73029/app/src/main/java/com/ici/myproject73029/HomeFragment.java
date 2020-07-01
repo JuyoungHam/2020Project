@@ -13,6 +13,9 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 
+import com.google.firebase.firestore.DocumentSnapshot;
+import com.google.firebase.firestore.FirebaseFirestore;
+
 public class HomeFragment extends Fragment {
     @Nullable
     @Override
@@ -26,8 +29,11 @@ public class HomeFragment extends Fragment {
         recyclerView.setLayoutManager(layoutManager);
         final ExhibitionAdapter adapter = new ExhibitionAdapter();
 
+        String title = "전시";
+        String description = "새로운 전시 입니다.";
+
         for (int i = 0; i < 10; i++) {
-            Exhibitions item = new Exhibitions("전시" + i, "새로운 전시입니다.");
+            Exhibitions item = new Exhibitions(title, description);
             adapter.addItem(item);
         }
 
@@ -38,7 +44,7 @@ public class HomeFragment extends Fragment {
             public void onItemClick(ExhibitionAdapter.ViewHolder holder, View view, int position) {
                 Exhibitions item = adapter.getItem(position);
                 MainActivity mainActivity = (MainActivity) getActivity();
-                mainActivity.onItemFragmentChanged(item.getTitle());
+                mainActivity.onItemFragmentChanged(item);
             }
         });
         return rootView;
