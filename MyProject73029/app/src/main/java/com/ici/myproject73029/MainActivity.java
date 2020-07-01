@@ -5,6 +5,7 @@ import androidx.appcompat.app.AppCompatActivity;
 
 import android.os.Bundle;
 import android.os.Parcel;
+import android.util.Log;
 import android.view.MenuItem;
 import android.widget.Toast;
 
@@ -35,11 +36,11 @@ public class MainActivity extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
 
-//        firebase = new Firebase();
-//        db = firebase.startFirebase();
-//        firebase.getData(db);
-
         homeFragment = (HomeFragment) getSupportFragmentManager().findFragmentById(R.id.main_fragment);
+
+        firebase = new Firebase();
+        db = firebase.startFirebase();
+        firebase.getData(db);
 
         tab1Fragment = new Tab1Fragment();
 
@@ -49,19 +50,10 @@ public class MainActivity extends AppCompatActivity {
             public boolean onNavigationItemSelected(@NonNull MenuItem item) {
                 switch (item.getItemId()) {
                     case R.id.tab1:
-                        if (homeFragment.isAdded()) {
-                            getSupportFragmentManager().beginTransaction().remove(homeFragment).commit();
-                        }
                         getSupportFragmentManager().beginTransaction().replace(R.id.main_fragment
                                 , tab1Fragment).commit();
                         return true;
                     case R.id.tab_home:
-                        if (tab1Fragment.isAdded()) {
-                            getSupportFragmentManager().beginTransaction().remove(tab1Fragment).commit();
-                        }
-                        if (homeFragment.isAdded()) {
-                            getSupportFragmentManager().beginTransaction().remove(homeFragment).commit();
-                        }
                         getSupportFragmentManager().beginTransaction().replace(R.id.main_fragment
                                 , homeFragment).commit();
                         return true;

@@ -1,6 +1,9 @@
 package com.ici.myproject73029;
 
 import android.os.Bundle;
+import android.view.LayoutInflater;
+import android.view.View;
+import android.view.ViewGroup;
 
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
@@ -8,17 +11,7 @@ import androidx.fragment.app.Fragment;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
-import android.util.Log;
-import android.view.LayoutInflater;
-import android.view.View;
-import android.view.ViewGroup;
-
-import com.google.firebase.firestore.FirebaseFirestore;
-
-import java.util.Map;
-
 public class HomeFragment extends Fragment {
-    public Map<String, Object> data;
 
     @Nullable
     @Override
