@@ -2,26 +2,15 @@ package com.ici.myproject73029;
 
 import androidx.annotation.NonNull;
 import androidx.appcompat.app.AppCompatActivity;
-import androidx.fragment.app.FragmentManager;
-import androidx.fragment.app.FragmentTransaction;
 
 import android.os.Bundle;
-import android.util.Log;
+import android.os.Parcel;
 import android.view.MenuItem;
 import android.widget.Toast;
 
-import com.google.android.gms.tasks.OnCompleteListener;
-import com.google.android.gms.tasks.OnFailureListener;
-import com.google.android.gms.tasks.OnSuccessListener;
-import com.google.android.gms.tasks.Task;
 import com.google.android.material.bottomnavigation.BottomNavigationView;
-import com.google.firebase.firestore.DocumentReference;
-import com.google.firebase.firestore.DocumentSnapshot;
 import com.google.firebase.firestore.FirebaseFirestore;
-import com.google.firebase.firestore.QueryDocumentSnapshot;
-import com.google.firebase.firestore.QuerySnapshot;
 
-import java.util.HashMap;
 import java.util.Map;
 
 public class MainActivity extends AppCompatActivity {
@@ -29,6 +18,8 @@ public class MainActivity extends AppCompatActivity {
     HomeFragment homeFragment;
     ItemFragment itemFragment;
     Tab1Fragment tab1Fragment;
+    public Firebase firebase;
+    public FirebaseFirestore db;
 
     @Override
     public void onBackPressed() {
@@ -44,9 +35,9 @@ public class MainActivity extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
 
-        Firebase firebase = new Firebase();
-        FirebaseFirestore db = firebase.startFirebase();
-
+//        firebase = new Firebase();
+//        db = firebase.startFirebase();
+//        firebase.getData(db);
 
         homeFragment = (HomeFragment) getSupportFragmentManager().findFragmentById(R.id.main_fragment);
 

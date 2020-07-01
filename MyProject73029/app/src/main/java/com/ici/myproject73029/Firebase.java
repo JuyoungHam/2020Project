@@ -87,16 +87,16 @@ public class Firebase {
                 });
     }
 
-    Map<String, Object> data;
 
-    public void readExhibition(FirebaseFirestore db) {
+    public void getData(FirebaseFirestore db, final HomeFragment homeFragment) {
         DocumentReference docRef = db.collection("Exhibitions").document("툴루즈 로트렉 展");
         docRef.get().addOnCompleteListener(new OnCompleteListener<DocumentSnapshot>() {
             @Override
             public void onComplete(@NonNull Task<DocumentSnapshot> task) {
                 if (task.isSuccessful()) {
                     DocumentSnapshot document = task.getResult();
-                    data = document.getData();
+                    Map<String, Object> data = document.getData();
+                    homeFragment.data = document.getData();
                     Log.d(TAG, document.getId() + " => " + document.getData());
                 } else {
                     Log.w(TAG, "Error getting documents.", task.getException());
@@ -104,10 +104,4 @@ public class Firebase {
             }
         });
     }
-
-    public Map<String, Object> getData() {
-        return data;
-    }
-
-
 }
