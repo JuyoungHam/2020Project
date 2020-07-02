@@ -14,53 +14,62 @@ import androidx.recyclerview.widget.RecyclerView;
 
 import com.google.android.gms.tasks.OnCompleteListener;
 import com.google.android.gms.tasks.Task;
-import com.google.firebase.firestore.DocumentReference;
-import com.google.firebase.firestore.DocumentSnapshot;
 import com.google.firebase.firestore.FirebaseFirestore;
 import com.google.firebase.firestore.QueryDocumentSnapshot;
 import com.google.firebase.firestore.QuerySnapshot;
 
-import java.util.ArrayList;
-import java.util.HashMap;
-import java.util.Map;
-
 public class HomeFragment extends Fragment {
+    private RecyclerView recyclerView;
 
-    final public String TAG = "FirebaseLog";
+    @Override
+    public void onCreate(@Nullable Bundle savedInstanceState) {
+        super.onCreate(savedInstanceState);
+
+    }
 
     @Nullable
     @Override
     public View onCreateView(@NonNull LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
         ViewGroup rootView = (ViewGroup) inflater.inflate(R.layout.fragment_home, container, false);
 
-        RecyclerView recyclerView = rootView.findViewById(R.id.recyclerView);
+        recyclerView = rootView.findViewById(R.id.home_recyclerView);
 
         LinearLayoutManager layoutManager = new LinearLayoutManager(getContext(),
                 LinearLayoutManager.VERTICAL, false);
         recyclerView.setLayoutManager(layoutManager);
         final ExhibitionAdapter adapter = new ExhibitionAdapter();
 
-        String title = "전시";
-        String description = "새로운 전시 입니다.";
-
         Firebase firebase = new Firebase();
         FirebaseFirestore db = firebase.startFirebase();
+        {
+            db.collection("Exhibitions").get()
+                    .addOnCompleteListener(new OnCompleteListener<QuerySnapshot>() {
+                        @Override
+                        public void onComplete(@NonNull Task<QuerySnapshot> task) {
+                            if (task.isSuccessful()) {
+                                for (QueryDocumentSnapshot document : task.getResult()) {
+                                    Exhibitions item = document.toObject(Exhibitions.class);
+                                    adapter.addItem(item);
+                                }
+                            } else {
+                                Log.d(Constant.TAG, "Error getting documents: ", task.getException());
+                            }
 
-        for (int i = 0; i < 10; i++) {
-            Exhibitions item = new Exhibitions(title + i, description);
-            adapter.addItem(item);
+                            recyclerView.setAdapter(adapter);
+
+                            adapter.setOnItemClickListener(new OnItemClickListener() {
+                                @Override
+                                public void onItemClick(ExhibitionAdapter.ViewHolder holder, View view, int position) {
+                                    Exhibitions item = adapter.getItem(position);
+                                    MainActivity mainActivity = (MainActivity) getActivity();
+                                    mainActivity.onItemFragmentChanged(item);
+                                }
+                            });
+                        }
+                    });
         }
 
-        recyclerView.setAdapter(adapter);
 
-        adapter.setOnItemClickListener(new OnItemClickListener() {
-            @Override
-            public void onItemClick(ExhibitionAdapter.ViewHolder holder, View view, int position) {
-                Exhibitions item = adapter.getItem(position);
-                MainActivity mainActivity = (MainActivity) getActivity();
-                mainActivity.onItemFragmentChanged(item);
-            }
-        });
         return rootView;
     }
 }

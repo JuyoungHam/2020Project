@@ -4,15 +4,18 @@ import androidx.annotation.NonNull;
 import androidx.appcompat.app.AppCompatActivity;
 
 import android.os.Bundle;
-import android.os.Parcel;
 import android.util.Log;
 import android.view.MenuItem;
 import android.widget.Toast;
 
+import com.google.android.gms.tasks.OnCompleteListener;
+import com.google.android.gms.tasks.Task;
 import com.google.android.material.bottomnavigation.BottomNavigationView;
 import com.google.firebase.firestore.FirebaseFirestore;
+import com.google.firebase.firestore.QueryDocumentSnapshot;
+import com.google.firebase.firestore.QuerySnapshot;
 
-import java.util.Map;
+import java.util.ArrayList;
 
 public class MainActivity extends AppCompatActivity {
 
@@ -20,8 +23,6 @@ public class MainActivity extends AppCompatActivity {
     ItemFragment itemFragment;
     Tab1Fragment tab1Fragment;
     showFragment showFragment;
-    public Firebase firebase;
-    public FirebaseFirestore db;
 
     @Override
     public void onBackPressed() {
@@ -37,14 +38,10 @@ public class MainActivity extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
 
-        homeFragment = (HomeFragment) getSupportFragmentManager().findFragmentById(R.id.main_fragment);
-
-        firebase = new Firebase();
-        db = firebase.startFirebase();
-        firebase.getData(db);
-
+        homeFragment =
+                (HomeFragment) getSupportFragmentManager().findFragmentById(R.id.main_fragment);
         tab1Fragment = new Tab1Fragment();
-        showFragment=new showFragment();
+        showFragment = new showFragment();
 
         BottomNavigationView bottomNavigation = findViewById(R.id.bottom_navigation);
         bottomNavigation.setOnNavigationItemSelectedListener(new BottomNavigationView.OnNavigationItemSelectedListener() {
@@ -59,17 +56,10 @@ public class MainActivity extends AppCompatActivity {
                         getSupportFragmentManager().beginTransaction().replace(R.id.main_fragment
                                 , homeFragment).commit();
                         return true;
-//                    case R.id.tab2:
-//                        getSupportFragmentManager().beginTransaction().replace(R.id.main_fragment
-//                                , homeFragment).commit();
-//                        return true;
                     case R.id.tab2:
                         getSupportFragmentManager().beginTransaction().replace(R.id.main_fragment
                                 , showFragment).commit();
                         return true;
-                    default:
-                        getSupportFragmentManager().beginTransaction().replace(R.id.main_fragment
-                                , homeFragment).commit();
                 }
                 return false;
             }

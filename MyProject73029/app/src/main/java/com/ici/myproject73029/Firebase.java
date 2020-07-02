@@ -3,6 +3,7 @@ package com.ici.myproject73029;
 import android.util.Log;
 
 import androidx.annotation.NonNull;
+import androidx.recyclerview.widget.RecyclerView;
 
 import com.google.android.gms.tasks.OnCompleteListener;
 import com.google.android.gms.tasks.OnFailureListener;
@@ -14,11 +15,11 @@ import com.google.firebase.firestore.FirebaseFirestore;
 import com.google.firebase.firestore.QueryDocumentSnapshot;
 import com.google.firebase.firestore.QuerySnapshot;
 
+import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.Map;
 
 public class Firebase {
-    public final String TAG = "FirebaseLog";
 
     public FirebaseFirestore startFirebase() {
         // Access a Cloud Firestore instance from your Activity
@@ -37,13 +38,13 @@ public class Firebase {
                 .addOnSuccessListener(new OnSuccessListener<Void>() {
                     @Override
                     public void onSuccess(Void aVoid) {
-                        Log.d(TAG, "DocumentSnapshot successfully written!");
+                        Log.d(Constant.TAG, "DocumentSnapshot successfully written!");
                     }
                 })
                 .addOnFailureListener(new OnFailureListener() {
                     @Override
                     public void onFailure(@NonNull Exception e) {
-                        Log.w(TAG, "Error writing document", e);
+                        Log.w(Constant.TAG, "Error writing document", e);
                     }
                 });
     }
@@ -59,13 +60,13 @@ public class Firebase {
                 .addOnSuccessListener(new OnSuccessListener<Void>() {
                     @Override
                     public void onSuccess(Void aVoid) {
-                        Log.d(TAG, "DocumentSnapshot successfully written!");
+                        Log.d(Constant.TAG, "DocumentSnapshot successfully written!");
                     }
                 })
                 .addOnFailureListener(new OnFailureListener() {
                     @Override
                     public void onFailure(@NonNull Exception e) {
-                        Log.w(TAG, "Error writing document", e);
+                        Log.w(Constant.TAG, "Error writing document", e);
                     }
                 });
     }
@@ -78,34 +79,31 @@ public class Firebase {
                     public void onComplete(@NonNull Task<QuerySnapshot> task) {
                         if (task.isSuccessful()) {
                             for (QueryDocumentSnapshot document : task.getResult()) {
-                                Log.d(TAG, document.getId() + " => " + document.getData());
+                                Log.d(Constant.TAG, document.getId() + " => " + document.getData());
                             }
                         } else {
-                            Log.w(TAG, "Error getting documents.", task.getException());
+                            Log.w(Constant.TAG, "Error getting documents.", task.getException());
                         }
                     }
                 });
     }
 
 
-    public HashMap<String, String> getData(FirebaseFirestore db) {
-        final HashMap<String, String> itemData = new HashMap<>();
-        DocumentReference docRef = db.collection("Exhibitions").document("1");
-        docRef.get().addOnCompleteListener(new OnCompleteListener<DocumentSnapshot>() {
-            @Override
-            public void onComplete(@NonNull Task<DocumentSnapshot> task) {
-                if (task.isSuccessful()) {
-                    DocumentSnapshot document = task.getResult();
-                    String creator = (String) document.get("creator");
-                    itemData.put("creator", creator);
-                    Log.d(TAG, document.getId() + " => " + document.get("title"));
-                    Log.d(TAG, "창작자 : " + creator);
-                } else {
-                    Log.w(TAG, "Error getting documents.", task.getException());
-                }
-            }
-        });
-        return itemData;
+    public void getItem(FirebaseFirestore db) {
+        db.collection("Exhibitions").get()
+                .addOnCompleteListener(new OnCompleteListener<QuerySnapshot>() {
+                    @Override
+                    public void onComplete(@NonNull Task<QuerySnapshot> task) {
+                        if (task.isSuccessful()) {
+                            for (QueryDocumentSnapshot document : task.getResult()) {
+
+                                Log.d(Constant.TAG, document.getId() + " => " + document.getData());
+                            }
+                        } else {
+                            Log.d(Constant.TAG, "Error getting documents: ", task.getException());
+                        }
+                    }
+                });
 
     }
 }

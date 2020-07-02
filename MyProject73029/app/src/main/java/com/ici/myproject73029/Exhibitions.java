@@ -63,6 +63,9 @@ public class Exhibitions {
         this.description = description;
     }
 
+    public Exhibitions() {
+    }
+
     public String getTitle() {
         return title;
     }
