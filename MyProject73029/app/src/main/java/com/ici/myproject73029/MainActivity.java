@@ -2,6 +2,7 @@ package com.ici.myproject73029;
 
 import androidx.annotation.NonNull;
 import androidx.appcompat.app.AppCompatActivity;
+import androidx.fragment.app.FragmentManager;
 
 import android.os.Bundle;
 import android.os.Parcel;
@@ -36,11 +37,13 @@ public class MainActivity extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
 
-        homeFragment = (HomeFragment) getSupportFragmentManager().findFragmentById(R.id.main_fragment);
+        homeFragment = new HomeFragment();
+        FragmentManager manager = getSupportFragmentManager();
+        manager.beginTransaction().add(R.id.main_fragment, homeFragment);
 
-        firebase = new Firebase();
-        db = firebase.startFirebase();
-        firebase.getData(db);
+//        firebase = new Firebase();
+//        db = firebase.startFirebase();
+//        firebase.getData(db);
 
         tab1Fragment = new Tab1Fragment();
 
@@ -61,10 +64,6 @@ public class MainActivity extends AppCompatActivity {
 //                        getSupportFragmentManager().beginTransaction().replace(R.id.main_fragment
 //                                , homeFragment).commit();
 //                        return true;
-
-                    default:
-                        getSupportFragmentManager().beginTransaction().replace(R.id.main_fragment
-                                , homeFragment).commit();
                 }
                 return false;
             }
