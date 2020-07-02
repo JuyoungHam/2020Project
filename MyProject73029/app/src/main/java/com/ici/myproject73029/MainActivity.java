@@ -19,6 +19,7 @@ public class MainActivity extends AppCompatActivity {
     HomeFragment homeFragment;
     ItemFragment itemFragment;
     Tab1Fragment tab1Fragment;
+    showFragment showFragment;
     public Firebase firebase;
     public FirebaseFirestore db;
 
@@ -43,6 +44,7 @@ public class MainActivity extends AppCompatActivity {
         firebase.getData(db);
 
         tab1Fragment = new Tab1Fragment();
+        showFragment=new showFragment();
 
         BottomNavigationView bottomNavigation = findViewById(R.id.bottom_navigation);
         bottomNavigation.setOnNavigationItemSelectedListener(new BottomNavigationView.OnNavigationItemSelectedListener() {
@@ -61,7 +63,10 @@ public class MainActivity extends AppCompatActivity {
 //                        getSupportFragmentManager().beginTransaction().replace(R.id.main_fragment
 //                                , homeFragment).commit();
 //                        return true;
-
+                    case R.id.tab2:
+                        getSupportFragmentManager().beginTransaction().replace(R.id.main_fragment
+                                , showFragment).commit();
+                        return true;
                     default:
                         getSupportFragmentManager().beginTransaction().replace(R.id.main_fragment
                                 , homeFragment).commit();
