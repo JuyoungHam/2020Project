@@ -59,7 +59,7 @@ public class HomeFragment extends Fragment {
 
                             adapter.setOnItemClickListener(new OnItemClickListener() {
                                 @Override
-                                public void onItemClick(ExhibitionAdapter.ViewHolder holder, View view, int position) {
+                                public void onItemClick(View view, int position) {
                                     Exhibitions item = adapter.getItem(position);
                                     MainActivity mainActivity = (MainActivity) getActivity();
                                     mainActivity.onItemFragmentChanged(item);
@@ -68,7 +68,6 @@ public class HomeFragment extends Fragment {
                         }
                     });
         }
-
 
         return rootView;
     }

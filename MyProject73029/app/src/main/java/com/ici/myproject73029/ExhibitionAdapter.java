@@ -7,6 +7,7 @@ import android.widget.TextView;
 
 import androidx.annotation.NonNull;
 import androidx.recyclerview.widget.RecyclerView;
+
 import java.util.ArrayList;
 
 public class ExhibitionAdapter extends RecyclerView.Adapter<ExhibitionAdapter.ViewHolder>
@@ -34,15 +35,16 @@ public class ExhibitionAdapter extends RecyclerView.Adapter<ExhibitionAdapter.Vi
         return items.size();
     }
 
-    @Override
-    public void onItemClick(ViewHolder holder, View view, int position) {
-        if (onItemClickListener != null) {
-            onItemClickListener.onItemClick(holder, view, position);
-        }
-    }
 
     public void setOnItemClickListener(OnItemClickListener listener) {
         this.onItemClickListener = listener;
+    }
+
+    @Override
+    public void onItemClick(View view, int position) {
+        if (onItemClickListener != null) {
+            onItemClickListener.onItemClick(view, position);
+        }
     }
 
     public class ViewHolder extends RecyclerView.ViewHolder {
@@ -59,7 +61,7 @@ public class ExhibitionAdapter extends RecyclerView.Adapter<ExhibitionAdapter.Vi
                 public void onClick(View v) {
                     int position = getAdapterPosition();
                     if (listener != null) {
-                        listener.onItemClick(ViewHolder.this, v, position);
+                        listener.onItemClick(v, position);
                     }
                 }
             });

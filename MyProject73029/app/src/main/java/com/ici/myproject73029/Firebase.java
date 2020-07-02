@@ -23,8 +23,7 @@ public class Firebase {
 
     public FirebaseFirestore startFirebase() {
         // Access a Cloud Firestore instance from your Activity
-        FirebaseFirestore db = FirebaseFirestore.getInstance();
-        return db;
+        return FirebaseFirestore.getInstance();
     }
 
     public void addData(FirebaseFirestore db) {
@@ -69,41 +68,5 @@ public class Firebase {
                         Log.w(Constant.TAG, "Error writing document", e);
                     }
                 });
-    }
-
-    public void readData(FirebaseFirestore db) {
-        db.collection("users")
-                .get()
-                .addOnCompleteListener(new OnCompleteListener<QuerySnapshot>() {
-                    @Override
-                    public void onComplete(@NonNull Task<QuerySnapshot> task) {
-                        if (task.isSuccessful()) {
-                            for (QueryDocumentSnapshot document : task.getResult()) {
-                                Log.d(Constant.TAG, document.getId() + " => " + document.getData());
-                            }
-                        } else {
-                            Log.w(Constant.TAG, "Error getting documents.", task.getException());
-                        }
-                    }
-                });
-    }
-
-
-    public void getItem(FirebaseFirestore db) {
-        db.collection("Exhibitions").get()
-                .addOnCompleteListener(new OnCompleteListener<QuerySnapshot>() {
-                    @Override
-                    public void onComplete(@NonNull Task<QuerySnapshot> task) {
-                        if (task.isSuccessful()) {
-                            for (QueryDocumentSnapshot document : task.getResult()) {
-
-                                Log.d(Constant.TAG, document.getId() + " => " + document.getData());
-                            }
-                        } else {
-                            Log.d(Constant.TAG, "Error getting documents: ", task.getException());
-                        }
-                    }
-                });
-
     }
 }

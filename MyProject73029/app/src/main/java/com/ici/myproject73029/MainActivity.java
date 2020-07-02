@@ -1,26 +1,28 @@
 package com.ici.myproject73029;
 
-import androidx.annotation.NonNull;
-import androidx.appcompat.app.AppCompatActivity;
-
 import android.os.Bundle;
 import android.view.MenuItem;
 import android.widget.Toast;
+
+import androidx.annotation.NonNull;
+import androidx.appcompat.app.AppCompatActivity;
 
 import com.google.android.material.bottomnavigation.BottomNavigationView;
 
 public class MainActivity extends AppCompatActivity {
 
     HomeFragment homeFragment;
-    ItemFragment itemFragment;
+    ItemFragment item_Show;
+    ItemFragment item_Exhibition;
     Tab1Fragment tab1Fragment;
     ShowFragment showFragment;
-    ShowFragment2 showFragment2;
 
     @Override
     public void onBackPressed() {
-        if (itemFragment.isAdded()) {
-            getSupportFragmentManager().beginTransaction().remove(itemFragment).commit();
+        if (item_Show.isAdded()) {
+            getSupportFragmentManager().beginTransaction().remove(item_Show).commit();
+        } else if (item_Exhibition.isAdded()) {
+            getSupportFragmentManager().beginTransaction().remove(item_Show).commit();
         } else {
             super.onBackPressed();
         }
@@ -35,7 +37,6 @@ public class MainActivity extends AppCompatActivity {
                 (HomeFragment) getSupportFragmentManager().findFragmentById(R.id.main_fragment);
         tab1Fragment = new Tab1Fragment();
         showFragment = new ShowFragment();
-        showFragment2 = new ShowFragment2();
 
         BottomNavigationView bottomNavigation = findViewById(R.id.bottom_navigation);
         bottomNavigation.setOnNavigationItemSelectedListener(new BottomNavigationView.OnNavigationItemSelectedListener() {
@@ -52,7 +53,7 @@ public class MainActivity extends AppCompatActivity {
                         return true;
                     case R.id.tab2:
                         getSupportFragmentManager().beginTransaction().replace(R.id.main_fragment
-                                , showFragment2).commit();
+                                , showFragment).commit();
                         return true;
                 }
                 return false;
@@ -63,16 +64,16 @@ public class MainActivity extends AppCompatActivity {
     }
 
     public void onItemFragmentChanged(Exhibitions item) {
-        itemFragment = new ItemFragment(item);
+        item_Exhibition = new ItemFragment(item);
 
         Toast.makeText(this, "전시제목 : " + item.getTitle(), Toast.LENGTH_SHORT).show();
-        getSupportFragmentManager().beginTransaction().replace(R.id.main_fragment, itemFragment).commit();
+        getSupportFragmentManager().beginTransaction().replace(R.id.main_fragment, item_Exhibition).commit();
     }
 
     public void onItemFragmentChanged(Show item) {
-        itemFragment = new ItemFragment(item);
+        item_Show = new ItemFragment(item);
 
         Toast.makeText(this, "공연제목 : " + item.getTitle(), Toast.LENGTH_SHORT).show();
-        getSupportFragmentManager().beginTransaction().replace(R.id.main_fragment, itemFragment).commit();
+        getSupportFragmentManager().beginTransaction().replace(R.id.main_fragment, item_Show).commit();
     }
 }

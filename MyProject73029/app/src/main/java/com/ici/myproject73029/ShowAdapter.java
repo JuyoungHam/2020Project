@@ -1,5 +1,6 @@
 package com.ici.myproject73029;
 
+import androidx.annotation.NonNull;
 import androidx.recyclerview.widget.RecyclerView;
 
 import android.view.LayoutInflater;
@@ -30,12 +31,14 @@ public class ShowAdapter extends RecyclerView.Adapter<ShowAdapter.ViewHolder>
         mValues.add(item);
     }
 
+    @NonNull
     @Override
     public ViewHolder onCreateViewHolder(ViewGroup parent, int viewType) {
         View view = LayoutInflater.from(parent.getContext())
                 .inflate(R.layout.item, parent, false);
-        return new ViewHolder(view);
+        return new ViewHolder(view, this);
     }
+
 
     @Override
     public void onBindViewHolder(final ViewHolder holder, int position) {
@@ -51,9 +54,9 @@ public class ShowAdapter extends RecyclerView.Adapter<ShowAdapter.ViewHolder>
     }
 
     @Override
-    public void onItemClick(ExhibitionAdapter.ViewHolder holder, View view, int position) {
+    public void onItemClick(View view, int position) {
         if (onItemClickListener != null) {
-            onItemClickListener.onItemClick(holder, view, position);
+            onItemClickListener.onItemClick(view, position);
         }
     }
 
@@ -67,16 +70,30 @@ public class ShowAdapter extends RecyclerView.Adapter<ShowAdapter.ViewHolder>
 
 
     public class ViewHolder extends RecyclerView.ViewHolder {
-        public final View mView;
         public TextView title;
         public TextView venue;
 
         public ViewHolder(View view) {
             super(view);
-            mView = view;
             title = (TextView) view.findViewById(R.id.text_title);
             venue = (TextView) view.findViewById(R.id.text_description);
 
+        }
+
+        public ViewHolder(@NonNull View itemView, final OnItemClickListener listener) {
+            super(itemView);
+            title = itemView.findViewById(R.id.text_title);
+            venue = itemView.findViewById(R.id.text_description);
+
+            itemView.setOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View v) {
+                    int position = getAdapterPosition();
+                    if (listener != null) {
+                        listener.onItemClick(v, position);
+                    }
+                }
+            });
         }
 //
 //        public void setText(Show set){
