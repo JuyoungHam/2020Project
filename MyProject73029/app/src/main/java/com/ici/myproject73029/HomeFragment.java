@@ -1,6 +1,7 @@
 package com.ici.myproject73029;
 
 import android.os.Bundle;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -11,7 +12,21 @@ import androidx.fragment.app.Fragment;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
+import com.google.android.gms.tasks.OnCompleteListener;
+import com.google.android.gms.tasks.Task;
+import com.google.firebase.firestore.DocumentReference;
+import com.google.firebase.firestore.DocumentSnapshot;
+import com.google.firebase.firestore.FirebaseFirestore;
+import com.google.firebase.firestore.QueryDocumentSnapshot;
+import com.google.firebase.firestore.QuerySnapshot;
+
+import java.util.ArrayList;
+import java.util.HashMap;
+import java.util.Map;
+
 public class HomeFragment extends Fragment {
+
+    final public String TAG = "FirebaseLog";
 
     @Nullable
     @Override
@@ -28,8 +43,11 @@ public class HomeFragment extends Fragment {
         String title = "전시";
         String description = "새로운 전시 입니다.";
 
+        Firebase firebase = new Firebase();
+        FirebaseFirestore db = firebase.startFirebase();
+
         for (int i = 0; i < 10; i++) {
-            Exhibitions item = new Exhibitions(title, description);
+            Exhibitions item = new Exhibitions(title + i, description);
             adapter.addItem(item);
         }
 

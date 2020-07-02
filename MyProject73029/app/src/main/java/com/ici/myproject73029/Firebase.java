@@ -19,8 +19,6 @@ import java.util.Map;
 
 public class Firebase {
     public final String TAG = "FirebaseLog";
-    String creator;
-    public static String title;
 
     public FirebaseFirestore startFirebase() {
         // Access a Cloud Firestore instance from your Activity
@@ -90,14 +88,16 @@ public class Firebase {
     }
 
 
-    public void getData(FirebaseFirestore db) {
+    public HashMap<String, String> getData(FirebaseFirestore db) {
+        final HashMap<String, String> itemData = new HashMap<>();
         DocumentReference docRef = db.collection("Exhibitions").document("1");
         docRef.get().addOnCompleteListener(new OnCompleteListener<DocumentSnapshot>() {
             @Override
             public void onComplete(@NonNull Task<DocumentSnapshot> task) {
                 if (task.isSuccessful()) {
                     DocumentSnapshot document = task.getResult();
-                    creator = (String) document.get("creator");
+                    String creator = (String) document.get("creator");
+                    itemData.put("creator", creator);
                     Log.d(TAG, document.getId() + " => " + document.get("title"));
                     Log.d(TAG, "창작자 : " + creator);
                 } else {
@@ -105,6 +105,7 @@ public class Firebase {
                 }
             }
         });
-    }
+        return itemData;
 
+    }
 }
