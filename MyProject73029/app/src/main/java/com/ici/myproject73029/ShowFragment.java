@@ -7,42 +7,29 @@ import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
-import android.widget.TextView;
 
 import androidx.annotation.NonNull;
-import androidx.constraintlayout.widget.ConstraintLayout;
 import androidx.fragment.app.Fragment;
-import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
 import com.google.android.gms.tasks.OnCompleteListener;
 import com.google.android.gms.tasks.Task;
-import com.google.firebase.database.DataSnapshot;
-import com.google.firebase.database.DatabaseError;
-import com.google.firebase.database.DatabaseReference;
-import com.google.firebase.database.FirebaseDatabase;
-import com.google.firebase.database.ValueEventListener;
 import com.google.firebase.firestore.FirebaseFirestore;
 import com.google.firebase.firestore.QueryDocumentSnapshot;
 import com.google.firebase.firestore.QuerySnapshot;
 
 import java.util.ArrayList;
 import java.util.List;
-import java.util.Map;
 
 
 /**
  * A fragment representing a list of Items.
  */
-public class showFragment extends Fragment {
+public class ShowFragment extends Fragment {
     Activity activity;
     private FirebaseFirestore db;
     private List list;
-    TextView title,venue;
 
-    public showFragment(){
-        list=new ArrayList<>();
-    }
     @Override
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -73,30 +60,39 @@ public class showFragment extends Fragment {
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
-        final View view = inflater.inflate(R.layout.fragment_show_list, container, false);
-        title=view.findViewById(R.id.txtTitle);
+        final ViewGroup view = (ViewGroup) inflater.inflate(R.layout.fragment_show_list, container, false);
+//        title=view.findViewById(R.id.txtTitle);
 
-        db = FirebaseFirestore.getInstance();
+        final ShowAdapter adapter = new ShowAdapter();
+
+        final RecyclerView recyclerView = view.findViewById(R.id.show_recyclerView);
+
+        Firebase firebase = new Firebase();
+        FirebaseFirestore db = firebase.startFirebase();
         db.collection("Show").get().addOnCompleteListener(new OnCompleteListener<QuerySnapshot>() {
             @Override
             public void onComplete(@NonNull Task<QuerySnapshot> task) {
                 list = new ArrayList<Show>();
                 if (task.isSuccessful()) {
                     for (QueryDocumentSnapshot document : task.getResult()) {
-                        Map<String,Object> map=document.getData();
-                        Log.d("ShowTest", document.getId() + " => " + document.getData());
                         Show show = document.toObject(Show.class);
-                      //  title.setText(document.getData().toString());
-                        list.add(show);
-                        Log.i("List",map.toString());
+                        adapter.addItem(show);
                     }
-                    RecyclerView recyclerView = view.findViewById(R.id.list);
-                    MyItemRecyclerViewAdapter adapter = new MyItemRecyclerViewAdapter(getActivity(), list);
-                    recyclerView.setAdapter(adapter);
-                    adapter.notifyDataSetChanged();
+
                 } else {
                     Log.d("ShowTest", "Error getting documents: ", task.getException());
                 }
+
+                recyclerView.setAdapter(adapter);
+                adapter.notifyDataSetChanged();
+                adapter.setOnItemClickListener(new OnItemClickListener() {
+                    @Override
+                    public void onItemClick(ExhibitionAdapter.ViewHolder holder, View view, int position) {
+                        Show item = adapter.getItem(position);
+                        MainActivity mainActivity = (MainActivity) getActivity();
+                        mainActivity.onItemFragmentChanged(item);
+                    }
+                });
                 //adapter.addAll(list);
             }
         });

@@ -1,11 +1,7 @@
 package com.ici.myproject73029;
 
-import androidx.annotation.Nullable;
 import androidx.recyclerview.widget.RecyclerView;
 
-import android.app.Activity;
-import android.content.Context;
-import android.content.SharedPreferences;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -15,35 +11,35 @@ import com.ici.myproject73029.dummy.DummyContent.DummyItem;
 
 import java.util.ArrayList;
 import java.util.List;
-import java.util.Map;
-import java.util.Set;
 
 /**
  * {@link RecyclerView.Adapter} that can display a {@link DummyItem}.
  * TODO: Replace the implementation with code for your data type.
  */
-public class MyItemRecyclerViewAdapter extends RecyclerView.Adapter<MyItemRecyclerViewAdapter.ViewHolder> {
+public class ShowAdapter extends RecyclerView.Adapter<ShowAdapter.ViewHolder>
+        implements OnItemClickListener {
 
-    private List<Show> mValues=new ArrayList<>();
+    private List<Show> mValues = new ArrayList<>();
+    OnItemClickListener onItemClickListener;
 
-    public MyItemRecyclerViewAdapter(Context context, List<Show> mValues) {
-        if(mValues==null){
-            mValues=new ArrayList<>();
-        }else {
-            this.mValues = mValues;
-        }
+    public void setItems(ArrayList<Show> items) {
+        this.mValues = items;
+    }
+
+    public void addItem(Show item) {
+        mValues.add(item);
     }
 
     @Override
     public ViewHolder onCreateViewHolder(ViewGroup parent, int viewType) {
         View view = LayoutInflater.from(parent.getContext())
-                .inflate(R.layout.fragment_show, parent, false);
+                .inflate(R.layout.item, parent, false);
         return new ViewHolder(view);
     }
 
     @Override
     public void onBindViewHolder(final ViewHolder holder, int position) {
-        Show show=mValues.get(position);
+        Show show = mValues.get(position);
         holder.title.setText(show.getTitle());
         holder.venue.setText(show.getVenue());
     }
@@ -54,6 +50,22 @@ public class MyItemRecyclerViewAdapter extends RecyclerView.Adapter<MyItemRecycl
         return mValues.size();
     }
 
+    @Override
+    public void onItemClick(ExhibitionAdapter.ViewHolder holder, View view, int position) {
+        if (onItemClickListener != null) {
+            onItemClickListener.onItemClick(holder, view, position);
+        }
+    }
+
+    public void setOnItemClickListener(OnItemClickListener listener) {
+        this.onItemClickListener = listener;
+    }
+
+    public Show getItem(int position) {
+        return mValues.get(position);
+    }
+
+
     public class ViewHolder extends RecyclerView.ViewHolder {
         public final View mView;
         public TextView title;
@@ -62,8 +74,8 @@ public class MyItemRecyclerViewAdapter extends RecyclerView.Adapter<MyItemRecycl
         public ViewHolder(View view) {
             super(view);
             mView = view;
-            title = (TextView) view.findViewById(R.id.txtTitle);
-            venue = (TextView) view.findViewById(R.id.txtVenue);
+            title = (TextView) view.findViewById(R.id.text_title);
+            venue = (TextView) view.findViewById(R.id.text_description);
 
         }
 //

@@ -4,25 +4,18 @@ import androidx.annotation.NonNull;
 import androidx.appcompat.app.AppCompatActivity;
 
 import android.os.Bundle;
-import android.util.Log;
 import android.view.MenuItem;
 import android.widget.Toast;
 
-import com.google.android.gms.tasks.OnCompleteListener;
-import com.google.android.gms.tasks.Task;
 import com.google.android.material.bottomnavigation.BottomNavigationView;
-import com.google.firebase.firestore.FirebaseFirestore;
-import com.google.firebase.firestore.QueryDocumentSnapshot;
-import com.google.firebase.firestore.QuerySnapshot;
-
-import java.util.ArrayList;
 
 public class MainActivity extends AppCompatActivity {
 
     HomeFragment homeFragment;
     ItemFragment itemFragment;
     Tab1Fragment tab1Fragment;
-    showFragment showFragment;
+    ShowFragment showFragment;
+    ShowFragment2 showFragment2;
 
     @Override
     public void onBackPressed() {
@@ -41,7 +34,8 @@ public class MainActivity extends AppCompatActivity {
         homeFragment =
                 (HomeFragment) getSupportFragmentManager().findFragmentById(R.id.main_fragment);
         tab1Fragment = new Tab1Fragment();
-        showFragment = new showFragment();
+        showFragment = new ShowFragment();
+        showFragment2 = new ShowFragment2();
 
         BottomNavigationView bottomNavigation = findViewById(R.id.bottom_navigation);
         bottomNavigation.setOnNavigationItemSelectedListener(new BottomNavigationView.OnNavigationItemSelectedListener() {
@@ -58,7 +52,7 @@ public class MainActivity extends AppCompatActivity {
                         return true;
                     case R.id.tab2:
                         getSupportFragmentManager().beginTransaction().replace(R.id.main_fragment
-                                , showFragment).commit();
+                                , showFragment2).commit();
                         return true;
                 }
                 return false;
@@ -72,6 +66,13 @@ public class MainActivity extends AppCompatActivity {
         itemFragment = new ItemFragment(item);
 
         Toast.makeText(this, "전시제목 : " + item.getTitle(), Toast.LENGTH_SHORT).show();
+        getSupportFragmentManager().beginTransaction().replace(R.id.main_fragment, itemFragment).commit();
+    }
+
+    public void onItemFragmentChanged(Show item) {
+        itemFragment = new ItemFragment(item);
+
+        Toast.makeText(this, "공연제목 : " + item.getTitle(), Toast.LENGTH_SHORT).show();
         getSupportFragmentManager().beginTransaction().replace(R.id.main_fragment, itemFragment).commit();
     }
 }

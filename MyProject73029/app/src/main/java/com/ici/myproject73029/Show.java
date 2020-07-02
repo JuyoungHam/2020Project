@@ -1,6 +1,7 @@
 package com.ici.myproject73029;
 
-public class Show {
+public class
+Show {
     private String title;
     private String venue;
 

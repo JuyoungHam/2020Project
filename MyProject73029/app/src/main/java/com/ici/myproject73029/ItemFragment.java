@@ -21,6 +21,11 @@ public class ItemFragment extends Fragment {
         this.description = item.getDescription();
     }
 
+    public ItemFragment(Show item) {
+        this.title = item.getTitle();
+        this.description = item.getVenue();
+    }
+
     @Nullable
     @Override
     public View onCreateView(@NonNull LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
