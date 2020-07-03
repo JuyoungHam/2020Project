@@ -1,6 +1,7 @@
 package com.ici.myproject73029.items;
 
 public class FundamentalItem {
+    private String poster;
     private String title;
     private String description;
     private String creator;
@@ -9,6 +10,20 @@ public class FundamentalItem {
     private String venue;
     private String phone;
     private String period;
+
+    public FundamentalItem(String title, String description) {
+        this.title = title;
+        this.description = description;
+    }
+
+    public FundamentalItem() {
+    }
+
+    public FundamentalItem(String title, String description, String poster) {
+        this.title = title;
+        this.description = title;
+        this.poster = poster;
+    }
 
     public String getCreator() {
         return creator;
@@ -58,14 +73,6 @@ public class FundamentalItem {
         this.period = period;
     }
 
-    public FundamentalItem(String title, String description) {
-        this.title = title;
-        this.description = description;
-    }
-
-    public FundamentalItem() {
-    }
-
     public String getTitle() {
         return title;
     }
@@ -80,5 +87,13 @@ public class FundamentalItem {
 
     public void setDescription(String description) {
         this.description = description;
+    }
+
+    public String getPoster() {
+        return poster;
+    }
+
+    public void setPoster(String poster) {
+        this.poster = poster;
     }
 }

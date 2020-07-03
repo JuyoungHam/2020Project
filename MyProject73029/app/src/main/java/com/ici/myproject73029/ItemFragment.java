@@ -44,8 +44,8 @@ public class ItemFragment extends Fragment {
         type = Constant.SHOW;
 
         //수빈씨 이거 오류 났는데 함수 정의 부분이 없어요!
-//        this.endDate=list_item.getendDate();
-//        this.startDate=list_item.getStartDate();
+//        this.endDate=item.getendDate();
+//        this.startDate=item.getStartDate();
     }
 
     @Nullable

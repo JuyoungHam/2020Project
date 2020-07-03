@@ -9,10 +9,8 @@ import androidx.appcompat.app.AppCompatActivity;
 
 import com.google.android.material.bottomnavigation.BottomNavigationView;
 import com.google.firebase.firestore.FirebaseFirestore;
-import com.google.firebase.storage.FirebaseStorage;
 import com.ici.myproject73029.firebase.Firebase;
 import com.ici.myproject73029.items.Exhibition;
-import com.ici.myproject73029.items.FundamentalItem;
 import com.ici.myproject73029.items.Show;
 import com.ici.myproject73029.tabs.ExhibitionTab;
 import com.ici.myproject73029.tabs.GridTab;
@@ -26,6 +24,7 @@ public class MainActivity extends AppCompatActivity {
     ShowTab showTab;
     ItemFragment item_Show;
     ItemFragment item_Exhibition;
+    GridTab gridTab;
 
     @Override
     public void onBackPressed() {
@@ -51,6 +50,7 @@ public class MainActivity extends AppCompatActivity {
                 (HomeTab) getSupportFragmentManager().findFragmentById(R.id.main_fragment);
         exhibitionTab = new ExhibitionTab();
         showTab = new ShowTab();
+        gridTab = new GridTab();
 
         BottomNavigationView bottomNavigation = findViewById(R.id.bottom_navigation);
         bottomNavigation.setSelectedItemId(R.id.tab_home);
@@ -69,7 +69,7 @@ public class MainActivity extends AppCompatActivity {
                         return true;
                     case R.id.tab2:
                         getSupportFragmentManager().beginTransaction().replace(R.id.main_fragment
-                                , showTab).commit();
+                                , gridTab).commit();
                         return true;
                 }
                 return false;
