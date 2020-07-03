@@ -24,7 +24,6 @@ public class MainActivity extends AppCompatActivity {
     HomeTab homeTab;
     ExhibitionTab exhibitionTab;
     ShowTab showTab;
-    GridTab gridTab;
     ItemFragment item_Show;
     ItemFragment item_Exhibition;
 
@@ -70,7 +69,7 @@ public class MainActivity extends AppCompatActivity {
                         return true;
                     case R.id.tab2:
                         getSupportFragmentManager().beginTransaction().replace(R.id.main_fragment
-                                , new GridTab()).commit();
+                                , showTab).commit();
                         return true;
                 }
                 return false;
