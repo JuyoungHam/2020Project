@@ -48,11 +48,11 @@ public class HomeFragment extends Fragment {
                         public void onComplete(@NonNull Task<QuerySnapshot> task) {
                             if (task.isSuccessful()) {
                                 for (QueryDocumentSnapshot document : task.getResult()) {
-                                    Exhibitions item = document.toObject(Exhibitions.class);
+                                    exhibitions item = document.toObject(exhibitions.class);
                                     adapter.addItem(item);
                                 }
                             } else {
-                                Log.d(Constant.TAG, "Error getting documents: ", task.getException());
+                                Log.d("TAG", "Error getting documents: ", task.getException());
                             }
 
                             recyclerView.setAdapter(adapter);
@@ -60,7 +60,7 @@ public class HomeFragment extends Fragment {
                             adapter.setOnItemClickListener(new OnItemClickListener() {
                                 @Override
                                 public void onItemClick(View view, int position) {
-                                    Exhibitions item = adapter.getItem(position);
+                                    exhibitions item = adapter.getItem(position);
                                     MainActivity mainActivity = (MainActivity) getActivity();
                                     mainActivity.onItemFragmentChanged(item);
                                 }

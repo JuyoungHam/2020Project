@@ -12,7 +12,7 @@ import java.util.ArrayList;
 
 public class ExhibitionAdapter extends RecyclerView.Adapter<ExhibitionAdapter.ViewHolder>
         implements OnItemClickListener {
-    ArrayList<Exhibitions> items = new ArrayList<>();
+    ArrayList<exhibitions> items = new ArrayList<>();
     OnItemClickListener onItemClickListener;
 
     @NonNull
@@ -26,7 +26,7 @@ public class ExhibitionAdapter extends RecyclerView.Adapter<ExhibitionAdapter.Vi
 
     @Override
     public void onBindViewHolder(@NonNull ViewHolder holder, int position) {
-        Exhibitions item = items.get(position);
+        exhibitions item = items.get(position);
         holder.setItem(item);
     }
 
@@ -67,25 +67,25 @@ public class ExhibitionAdapter extends RecyclerView.Adapter<ExhibitionAdapter.Vi
             });
         }
 
-        public void setItem(Exhibitions item) {
+        public void setItem(exhibitions item) {
             textTitle.setText(item.getTitle());
             textDescription.setText(item.getDescription());
         }
     }
 
-    public void addItem(Exhibitions item) {
+    public void addItem(exhibitions item) {
         items.add(item);
     }
 
-    public void setItems(ArrayList<Exhibitions> items) {
+    public void setItems(ArrayList<exhibitions> items) {
         this.items = items;
     }
 
-    public Exhibitions getItem(int position) {
+    public exhibitions getItem(int position) {
         return items.get(position);
     }
 
-    public void setItem(int position, Exhibitions item) {
+    public void setItem(int position, exhibitions item) {
         items.set(position, item);
     }
 }

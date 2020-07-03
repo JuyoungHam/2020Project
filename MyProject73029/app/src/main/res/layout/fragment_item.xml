@@ -20,10 +20,10 @@
 
             <ImageView
                 android:id="@+id/item_poster"
-            android:layout_width="100dp"
-            android:layout_height="100dp"
-            android:layout_gravity="center_horizontal"
-            android:layout_marginTop="16dp"
+                android:layout_width="242dp"
+                android:layout_height="312dp"
+                android:layout_gravity="center_horizontal"
+                android:layout_marginTop="16dp"
                 tools:src="@tools:sample/backgrounds/scenic" />
 
             <TextView

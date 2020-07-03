@@ -1,6 +1,6 @@
 package com.ici.myproject73029;
 
-public class Exhibitions {
+public class exhibitions {
     private String title;
     private String description;
     private String creator;
@@ -58,12 +58,12 @@ public class Exhibitions {
         this.period = period;
     }
 
-    public Exhibitions(String title, String description) {
+    public exhibitions(String title, String description) {
         this.title = title;
         this.description = description;
     }
 
-    public Exhibitions() {
+    public exhibitions() {
     }
 
     public String getTitle() {

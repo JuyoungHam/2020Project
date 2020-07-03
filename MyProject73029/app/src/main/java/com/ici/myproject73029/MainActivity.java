@@ -63,7 +63,7 @@ public class MainActivity extends AppCompatActivity {
 
     }
 
-    public void onItemFragmentChanged(Exhibitions item) {
+    public void onItemFragmentChanged(exhibitions item) {
         item_Exhibition = new ItemFragment(item);
 
         Toast.makeText(this, "전시제목 : " + item.getTitle(), Toast.LENGTH_SHORT).show();
