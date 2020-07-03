@@ -1,4 +1,4 @@
-package com.ici.myproject73029;
+package com.ici.myproject73029.adapters;
 
 import android.view.View;
 

@@ -8,7 +8,6 @@ import android.widget.TextView;
 import androidx.annotation.NonNull;
 import androidx.recyclerview.widget.RecyclerView;
 
-import com.ici.myproject73029.OnItemClickListener;
 import com.ici.myproject73029.R;
 import com.ici.myproject73029.items.FundamentalItem;
 
@@ -23,7 +22,7 @@ public class FundamentalAdapter extends RecyclerView.Adapter<FundamentalAdapter.
     @Override
     public ViewHolder onCreateViewHolder(@NonNull ViewGroup parent, int viewType) {
         LayoutInflater inflater = LayoutInflater.from(parent.getContext());
-        View itemView = inflater.inflate(R.layout.item, parent, false);
+        View itemView = inflater.inflate(R.layout.listitem, parent, false);
 
         return new ViewHolder(itemView, this);
     }

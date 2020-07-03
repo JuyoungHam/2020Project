@@ -6,7 +6,6 @@ import android.widget.TextView;
 import androidx.annotation.NonNull;
 import androidx.recyclerview.widget.RecyclerView;
 
-import com.ici.myproject73029.OnItemClickListener;
 import com.ici.myproject73029.R;
 import com.ici.myproject73029.items.Show;
 

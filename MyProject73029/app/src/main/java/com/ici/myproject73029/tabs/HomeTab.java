@@ -19,7 +19,7 @@ import com.google.firebase.firestore.QueryDocumentSnapshot;
 import com.google.firebase.firestore.QuerySnapshot;
 import com.ici.myproject73029.Constant;
 import com.ici.myproject73029.MainActivity;
-import com.ici.myproject73029.OnItemClickListener;
+import com.ici.myproject73029.adapters.OnItemClickListener;
 import com.ici.myproject73029.R;
 import com.ici.myproject73029.adapters.FundamentalAdapter;
 import com.ici.myproject73029.firebase.Firebase;
