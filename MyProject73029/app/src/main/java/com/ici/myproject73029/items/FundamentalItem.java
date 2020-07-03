@@ -1,4 +1,4 @@
-package com.ici.myproject73029;
+package com.ici.myproject73029.items;
 
 public class FundamentalItem {
     private String title;

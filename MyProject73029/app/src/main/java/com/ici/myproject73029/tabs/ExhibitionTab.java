@@ -1,4 +1,4 @@
-package com.ici.myproject73029;
+package com.ici.myproject73029.tabs;
 
 import android.os.Bundle;
 import android.util.Log;
@@ -17,8 +17,15 @@ import com.google.android.gms.tasks.Task;
 import com.google.firebase.firestore.FirebaseFirestore;
 import com.google.firebase.firestore.QueryDocumentSnapshot;
 import com.google.firebase.firestore.QuerySnapshot;
+import com.ici.myproject73029.Constant;
+import com.ici.myproject73029.MainActivity;
+import com.ici.myproject73029.OnItemClickListener;
+import com.ici.myproject73029.R;
+import com.ici.myproject73029.adapters.FundamentalAdapter;
+import com.ici.myproject73029.firebase.Firebase;
+import com.ici.myproject73029.items.Exhibition;
 
-public class HomeFragment extends Fragment {
+public class ExhibitionTab extends Fragment {
     private RecyclerView recyclerView;
 
     @Override
@@ -30,9 +37,9 @@ public class HomeFragment extends Fragment {
     @Nullable
     @Override
     public View onCreateView(@NonNull LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
-        ViewGroup rootView = (ViewGroup) inflater.inflate(R.layout.fragment_home, container, false);
+        ViewGroup rootView = (ViewGroup) inflater.inflate(R.layout.tab_exhibition, container, false);
 
-        recyclerView = rootView.findViewById(R.id.home_recyclerView);
+        recyclerView = rootView.findViewById(R.id.exhibition_recyclerView);
 
         LinearLayoutManager layoutManager = new LinearLayoutManager(getContext(),
                 LinearLayoutManager.VERTICAL, false);
@@ -48,7 +55,7 @@ public class HomeFragment extends Fragment {
                         public void onComplete(@NonNull Task<QuerySnapshot> task) {
                             if (task.isSuccessful()) {
                                 for (QueryDocumentSnapshot document : task.getResult()) {
-                                    Exhibitions item = document.toObject(Exhibitions.class);
+                                    Exhibition item = document.toObject(Exhibition.class);
                                     adapter.addItem(item);
                                 }
                             } else {
@@ -60,7 +67,7 @@ public class HomeFragment extends Fragment {
                             adapter.setOnItemClickListener(new OnItemClickListener() {
                                 @Override
                                 public void onItemClick(View view, int position) {
-                                    Exhibitions item = (Exhibitions) adapter.getItem(position);
+                                    Exhibition item = (Exhibition) adapter.getItem(position);
                                     MainActivity mainActivity = (MainActivity) getActivity();
                                     mainActivity.onItemFragmentChanged(item);
                                 }
@@ -68,7 +75,6 @@ public class HomeFragment extends Fragment {
                         }
                     });
         }
-
 
 
         return rootView;

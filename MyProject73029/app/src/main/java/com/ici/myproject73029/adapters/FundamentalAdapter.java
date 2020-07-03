@@ -1,4 +1,4 @@
-package com.ici.myproject73029;
+package com.ici.myproject73029.adapters;
 
 import android.view.LayoutInflater;
 import android.view.View;
@@ -7,6 +7,10 @@ import android.widget.TextView;
 
 import androidx.annotation.NonNull;
 import androidx.recyclerview.widget.RecyclerView;
+
+import com.ici.myproject73029.OnItemClickListener;
+import com.ici.myproject73029.R;
+import com.ici.myproject73029.items.FundamentalItem;
 
 import java.util.ArrayList;
 

@@ -8,21 +8,26 @@ import androidx.annotation.NonNull;
 import androidx.appcompat.app.AppCompatActivity;
 
 import com.google.android.material.bottomnavigation.BottomNavigationView;
+import com.ici.myproject73029.items.Exhibition;
+import com.ici.myproject73029.items.Show;
+import com.ici.myproject73029.tabs.ExhibitionTab;
+import com.ici.myproject73029.tabs.HomeTab;
+import com.ici.myproject73029.tabs.ShowTab;
 
 public class MainActivity extends AppCompatActivity {
 
-    HomeFragment homeFragment;
+    HomeTab homeTab;
     ItemFragment item_Show;
     ItemFragment item_Exhibition;
-    Tab1Fragment tab1Fragment;
-    ShowFragment showFragment;
+    ExhibitionTab exhibitionTab;
+    ShowTab showTab;
 
     @Override
     public void onBackPressed() {
         if (item_Show.isAdded()) {
             getSupportFragmentManager().beginTransaction().remove(item_Show).commit();
         } else if (item_Exhibition.isAdded()) {
-            getSupportFragmentManager().beginTransaction().remove(item_Show).commit();
+//            getSupportFragmentManager().beginTransaction().remove(item_Show).commit();
         } else {
             super.onBackPressed();
         }
@@ -33,10 +38,10 @@ public class MainActivity extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
 
-        homeFragment =
-                (HomeFragment) getSupportFragmentManager().findFragmentById(R.id.main_fragment);
-        tab1Fragment = new Tab1Fragment();
-        showFragment = new ShowFragment();
+        homeTab =
+                (HomeTab) getSupportFragmentManager().findFragmentById(R.id.main_fragment);
+        exhibitionTab = new ExhibitionTab();
+        showTab = new ShowTab();
 
         BottomNavigationView bottomNavigation = findViewById(R.id.bottom_navigation);
         bottomNavigation.setOnNavigationItemSelectedListener(new BottomNavigationView.OnNavigationItemSelectedListener() {
@@ -45,15 +50,15 @@ public class MainActivity extends AppCompatActivity {
                 switch (item.getItemId()) {
                     case R.id.tab1:
                         getSupportFragmentManager().beginTransaction().replace(R.id.main_fragment
-                                , tab1Fragment).commit();
+                                , exhibitionTab).commit();
                         return true;
                     case R.id.tab_home:
                         getSupportFragmentManager().beginTransaction().replace(R.id.main_fragment
-                                , homeFragment).commit();
+                                , homeTab).commit();
                         return true;
                     case R.id.tab2:
                         getSupportFragmentManager().beginTransaction().replace(R.id.main_fragment
-                                , showFragment).commit();
+                                , showTab).commit();
                         return true;
                 }
                 return false;
@@ -63,7 +68,7 @@ public class MainActivity extends AppCompatActivity {
 
     }
 
-    public void onItemFragmentChanged(exhibitions item) {
+    public void onItemFragmentChanged(Exhibition item) {
         item_Exhibition = new ItemFragment(item);
 
         Toast.makeText(this, "전시제목 : " + item.getTitle(), Toast.LENGTH_SHORT).show();

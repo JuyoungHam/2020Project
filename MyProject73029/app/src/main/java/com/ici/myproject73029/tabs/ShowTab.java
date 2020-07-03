@@ -1,4 +1,4 @@
-package com.ici.myproject73029;
+package com.ici.myproject73029.tabs;
 
 import android.os.Bundle;
 import android.util.Log;
@@ -17,8 +17,15 @@ import com.google.android.gms.tasks.Task;
 import com.google.firebase.firestore.FirebaseFirestore;
 import com.google.firebase.firestore.QueryDocumentSnapshot;
 import com.google.firebase.firestore.QuerySnapshot;
+import com.ici.myproject73029.Constant;
+import com.ici.myproject73029.MainActivity;
+import com.ici.myproject73029.OnItemClickListener;
+import com.ici.myproject73029.R;
+import com.ici.myproject73029.adapters.FundamentalAdapter;
+import com.ici.myproject73029.firebase.Firebase;
+import com.ici.myproject73029.items.Show;
 
-public class ShowFragment extends Fragment {
+public class ShowTab extends Fragment {
     private RecyclerView recyclerView;
 
     @Override
@@ -30,7 +37,7 @@ public class ShowFragment extends Fragment {
     @Nullable
     @Override
     public View onCreateView(@NonNull LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
-        ViewGroup rootView = (ViewGroup) inflater.inflate(R.layout.fragment_show_list, container, false);
+        ViewGroup rootView = (ViewGroup) inflater.inflate(R.layout.tab_show, container, false);
 
         recyclerView = rootView.findViewById(R.id.show_recyclerView);
 

@@ -10,7 +10,7 @@
 
     <fragment
         android:id="@+id/main_fragment"
-        android:name="com.ici.myproject73029.HomeFragment"
+        android:name="com.ici.myproject73029.tabs.HomeTab"
         android:layout_width="0dp"
         android:layout_height="0dp"
         app:layout_constraintBottom_toTopOf="@+id/bottom_navigation"
