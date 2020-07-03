@@ -56,7 +56,6 @@ public class ShowFragment extends Fragment {
                             }
 
                             recyclerView.setAdapter(adapter);
-
                             adapter.notifyDataSetChanged();
                             adapter.setOnItemClickListener(new OnItemClickListener() {
                                 @Override
@@ -69,8 +68,6 @@ public class ShowFragment extends Fragment {
                         }
                     });
         }
-
-
         return rootView;
     }
 }
