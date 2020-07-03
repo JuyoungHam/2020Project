@@ -37,7 +37,7 @@ public class HomeFragment extends Fragment {
         LinearLayoutManager layoutManager = new LinearLayoutManager(getContext(),
                 LinearLayoutManager.VERTICAL, false);
         recyclerView.setLayoutManager(layoutManager);
-        final ExhibitionAdapter adapter = new ExhibitionAdapter();
+        final FundamentalAdapter adapter = new FundamentalAdapter();
 
         Firebase firebase = new Firebase();
         FirebaseFirestore db = firebase.startFirebase();
@@ -60,7 +60,7 @@ public class HomeFragment extends Fragment {
                             adapter.setOnItemClickListener(new OnItemClickListener() {
                                 @Override
                                 public void onItemClick(View view, int position) {
-                                    Exhibitions item = adapter.getItem(position);
+                                    Exhibitions item = (Exhibitions) adapter.getItem(position);
                                     MainActivity mainActivity = (MainActivity) getActivity();
                                     mainActivity.onItemFragmentChanged(item);
                                 }
@@ -68,6 +68,8 @@ public class HomeFragment extends Fragment {
                         }
                     });
         }
+
+
 
         return rootView;
     }

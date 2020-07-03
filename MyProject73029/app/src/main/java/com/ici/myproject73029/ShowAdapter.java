@@ -17,36 +17,27 @@ import java.util.List;
  * {@link RecyclerView.Adapter} that can display a {@link DummyItem}.
  * TODO: Replace the implementation with code for your data type.
  */
-public class ShowAdapter extends RecyclerView.Adapter<ShowAdapter.ViewHolder>
-        implements OnItemClickListener {
+
+public class ShowAdapter extends FundamentalAdapter{
+    public ShowAdapter(){
+        super();
+    }
 
     private List<Show> mValues = new ArrayList<>();
     OnItemClickListener onItemClickListener;
 
-    public void setItems(ArrayList<Show> items) {
-        this.mValues = items;
-    }
 
     public void addItem(Show item) {
         mValues.add(item);
     }
 
-    @NonNull
     @Override
-    public ViewHolder onCreateViewHolder(ViewGroup parent, int viewType) {
-        View view = LayoutInflater.from(parent.getContext())
-                .inflate(R.layout.item, parent, false);
-        return new ViewHolder(view, this);
-    }
-
-
-    @Override
-    public void onBindViewHolder(final ViewHolder holder, int position) {
+    public void onBindViewHolder(@NonNull FundamentalAdapter.ViewHolder holder, int position) {
+        super.onBindViewHolder(holder, position);
         Show show = mValues.get(position);
-        holder.title.setText(show.getTitle());
-        holder.venue.setText(show.getVenue());
+        holder.textTitle.setText(show.getTitle());
+        holder.textDescription.setText(show.getVenue());
     }
-
 
     @Override
     public int getItemCount() {

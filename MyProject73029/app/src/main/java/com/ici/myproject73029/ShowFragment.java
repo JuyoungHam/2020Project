@@ -37,7 +37,7 @@ public class ShowFragment extends Fragment {
         LinearLayoutManager layoutManager = new LinearLayoutManager(getContext(),
                 LinearLayoutManager.VERTICAL, false);
         recyclerView.setLayoutManager(layoutManager);
-        final ShowAdapter adapter = new ShowAdapter();
+        final FundamentalAdapter adapter = new FundamentalAdapter();
 
         Firebase firebase = new Firebase();
         FirebaseFirestore db = firebase.startFirebase();
@@ -61,7 +61,7 @@ public class ShowFragment extends Fragment {
                             adapter.setOnItemClickListener(new OnItemClickListener() {
                                 @Override
                                 public void onItemClick(View view, int position) {
-                                    Show item = adapter.getItem(position);
+                                    Show item = (Show) adapter.getItem(position);
                                     MainActivity mainActivity = (MainActivity) getActivity();
                                     mainActivity.onItemFragmentChanged(item);
                                 }
