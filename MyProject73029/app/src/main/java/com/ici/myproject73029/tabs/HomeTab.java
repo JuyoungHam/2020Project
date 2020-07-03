@@ -49,7 +49,7 @@ public class HomeTab extends Fragment {
         Firebase firebase = new Firebase();
         FirebaseFirestore db = firebase.startFirebase();
         {
-            db.collection("Exhibitions").get()
+            db.collection("All").get()
                     .addOnCompleteListener(new OnCompleteListener<QuerySnapshot>() {
                         @Override
                         public void onComplete(@NonNull Task<QuerySnapshot> task) {
@@ -75,7 +75,6 @@ public class HomeTab extends Fragment {
                         }
                     });
         }
-
 
 
         return rootView;

@@ -48,8 +48,11 @@ public class ShowTab extends Fragment {
 
         Firebase firebase = new Firebase();
         FirebaseFirestore db = firebase.startFirebase();
+
         {
-            db.collection("Show").get()
+            db.collection("All")
+                    .whereEqualTo("category", 102)
+                    .get()
                     .addOnCompleteListener(new OnCompleteListener<QuerySnapshot>() {
                         @Override
                         public void onComplete(@NonNull Task<QuerySnapshot> task) {

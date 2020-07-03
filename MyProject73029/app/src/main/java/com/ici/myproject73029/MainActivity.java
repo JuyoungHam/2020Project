@@ -8,7 +8,11 @@ import androidx.annotation.NonNull;
 import androidx.appcompat.app.AppCompatActivity;
 
 import com.google.android.material.bottomnavigation.BottomNavigationView;
+import com.google.firebase.firestore.FirebaseFirestore;
+import com.google.firebase.storage.FirebaseStorage;
+import com.ici.myproject73029.firebase.Firebase;
 import com.ici.myproject73029.items.Exhibition;
+import com.ici.myproject73029.items.FundamentalItem;
 import com.ici.myproject73029.items.Show;
 import com.ici.myproject73029.tabs.ExhibitionTab;
 import com.ici.myproject73029.tabs.HomeTab;
@@ -37,6 +41,10 @@ public class MainActivity extends AppCompatActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
+
+        Firebase firebase = new Firebase();
+        FirebaseFirestore db = firebase.startFirebase();
+//        firebase.addData(db);
 
         homeTab =
                 (HomeTab) getSupportFragmentManager().findFragmentById(R.id.main_fragment);

@@ -31,20 +31,17 @@ public class ItemFragment extends Fragment {
     String venue;
     Timestamp endDate, startDate;
     int type;
-    String category;
 
     public ItemFragment(Exhibition item) {
         this.title = item.getTitle();
         this.description = item.getDescription();
         type = Constant.EXHIBITION;
-        category = "Exhibitions";
     }
 
     public ItemFragment(Show item) {
         this.title = item.getTitle();
         this.description = item.getDescription();
         type = Constant.SHOW;
-        category = "Show";
 
         //수빈씨 이거 오류 났는데 함수 정의 부분이 없어요!
 //        this.endDate=listitem.getendDate();
@@ -68,26 +65,28 @@ public class ItemFragment extends Fragment {
 
         Firebase firebase = new Firebase();
         FirebaseFirestore db = firebase.startFirebase();
-        if (type == Constant.SHOW) {
-            db.collection(category)
-                    .whereEqualTo("title", title)
-                    .get()
-                    .addOnCompleteListener(new OnCompleteListener<QuerySnapshot>() {
-                        @Override
-                        public void onComplete(@NonNull Task<QuerySnapshot> task) {
-                            if (task.isSuccessful()) {
-                                for (QueryDocumentSnapshot document : task.getResult()) {
-                                    Map<String, Object> fieldData = document.getData();
+        db.collection("All")
+                .whereEqualTo("title", title)
+                .get()
+                .addOnCompleteListener(new OnCompleteListener<QuerySnapshot>() {
+                    @Override
+                    public void onComplete(@NonNull Task<QuerySnapshot> task) {
+                        if (task.isSuccessful()) {
+                            for (QueryDocumentSnapshot document : task.getResult()) {
+                                Map<String, Object> fieldData = document.getData();
+                                if (fieldData.get("poster") != null) {
                                     Glide.with(itemView).load(fieldData.get("poster").toString()).into(img_poster);
+                                    img_poster.setVisibility(View.VISIBLE);
+                                } else {
+                                    img_poster.setVisibility(View.GONE);
                                 }
-                            } else {
-                                Log.d(Constant.TAG, "Error getting documents: ", task.getException());
                             }
+                        } else {
+                            Log.d(Constant.TAG, "Error getting documents: ", task.getException());
+
                         }
-                    });
-        } else {
-            img_poster.setVisibility(View.GONE);
-        }
+                    }
+                });
 
         //오류나서 임시로 잠궜어요
 //        item_period.setText(startDate+"~"+endDate);

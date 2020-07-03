@@ -49,7 +49,7 @@ public class ExhibitionTab extends Fragment {
         Firebase firebase = new Firebase();
         FirebaseFirestore db = firebase.startFirebase();
         {
-            db.collection("Exhibitions").get()
+            db.collection("All").whereEqualTo("category", 101).get()
                     .addOnCompleteListener(new OnCompleteListener<QuerySnapshot>() {
                         @Override
                         public void onComplete(@NonNull Task<QuerySnapshot> task) {

@@ -21,7 +21,7 @@
             <ImageView
                 android:id="@+id/item_poster"
                 android:layout_width="wrap_content"
-                android:layout_height="500dp"
+                android:layout_height="300dp"
                 android:layout_gravity="center_horizontal"
                 android:layout_margin="16dp"
                 android:layout_marginTop="16dp"
@@ -35,7 +35,8 @@
                 android:layout_gravity="center_horizontal"
                 android:layout_margin="8dp"
                 android:text="제목"
-                android:textAppearance="@style/TextAppearance.AppCompat.Large" />
+                android:textAppearance="@style/TextAppearance.AppCompat.Large"
+                android:textSize="20sp" />
 
             <TextView
                 android:id="@+id/item_venue"
@@ -61,7 +62,7 @@
                 android:layout_height="wrap_content"
                 android:layout_gravity="center_horizontal"
                 android:layout_margin="8dp"
-                android:text="@string/description_example" />
+                android:text="설명" />
         </LinearLayout>
     </ScrollView>
 
