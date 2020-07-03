@@ -15,16 +15,18 @@ import com.ici.myproject73029.items.Exhibition;
 import com.ici.myproject73029.items.FundamentalItem;
 import com.ici.myproject73029.items.Show;
 import com.ici.myproject73029.tabs.ExhibitionTab;
+import com.ici.myproject73029.tabs.GridTab;
 import com.ici.myproject73029.tabs.HomeTab;
 import com.ici.myproject73029.tabs.ShowTab;
 
 public class MainActivity extends AppCompatActivity {
 
     HomeTab homeTab;
-    ItemFragment item_Show;
-    ItemFragment item_Exhibition;
     ExhibitionTab exhibitionTab;
     ShowTab showTab;
+    GridTab gridTab;
+    ItemFragment item_Show;
+    ItemFragment item_Exhibition;
 
     @Override
     public void onBackPressed() {
@@ -52,6 +54,8 @@ public class MainActivity extends AppCompatActivity {
         showTab = new ShowTab();
 
         BottomNavigationView bottomNavigation = findViewById(R.id.bottom_navigation);
+        bottomNavigation.setSelectedItemId(R.id.tab_home);
+
         bottomNavigation.setOnNavigationItemSelectedListener(new BottomNavigationView.OnNavigationItemSelectedListener() {
             @Override
             public boolean onNavigationItemSelected(@NonNull MenuItem item) {
@@ -66,7 +70,7 @@ public class MainActivity extends AppCompatActivity {
                         return true;
                     case R.id.tab2:
                         getSupportFragmentManager().beginTransaction().replace(R.id.main_fragment
-                                , showTab).commit();
+                                , new GridTab()).commit();
                         return true;
                 }
                 return false;

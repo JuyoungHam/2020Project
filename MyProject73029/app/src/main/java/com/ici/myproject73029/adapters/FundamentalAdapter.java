@@ -3,6 +3,7 @@ package com.ici.myproject73029.adapters;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.ImageView;
 import android.widget.TextView;
 
 import androidx.annotation.NonNull;
@@ -22,7 +23,7 @@ public class FundamentalAdapter extends RecyclerView.Adapter<FundamentalAdapter.
     @Override
     public ViewHolder onCreateViewHolder(@NonNull ViewGroup parent, int viewType) {
         LayoutInflater inflater = LayoutInflater.from(parent.getContext());
-        View itemView = inflater.inflate(R.layout.listitem, parent, false);
+        View itemView = inflater.inflate(R.layout.list_item, parent, false);
 
         return new ViewHolder(itemView, this);
     }
@@ -53,11 +54,13 @@ public class FundamentalAdapter extends RecyclerView.Adapter<FundamentalAdapter.
     public class ViewHolder extends RecyclerView.ViewHolder {
         TextView textTitle;
         TextView textDescription;
+        ImageView imageView;
 
         public ViewHolder(@NonNull View itemView, final OnItemClickListener listener) {
             super(itemView);
             textTitle = itemView.findViewById(R.id.text_title);
             textDescription = itemView.findViewById(R.id.text_description);
+            imageView = itemView.findViewById(R.id.image_gird);
 
             itemView.setOnClickListener(new View.OnClickListener() {
                 @Override
@@ -73,6 +76,7 @@ public class FundamentalAdapter extends RecyclerView.Adapter<FundamentalAdapter.
         public void setItem(FundamentalItem item) {
             textTitle.setText(item.getTitle());
             textDescription.setText(item.getDescription());
+
         }
     }
 

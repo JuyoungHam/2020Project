@@ -7,10 +7,9 @@
         android:enabled="true"
         android:icon="@drawable/ic_baseline_portrait_24"
         android:title="전시"
-        app:showAsAction="always" />
+        app:showAsAction="ifRoom" />
     <item
         android:id="@+id/tab_home"
-        android:enabled="true"
         android:icon="@drawable/ic_baseline_home_24"
         android:title="홈"
         app:showAsAction="always" />
