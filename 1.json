@@ -1,0 +1,122 @@
+A{"response": {
+    "header": {
+        "resultCode": "0000",
+        "resultMsg": "OK"
+    },
+    "body": {
+        "pageNo": 1,
+        "totalCount": 1810,
+        "items": {"item": [
+            {
+                "venue": "국립현대미술관",
+                "creator": "국립현대미술관",
+                "period": "1982-04-29 ~ 1982-05-08",
+                "referenceIdentifier": "http://www.mmca.go.kr/upload/exhibition/2017/12/2017121405482990014142.jpg",
+                "rights": "동아일보사",
+                "collectionDb": "국립현대미술관DB",
+                "publisher": "NMAA04",
+                "title": "1982 동아미술제",
+                "url": "http://www.mmca.go.kr/exhibitions/exhibitionsDetail.do?menuId=1010000000&exhId=201712140000837",
+                "subjectCategory": "국내전시"
+            },
+            {
+                "creator": "국립현대미술관",
+                "period": "1982-05-20 ~ 1982-06-08",
+                "referenceIdentifier": "http://www.mmca.go.kr/upload/exhibition/2017/12/2017121405522112512327.jpg",
+                "rights": "한국문화예술진흥원",
+                "collectionDb": "국립현대미술관DB",
+                "publisher": "NMAA04",
+                "title": "제1회 대한민국 미술대전: 서예·공예",
+                "url": "http://www.mmca.go.kr/exhibitions/exhibitionsDetail.do?menuId=1010000000&exhId=201712140000838",
+                "subjectCategory": "국내전시"
+            },
+            {
+                "creator": "국립현대미술관",
+                "period": "2002-06-20 ~ 2002-06-20",
+                "referenceIdentifier": "http://www.mmca.go.kr/upload/exhibition/2017/12/2017121509341894416943.jpg",
+                "collectionDb": "국립현대미술관DB",
+                "publisher": "NMAA04",
+                "title": "창동미술스튜디오 개관 기념전",
+                "url": "http://www.mmca.go.kr/exhibitions/exhibitionsDetail.do?menuId=1010000000&exhId=201712150000839",
+                "subjectCategory": "국내전시"
+            },
+            {
+                "venue": "제7전시실",
+                "creator": "국립현대미술관",
+                "period": "2002-09-07 ~ 2002-09-17",
+                "referenceIdentifier": "http://www.mmca.go.kr/upload/exhibition/2018/02/2018022609275538216515.jpg",
+                "rights": "(사)한국미술협회, 대한민국미술대전 서예부문 운영위원회 / 한국문화예술진흥원",
+                "collectionDb": "국립현대미술관DB",
+                "publisher": "NMAA04",
+                "title": "제21회 대한민국미술대전: 서예부문",
+                "url": "http://www.mmca.go.kr/exhibitions/exhibitionsDetail.do?menuId=1010000000&exhId=201712150000840",
+                "subjectCategory": "국내전시"
+            },
+            {
+                "venue": "제7전시실",
+                "creator": "국립현대미술관",
+                "period": "2002-10-12 ~ 2002-10-29",
+                "referenceIdentifier": "http://www.mmca.go.kr/upload/exhibition/2018/02/2018022609325592218443.jpg",
+                "rights": "(사)한국미술협회, 대한민국미술대전 운영위원회 / 한국문화예술진흥원",
+                "collectionDb": "국립현대미술관DB",
+                "publisher": "NMAA04",
+                "title": "제21회 대한민국미술대전: 2부 구상계열",
+                "url": "http://www.mmca.go.kr/exhibitions/exhibitionsDetail.do?menuId=1010000000&exhId=201712150000841",
+                "subjectCategory": "국내전시"
+            },
+            {
+                "creator": "국립현대미술관",
+                "period": "2002-12-18 ~ 2003-05-11",
+                "referenceIdentifier": "http://www.mmca.go.kr/upload/exhibition/2018/02/2018022003344099914240.jpg",
+                "collectionDb": "국립현대미술관DB",
+                "publisher": "NMAA04",
+                "title": "국립현대미술관소장품 근대미술의 산책",
+                "url": "http://www.mmca.go.kr/exhibitions/exhibitionsDetail.do?menuId=1010000000&exhId=201712150000842",
+                "subjectCategory": "국내전시"
+            },
+            {
+                "creator": "국립현대미술관",
+                "period": "2002-12-01 ~ 2003-05-17",
+                "referenceIdentifier": "http://www.mmca.go.kr/upload/exhibition/2018/02/2018022003341614116528.jpg",
+                "collectionDb": "국립현대미술관DB",
+                "publisher": "NMAA04",
+                "title": "작고20주년 기념 오지호 소장품 특별전",
+                "url": "http://www.mmca.go.kr/exhibitions/exhibitionsDetail.do?menuId=1010000000&exhId=201712150000843",
+                "subjectCategory": "국내전시"
+            },
+            {
+                "venue": "정부대전청사",
+                "creator": "국립현대미술관",
+                "period": "2002-12-10 ~ 2003-12-09",
+                "referenceIdentifier": "http://www.mmca.go.kr/upload/exhibition/2017/12/2017121509512650013301.jpg",
+                "collectionDb": "국립현대미술관DB",
+                "publisher": "NMAA04",
+                "title": "한국 색채와 꿈_작은미술관",
+                "url": "http://www.mmca.go.kr/exhibitions/exhibitionsDetail.do?menuId=1010000000&exhId=201712150000844",
+                "subjectCategory": "국내전시"
+            },
+            {
+                "venue": "전북 부안예술회관",
+                "creator": "국립현대미술관",
+                "period": "2003-03-20 ~ 2003-11-07",
+                "referenceIdentifier": "http://www.mmca.go.kr/upload/exhibition/2017/12/2017121509535337813900.jpg",
+                "collectionDb": "국립현대미술관DB",
+                "publisher": "NMAA04",
+                "title": "2003 찾아가는 미술관",
+                "url": "http://www.mmca.go.kr/exhibitions/exhibitionsDetail.do?menuId=1010000000&exhId=201712150000845",
+                "subjectCategory": "국내전시"
+            },
+            {
+                "creator": "국립현대미술관",
+                "period": "2003-04-30 ~ 2003-06-22",
+                "referenceIdentifier": "http://www.mmca.go.kr/upload/exhibition/2017/12/2017121509571518713914.jpg",
+                "collectionDb": "국립현대미술관DB",
+                "publisher": "NMAA04",
+                "title": "한국현대판화모음전",
+                "url": "http://www.mmca.go.kr/exhibitions/exhibitionsDetail.do?menuId=1010000000&exhId=201712150000846",
+                "subjectCategory": "국내전시"
+            }
+        ]},
+        "numOfRows": 10
+    }
+}}
