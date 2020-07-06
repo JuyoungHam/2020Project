@@ -12,6 +12,7 @@ import com.google.firebase.firestore.FirebaseFirestore;
 import com.ici.myproject73029.firebase.Firebase;
 import com.ici.myproject73029.items.Exhibition;
 import com.ici.myproject73029.items.Show;
+import com.ici.myproject73029.tabs.AuthTab;
 import com.ici.myproject73029.tabs.ExhibitionTab;
 import com.ici.myproject73029.tabs.GridTab;
 import com.ici.myproject73029.tabs.HomeTab;
@@ -25,6 +26,7 @@ public class MainActivity extends AppCompatActivity {
     ItemFragment item_Show;
     ItemFragment item_Exhibition;
     GridTab gridTab;
+    AuthTab authTab;
 
     @Override
     public void onBackPressed() {
@@ -51,6 +53,7 @@ public class MainActivity extends AppCompatActivity {
         exhibitionTab = new ExhibitionTab();
         showTab = new ShowTab();
         gridTab = new GridTab();
+        authTab = new AuthTab();
 
         BottomNavigationView bottomNavigation = findViewById(R.id.bottom_navigation);
         bottomNavigation.setSelectedItemId(R.id.tab_home);
@@ -71,6 +74,9 @@ public class MainActivity extends AppCompatActivity {
                         getSupportFragmentManager().beginTransaction().replace(R.id.main_fragment
                                 , gridTab).commit();
                         return true;
+                    case R.id.tab_auth:
+                        getSupportFragmentManager().beginTransaction().replace(R.id.main_fragment
+                                , authTab).commit();
                 }
                 return false;
             }
