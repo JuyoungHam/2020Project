@@ -18,7 +18,7 @@ firebase.initializeApp({
 
 var db = firebase.firestore();
 
-// var jsonFile = menu =[
+// var menu =[
 //     {
 //        "id":1,
 //        "name":"Focaccia al rosmarino",
@@ -33,21 +33,21 @@ var db = firebase.firestore();
 //        "price":13.50,
 //        "type":"Appetizers"
 //     }
-//  ];
-var json = require('1.json');
+//  ]
 
-data.forEach(function(obj) {
-  db.collection("temp").document(obj.title).add({
-      title: obj.title,
-      venue: obj.venue,
-      period: obj.period,
-      url: obj.url,
-      category: 101,
-      poster: obj.referenceIdentifier
+var menu = require("./1.json");
+
+menu.forEach(function(obj) {
+    db.collection("temp").add({
+        creator: obj.creator,
+        period: obj.period,
+        referenceIdentifier: obj.referenceIdentifier,
+        title: obj.title,
+        url: obj.url
     }).then(function(docRef) {
-      console.log("Document written with ID: ", docRef.id);
+        console.log("Document written with ID: ", docRef.id);
     })
     .catch(function(error) {
-      console.error("Error adding document: ", error);
+        console.error("Error adding document: ", error);
     });
 });
