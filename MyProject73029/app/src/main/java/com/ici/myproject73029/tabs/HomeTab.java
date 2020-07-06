@@ -50,7 +50,7 @@ public class HomeTab extends Fragment {
         Firebase firebase = new Firebase();
         FirebaseFirestore db = firebase.startFirebase();
         {
-            db.collection("All").orderBy("title", Query.Direction.DESCENDING).get()
+            db.collection("All").orderBy("title", Query.Direction.ASCENDING).get()
                     .addOnCompleteListener(new OnCompleteListener<QuerySnapshot>() {
                         @Override
                         public void onComplete(@NonNull Task<QuerySnapshot> task) {

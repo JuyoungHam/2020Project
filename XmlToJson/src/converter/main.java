@@ -19,7 +19,8 @@ public class main {
 	public static final int INDENT_FACTOR = 4;
 
 	public static void main(String args[]) throws IOException,MalformedURLException {
-		 HttpURLConnection conn = (HttpURLConnection) new URL("http://175.125.91.94/oasis/service/rest/meta2020/docMeta").openConnection();
+		 HttpURLConnection conn = (HttpURLConnection) 
+				 new URL("http://175.125.91.94/oasis/service/rest/other/getMAPN0701").openConnection();
 	        conn.connect();
 		BufferedInputStream bis = new BufferedInputStream(conn.getInputStream());
 		BufferedReader reader = new BufferedReader(new InputStreamReader(bis, "utf8"));

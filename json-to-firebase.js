@@ -36,16 +36,16 @@ var db = firebase.firestore();
 //  ]
 
 var menu = require("./1.json");
-
-menu.forEach(function(obj) {
-    db.collection("temp").add({
+menu.response.body.items.item.forEach(function(obj) {
+    db.collection("All").doc(obj.title).set({
         creator: obj.creator,
-        period: obj.period,
-        referenceIdentifier: obj.referenceIdentifier,
+        poster: null,
         title: obj.title,
-        url: obj.url
+        url: obj.url,
+        category:102,
+        venue:obj.venue
     }).then(function(docRef) {
-        console.log("Document written with ID: ", docRef.id);
+        console.log("Document written with ID: ");
     })
     .catch(function(error) {
         console.error("Error adding document: ", error);
