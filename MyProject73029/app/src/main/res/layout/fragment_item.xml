@@ -10,8 +10,11 @@
     tools:context=".ItemFragment">
 
     <ScrollView
+        android:id="@+id/scrollView2"
         android:layout_width="match_parent"
-        android:layout_height="match_parent">
+        android:layout_height="match_parent"
+        tools:layout_editor_absoluteX="16dp"
+        tools:layout_editor_absoluteY="173dp">
 
         <LinearLayout
             android:layout_width="match_parent"
@@ -63,6 +66,15 @@
                 android:layout_gravity="center_horizontal"
                 android:layout_margin="8dp"
                 android:text="설명" />
+
+            <ImageView
+                android:id="@+id/map"
+                android:layout_width="67dp"
+                android:layout_height="38dp"
+                android:layout_gravity="center"
+                android:visibility="visible"
+                tools:src="@drawable/daum" />
+
         </LinearLayout>
     </ScrollView>
 

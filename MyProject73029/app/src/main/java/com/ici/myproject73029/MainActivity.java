@@ -1,6 +1,11 @@
 package com.ici.myproject73029;
 
+import android.content.pm.PackageInfo;
+import android.content.pm.PackageManager;
+import android.content.pm.Signature;
 import android.os.Bundle;
+import android.util.Base64;
+import android.util.Log;
 import android.view.MenuItem;
 import android.widget.Toast;
 
@@ -17,6 +22,9 @@ import com.ici.myproject73029.tabs.ExhibitionTab;
 import com.ici.myproject73029.tabs.GridTab;
 import com.ici.myproject73029.tabs.HomeTab;
 import com.ici.myproject73029.tabs.ShowTab;
+
+import java.security.MessageDigest;
+import java.security.NoSuchAlgorithmException;
 
 public class MainActivity extends AppCompatActivity {
 
@@ -82,7 +90,6 @@ public class MainActivity extends AppCompatActivity {
             }
         });
 
-
     }
 
     public void onItemFragmentChanged(Exhibition item) {
@@ -98,4 +105,5 @@ public class MainActivity extends AppCompatActivity {
         Toast.makeText(this, "공연제목 : " + item.getTitle(), Toast.LENGTH_SHORT).show();
         getSupportFragmentManager().beginTransaction().replace(R.id.main_fragment, item_Show).commit();
     }
+
 }

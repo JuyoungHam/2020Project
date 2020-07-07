@@ -1,5 +1,9 @@
 package com.ici.myproject73029;
 
+import android.app.Activity;
+import android.content.Context;
+import android.content.Intent;
+import android.net.Uri;
 import android.os.Bundle;
 import android.text.Html;
 import android.util.Log;
@@ -29,8 +33,7 @@ import java.util.Map;
 public class ItemFragment extends Fragment {
     String title;
     String description;
-    String venue;
-    Timestamp endDate, startDate;
+    public String venue;
     int type;
 
     public ItemFragment(Exhibition item) {
@@ -42,16 +45,14 @@ public class ItemFragment extends Fragment {
     public ItemFragment(Show item) {
         this.title = item.getTitle();
         this.description = item.getDescription();
+        this.venue=item.getVenue();
         type = Constant.SHOW;
-
-        //수빈씨 이거 오류 났는데 함수 정의 부분이 없어요!
-//        this.endDate=item.getendDate();
-//        this.startDate=item.getStartDate();
     }
+
 
     @Nullable
     @Override
-    public View onCreateView(@NonNull LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
+    public View onCreateView(@NonNull final LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
         final ViewGroup itemView = (ViewGroup) inflater.inflate(R.layout.fragment_item, container,
                 false);
 
@@ -60,10 +61,23 @@ public class ItemFragment extends Fragment {
         TextView item_venue = itemView.findViewById(R.id.item_venue);
         TextView item_period = itemView.findViewById(R.id.item_period);
         TextView item_description = itemView.findViewById(R.id.item_description);
+        ImageView img_map=itemView.findViewById(R.id.map);
+        img_map.setImageResource(R.mipmap.ic_launcher_foreground);
 
         item_title.setText(title);
         if (description != null)
             item_description.setText(Html.fromHtml(description));
+        item_venue.setText(venue);
+
+        img_map.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                Intent intent=new Intent(getContext(),MapTest.class);
+                intent.putExtra("venue",venue);
+                startActivity(intent);
+            }
+        });
+
 
         Firebase firebase = new Firebase();
         FirebaseFirestore db = firebase.startFirebase();
@@ -89,10 +103,6 @@ public class ItemFragment extends Fragment {
                         }
                     }
                 });
-
-        //오류나서 임시로 잠궜어요
-//        item_period.setText(startDate+"~"+endDate);
-//        String name=title;
 
         return itemView;
     }
