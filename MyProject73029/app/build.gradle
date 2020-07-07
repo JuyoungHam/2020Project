@@ -12,7 +12,7 @@ android {
         versionCode 1
         versionName "1.0"
         multiDexEnabled true
-        resConfigs "kr","en"
+        resConfigs "kr", "en"
 
         testInstrumentationRunner "androidx.test.runner.AndroidJUnitRunner"
     }
@@ -46,6 +46,8 @@ dependencies {
     implementation 'com.google.firebase:firebase-firestore:21.4.3'
     implementation 'com.google.firebase:firebase-auth:19.3.1'
     implementation 'com.firebaseui:firebase-ui-auth:6.2.1'
+    implementation 'com.google.firebase:firebase-auth:19.3.1'
+    implementation 'com.google.android.gms:play-services-auth:18.0.0'
 
     implementation 'com.facebook.android:facebook-android-sdk:4.41.0'
     implementation 'com.twitter.sdk.android:twitter-core:3.1.1'

@@ -7,6 +7,8 @@ public class Constant {
     public static final int EXHIBITION = 1111;
     public static final int SHOW = 2222;
 
+
+    public static final int RC_SIGN_IN = 9001;
     public static final String GOOGLE_AUTH = "google";
     public static final String TWITTER_AUTH = "twitter";
     public static final String FACEBOOK_AUTH = "facebook";
