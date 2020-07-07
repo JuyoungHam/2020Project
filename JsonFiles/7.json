@@ -1,0 +1,68 @@
+{"response": {
+    "header": {
+        "resultCode": "0000",
+        "resultMsg": "OK"
+    },
+    "body": {
+        "pageNo": 1,
+        "totalCount": 1810,
+        "items": {"item": [
+            {
+                "prfpdfrom": "2020.06.06",
+                "venue": "명작극장 (구 아츠플레이씨어터)",
+                "openrun": "N",
+                "prfpdto": "2020.07.12",
+                "mt20id": "PF165166",
+                "title": "흥부놀부 [대학로]",
+                "subjectCategory": "뮤지컬",
+                "referenceIdentifier": "http://www.kopis.or.kr/upload/pfmreferenceIdentifier/PF_PF165166_200622_110430.jpg",
+                "subjectCategory": "공연중"
+            },
+            {
+                "prfpdfrom": "2020.07.03",
+                "venue": "세우아트센터",
+                "openrun": "N",
+                "prfpdto": "2020.08.30",
+                "mt20id": "PF164717",
+                "title": "봄날의 곰",
+                "subjectCategory": "뮤지컬",
+                "referenceIdentifier": "http://www.kopis.or.kr/upload/pfmreferenceIdentifier/PF_PF164717_200605_102252.gif",
+                "subjectCategory": "공연중"
+            },
+            {
+                "prfpdfrom": "2020.06.25",
+                "venue": "시온아트홀 (구. JK아트홀, 샘아트홀)",
+                "openrun": "N",
+                "prfpdto": "2020.08.29",
+                "mt20id": "PF164030",
+                "title": "엄마는 안가르쳐줘",
+                "subjectCategory": "뮤지컬",
+                "referenceIdentifier": "http://www.kopis.or.kr/upload/pfmreferenceIdentifier/PF_PF164030_200511_132248.gif",
+                "subjectCategory": "공연중"
+            },
+            {
+                "prfpdfrom": "2020.05.02",
+                "venue": "북촌아트홀",
+                "openrun": "N",
+                "prfpdto": "2020.08.29",
+                "mt20id": "PF162493",
+                "title": "도서관에 간 사자",
+                "subjectCategory": "뮤지컬",
+                "referenceIdentifier": "http://www.kopis.or.kr/upload/pfmreferenceIdentifier/PF_PF162493_200310_102517.gif",
+                "subjectCategory": "공연중"
+            },
+            {
+                "prfpdfrom": "2020.01.08",
+                "venue": "마당세실극장",
+                "openrun": "Y",
+                "prfpdto": "2020.12.31",
+                "mt20id": "PF161396",
+                "title": "노리야 학교가자 [마당세실극장]",
+                "subjectCategory": "연극",
+                "referenceIdentifier": "http://www.kopis.or.kr/upload/pfmreferenceIdentifier/PF_PF161396_200128_140656.gif",
+                "subjectCategory": "공연중"
+            }
+        ]},
+        "numOfRows": 10
+    }
+}}
