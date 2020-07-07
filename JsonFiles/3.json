@@ -1,0 +1,17 @@
+{"response": {
+    "header": {
+        "resultCode": "0000",
+        "resultMsg": "OK"
+    },
+    "body": {"item": {
+        "venue": "서울시립미술관 남서울미술관 1, 2층 전관",
+        "creator": "서울시립미술관",
+        "period": "2005-06-01~2005-09-04",
+        "collectionDb": "서울시립미술관 DB",
+        "description": "`자연`이라는 사물이 가지는 표정과 그 하나하나의 개체들이 담고 있는 특징을 기록, 시각화하는 전시로, 참여 작가들이 자신의 시각으로 다양한 매체에 담은 자연의 표정들을 13개의 공간에서 특성화시켜 보여주는 전시",
+        "regDate": "2005-05-29T00:00:00+09:00",
+        "language": "Kor",
+        "title": "자연의 기록展",
+        "url": "http://sema.seoul.go.kr/korean/exhibition/exhibitionView.jsp?seq=23"
+    }}
+}}
