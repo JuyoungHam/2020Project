@@ -25,8 +25,8 @@
                 android:layout_gravity="center_horizontal"
                 android:layout_margin="16dp"
                 android:layout_marginTop="16dp"
-                android:visibility="visible"
-                tools:src="@tools:sample/backgrounds/scenic" />
+                android:visibility="gone"
+                tools:src="@drawable/ic_baseline_photo" />
 
             <TextView
                 android:id="@+id/item_title"

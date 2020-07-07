@@ -44,23 +44,24 @@
         android:layout_width="match_parent"
         android:layout_height="match_parent"
         android:layout_margin="4dp"
+        android:gravity="center|center_horizontal|center_vertical"
         android:orientation="vertical"
         android:visibility="gone">
 
         <ImageView
             android:id="@+id/image_gird"
-            android:layout_width="match_parent"
-            android:layout_height="200dp"
-            android:layout_gravity="center"
+            android:layout_width="wrap_content"
+            android:layout_height="250dp"
+            android:layout_gravity="center|center_vertical"
             android:layout_margin="4dp"
-            android:visibility="visible"
-            tools:srcCompat="@tools:sample/backgrounds/scenic" />
+            android:visibility="gone"
+            tools:srcCompat="@drawable/ic_baseline_photo" />
 
         <TextView
             android:id="@+id/title_grid"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:layout_gravity="center"
+            android:layout_gravity="center|center_vertical"
             android:layout_margin="4dp"
             android:gravity="center"
             android:text="제목"
@@ -71,7 +72,7 @@
             android:id="@+id/description_grid"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:layout_gravity="center"
+            android:layout_gravity="center|center_vertical"
             android:layout_margin="4dp"
             android:gravity="center"
             android:singleLine="true"

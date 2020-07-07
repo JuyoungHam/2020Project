@@ -9,8 +9,10 @@ import android.view.ViewGroup;
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.fragment.app.Fragment;
+import androidx.recyclerview.widget.GridLayoutManager;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
+import androidx.recyclerview.widget.StaggeredGridLayoutManager;
 
 import com.google.android.gms.tasks.OnCompleteListener;
 import com.google.android.gms.tasks.Task;
@@ -37,12 +39,23 @@ public class ExhibitionTab extends Fragment {
     @Nullable
     @Override
     public View onCreateView(@NonNull LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
-        ViewGroup rootView = (ViewGroup) inflater.inflate(R.layout.tab_exhibition, container, false);
+//        ViewGroup rootView = (ViewGroup) inflater.inflate(R.layout.tab_exhibition, container, false);
+//
+//        recyclerView = rootView.findViewById(R.id.exhibition_recyclerView);
+//
+//        LinearLayoutManager layoutManager = new LinearLayoutManager(getContext(),
+//                LinearLayoutManager.VERTICAL, false);
+//        recyclerView.setLayoutManager(layoutManager);
+//        final FundamentalAdapter adapter = new FundamentalAdapter();
 
-        recyclerView = rootView.findViewById(R.id.exhibition_recyclerView);
+        final ViewGroup rootView = (ViewGroup) inflater.inflate(R.layout.tab_grid, container, false);
 
-        LinearLayoutManager layoutManager = new LinearLayoutManager(getContext(),
-                LinearLayoutManager.VERTICAL, false);
+        recyclerView = rootView.findViewById(R.id.grid_recyclerView);
+        StaggeredGridLayoutManager layoutManager = new StaggeredGridLayoutManager(2,
+                StaggeredGridLayoutManager.VERTICAL);
+
+//        GridLayoutManager layoutManager = new GridLayoutManager(getContext(), 2);
+
         recyclerView.setLayoutManager(layoutManager);
         final FundamentalAdapter adapter = new FundamentalAdapter();
 
@@ -57,6 +70,7 @@ public class ExhibitionTab extends Fragment {
                                 for (QueryDocumentSnapshot document : task.getResult()) {
                                     Exhibition item = document.toObject(Exhibition.class);
                                     adapter.addItem(item);
+                                    adapter.setIsGrid(true);
                                 }
                             } else {
                                 Log.d(Constant.TAG, "Error getting documents: ", task.getException());

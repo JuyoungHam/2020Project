@@ -1,6 +1,7 @@
 package com.ici.myproject73029;
 
 import android.os.Bundle;
+import android.text.Html;
 import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -61,7 +62,8 @@ public class ItemFragment extends Fragment {
         TextView item_description = itemView.findViewById(R.id.item_description);
 
         item_title.setText(title);
-        item_description.setText(description);
+        if (description != null)
+            item_description.setText(Html.fromHtml(description));
 
         Firebase firebase = new Firebase();
         FirebaseFirestore db = firebase.startFirebase();
