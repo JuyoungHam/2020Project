@@ -2,6 +2,8 @@ package com.ici.myproject73029.firebase;
 
 import android.content.Context;
 import android.content.Intent;
+import android.graphics.Bitmap;
+import android.graphics.BitmapFactory;
 import android.net.Uri;
 import android.os.Bundle;
 import android.os.Parcel;
@@ -34,6 +36,8 @@ import com.google.android.gms.common.SignInButton;
 import com.google.android.gms.common.api.ApiException;
 import com.google.android.gms.internal.firebase_auth.zzff;
 import com.google.android.gms.tasks.OnCompleteListener;
+import com.google.android.gms.tasks.OnFailureListener;
+import com.google.android.gms.tasks.OnSuccessListener;
 import com.google.android.gms.tasks.Task;
 import com.google.firebase.FirebaseApp;
 import com.google.firebase.auth.AuthCredential;
@@ -47,23 +51,29 @@ import com.google.firebase.auth.FirebaseUserMetadata;
 import com.google.firebase.auth.GoogleAuthProvider;
 import com.google.firebase.auth.MultiFactor;
 import com.google.firebase.auth.MultiFactorInfo;
+import com.google.firebase.auth.OAuthProvider;
 import com.google.firebase.auth.TwitterAuthProvider;
 import com.google.firebase.auth.UserInfo;
+import com.ici.myproject73029.MainActivity;
 import com.ici.myproject73029.R;
 import com.kakao.auth.ApiErrorCode;
 import com.kakao.auth.ISessionCallback;
 import com.kakao.auth.Session;
 import com.kakao.network.ErrorResult;
 import com.kakao.usermgmt.UserManagement;
+import com.kakao.usermgmt.callback.LogoutResponseCallback;
 import com.kakao.usermgmt.callback.MeV2ResponseCallback;
 import com.kakao.usermgmt.response.MeV2Response;
 import com.kakao.usermgmt.response.model.UserAccount;
 import com.kakao.util.exception.KakaoException;
 import com.twitter.sdk.android.core.Callback;
+import com.twitter.sdk.android.core.DefaultLogger;
 import com.twitter.sdk.android.core.Result;
 import com.twitter.sdk.android.core.Twitter;
 import com.twitter.sdk.android.core.TwitterAuthConfig;
+import com.twitter.sdk.android.core.TwitterAuthToken;
 import com.twitter.sdk.android.core.TwitterConfig;
+import com.twitter.sdk.android.core.TwitterCore;
 import com.twitter.sdk.android.core.TwitterException;
 import com.twitter.sdk.android.core.TwitterSession;
 import com.twitter.sdk.android.core.identity.TwitterAuthClient;
@@ -72,6 +82,7 @@ import com.facebook.FacebookSdk;
 import com.facebook.appevents.AppEventsLogger;
 
 import java.util.List;
+import java.util.logging.LogManager;
 
 
 public class FirebaseUIActivity extends AppCompatActivity implements View.OnClickListener {
@@ -115,7 +126,7 @@ public class FirebaseUIActivity extends AppCompatActivity implements View.OnClic
         logout.setOnClickListener(this);
 
         twitter_login = findViewById(R.id.twitter_login_button);
-        twitter_login.setOnClickListener(this);
+        twitter_login.setEnabled(true);
 
         facebook_login = findViewById(R.id.facebook_login_button);
         facebook_login.setOnClickListener(this);
@@ -133,17 +144,34 @@ public class FirebaseUIActivity extends AppCompatActivity implements View.OnClic
 
 
         //Configure Twitter Sign In
+        OAuthProvider.Builder provider = OAuthProvider.newBuilder("twitter.com");
+
+        provider.addCustomParameter("lang", "fr");
         TwitterAuthConfig mTwitterAuthConfig = new TwitterAuthConfig(getString(R.string.twitter_consumer_key),
                 getString(R.string.twitter_consumer_secret));
         TwitterConfig twitterConfig = new TwitterConfig.Builder(this)
+                .logger(new DefaultLogger(Log.DEBUG))
                 .twitterAuthConfig(mTwitterAuthConfig)
+                .debug(true)
                 .build();
         Twitter.initialize(twitterConfig);
+        twitter_login.setCallback(new Callback<TwitterSession>() {
+            @Override
+            public void success(Result<TwitterSession> result) {
+                signInToFirebaseWithTwitterSession(result.data);
+//                getWindow().setFlags(WindowManager.LayoutParams.FLAG_NOT_TOUCHABLE, WindowManager.LayoutParams.FLAG_NOT_TOUCHABLE);
+            }
+
+            @Override
+            public void failure(TwitterException exception) {
+                Toast.makeText(FirebaseUIActivity.this, "Login failed. No internet or No Twitter app found on your phone", Toast.LENGTH_LONG).show();
+//                getWindow().clearFlags(WindowManager.LayoutParams.FLAG_NOT_TOUCHABLE);
+                updateUI(null);
+            }
+        });
 
 
         //Configure Facebook Sign In
-        LoginManager loginManager = LoginManager.getInstance();
-        loginManager.logOut();
         facebook_login.setReadPermissions("email", "public_profile");
         facebook_login_manager = CallbackManager.Factory.create();
         facebook_signIn();
@@ -266,6 +294,24 @@ public class FirebaseUIActivity extends AppCompatActivity implements View.OnClic
                         updateUI(null);
                     }
                 });
+
+        // Twitter sign out
+        TwitterCore.getInstance().getSessionManager().clearActiveSession();
+
+        // Facebook sign out
+        LoginManager facebookLoginManager = LoginManager.getInstance();
+        facebookLoginManager.logOut();
+
+        // Kakao sign out
+        UserManagement kakaoLoginManager = UserManagement.getInstance();
+        kakaoLoginManager.requestLogout(new LogoutResponseCallback() {
+            @Override
+            public void onCompleteLogout() {
+                Toast.makeText(FirebaseUIActivity.this, "로그아웃 되었습니다.", Toast.LENGTH_SHORT).show();
+            }
+        });
+
+        userProfile = null;
     }
 
     private void google_revokeAccess() {
@@ -285,7 +331,7 @@ public class FirebaseUIActivity extends AppCompatActivity implements View.OnClic
     private void updateUI(FirebaseUser user) {
         if (user != null) {
             logintext.setText(user.getDisplayName() + "님, 환영합니다");
-            Glide.with(rootView).load(user.getPhotoUrl().toString()).into(userProfile);
+//                Glide.with(rootView).load(user.getPhotoUrl().toString()).into(userProfile);
             google_login.setVisibility(View.GONE);
             twitter_login.setVisibility(View.GONE);
             facebook_login.setVisibility(View.GONE);
@@ -293,12 +339,13 @@ public class FirebaseUIActivity extends AppCompatActivity implements View.OnClic
             logout.setVisibility(View.VISIBLE);
         } else {
             logintext.setText("로그인이 필요합니다");
-            Glide.with(rootView).load(R.drawable.ic_baseline_perm_identity_24).into(userProfile);
+//            userProfile.setImageBitmap(Bitmap.);
             google_login.setVisibility(View.VISIBLE);
             twitter_login.setVisibility(View.VISIBLE);
             facebook_login.setVisibility(View.VISIBLE);
             kakao_login.setVisibility(View.VISIBLE);
             logout.setVisibility(View.GONE);
+            logout.setEnabled(true);
         }
     }
 
@@ -309,50 +356,30 @@ public class FirebaseUIActivity extends AppCompatActivity implements View.OnClic
             google_signIn();
         } else if (i == R.id.logout) {
             signOut();
-        } else if (i == R.id.twitter_login_button) {
-            twitter_signIn();
         } else if (i == R.id.facebook_login_button) {
             facebook_signIn();
         }
     }
 
-    private void twitter_signIn() {
-
-        TwitterAuthClient twitterAuthClient = new TwitterAuthClient();
-        twitterAuthClient.authorize(this, new Callback<TwitterSession>() {
-            @Override
-            public void success(Result<TwitterSession> result) {
-                Toast.makeText(FirebaseUIActivity.this, "Signed in to twitter successful", Toast.LENGTH_LONG).show();
-                signInToFirebaseWithTwitterSession(result.data);
-                twitter_login.setVisibility(View.VISIBLE);
-                getWindow().setFlags(WindowManager.LayoutParams.FLAG_NOT_TOUCHABLE, WindowManager.LayoutParams.FLAG_NOT_TOUCHABLE);
-            }
-
-            @Override
-            public void failure(TwitterException exception) {
-                Toast.makeText(FirebaseUIActivity.this, "Login failed. No internet or No Twitter app found on your phone", Toast.LENGTH_LONG).show();
-                getWindow().clearFlags(WindowManager.LayoutParams.FLAG_NOT_TOUCHABLE);
-                updateUI(null);
-            }
-        });
-    }
-
-
     private void signInToFirebaseWithTwitterSession(TwitterSession session) {
         AuthCredential credential = TwitterAuthProvider.getCredential(session.getAuthToken().token,
                 session.getAuthToken().secret);
-
         mAuth.signInWithCredential(credential)
                 .addOnCompleteListener(this, new OnCompleteListener<AuthResult>() {
                     @Override
                     public void onComplete(@NonNull Task<AuthResult> task) {
-                        Toast.makeText(FirebaseUIActivity.this, "Signed in firebase twitter successful",
-                                Toast.LENGTH_LONG).show();
-                        if (!task.isSuccessful()) {
-                            Toast.makeText(FirebaseUIActivity.this, "Auth firebase twitter failed", Toast.LENGTH_LONG).show();
+                        if (task.isSuccessful()) {
+                            Toast.makeText(FirebaseUIActivity.this, "로그인 성공",
+                                    Toast.LENGTH_SHORT).show();
+                            FirebaseUser user = mAuth.getCurrentUser();
+                            updateUI(user);
+                        } else {
+                            Toast.makeText(FirebaseUIActivity.this, "Auth firebase twitter " +
+                                    "failed", Toast.LENGTH_LONG).show();
                         }
                     }
                 });
+
     }
 
     private void facebook_signIn() {
@@ -438,7 +465,7 @@ public class FirebaseUIActivity extends AppCompatActivity implements View.OnClic
                         @NonNull
                         @Override
                         public String getProviderId() {
-                            return null;
+                            return "Kakao";
                         }
 
                         @Override
