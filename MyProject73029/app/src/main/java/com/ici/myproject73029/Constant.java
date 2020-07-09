@@ -25,6 +25,8 @@ public class Constant {
     public static final String FACEBOOK_AUTH = "facebook";
     public static final String KAKAO_AUTH = "kakao";
 
+    public static final int LOGIN_REQUEST_FROM_MYPAGE = 8921;
+
 
     //How to get hashcode
     public static String getKeyHash(final Context context) {

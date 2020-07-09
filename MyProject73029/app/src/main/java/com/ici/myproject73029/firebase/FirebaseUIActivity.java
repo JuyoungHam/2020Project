@@ -2,16 +2,14 @@ package com.ici.myproject73029.firebase;
 
 import android.content.Context;
 import android.content.Intent;
-import android.graphics.Bitmap;
-import android.graphics.BitmapFactory;
 import android.net.Uri;
 import android.os.Bundle;
 import android.os.Parcel;
 import android.util.AttributeSet;
 import android.util.Log;
 import android.view.View;
-import android.view.WindowManager;
 import android.widget.Button;
+import android.widget.ImageButton;
 import android.widget.ImageView;
 import android.widget.TextView;
 import android.widget.Toast;
@@ -20,7 +18,6 @@ import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.appcompat.app.AppCompatActivity;
 
-import com.bumptech.glide.Glide;
 import com.facebook.AccessToken;
 import com.facebook.CallbackManager;
 import com.facebook.FacebookCallback;
@@ -36,14 +33,10 @@ import com.google.android.gms.common.SignInButton;
 import com.google.android.gms.common.api.ApiException;
 import com.google.android.gms.internal.firebase_auth.zzff;
 import com.google.android.gms.tasks.OnCompleteListener;
-import com.google.android.gms.tasks.OnFailureListener;
-import com.google.android.gms.tasks.OnSuccessListener;
 import com.google.android.gms.tasks.Task;
 import com.google.firebase.FirebaseApp;
 import com.google.firebase.auth.AuthCredential;
 import com.google.firebase.auth.AuthResult;
-import com.google.firebase.auth.EmailAuthCredential;
-import com.google.firebase.auth.EmailAuthProvider;
 import com.google.firebase.auth.FacebookAuthProvider;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.auth.FirebaseUser;
@@ -54,7 +47,8 @@ import com.google.firebase.auth.MultiFactorInfo;
 import com.google.firebase.auth.OAuthProvider;
 import com.google.firebase.auth.TwitterAuthProvider;
 import com.google.firebase.auth.UserInfo;
-import com.ici.myproject73029.MainActivity;
+import com.ici.myproject73029.Constant;
+import com.ici.myproject73029.MyPage;
 import com.ici.myproject73029.R;
 import com.kakao.auth.ApiErrorCode;
 import com.kakao.auth.ISessionCallback;
@@ -71,18 +65,15 @@ import com.twitter.sdk.android.core.DefaultLogger;
 import com.twitter.sdk.android.core.Result;
 import com.twitter.sdk.android.core.Twitter;
 import com.twitter.sdk.android.core.TwitterAuthConfig;
-import com.twitter.sdk.android.core.TwitterAuthToken;
 import com.twitter.sdk.android.core.TwitterConfig;
 import com.twitter.sdk.android.core.TwitterCore;
 import com.twitter.sdk.android.core.TwitterException;
 import com.twitter.sdk.android.core.TwitterSession;
-import com.twitter.sdk.android.core.identity.TwitterAuthClient;
 import com.twitter.sdk.android.core.identity.TwitterLoginButton;
 import com.facebook.FacebookSdk;
 import com.facebook.appevents.AppEventsLogger;
 
 import java.util.List;
-import java.util.logging.LogManager;
 
 
 public class FirebaseUIActivity extends AppCompatActivity implements View.OnClickListener {
@@ -90,6 +81,7 @@ public class FirebaseUIActivity extends AppCompatActivity implements View.OnClic
     private static final String TAG = "GoogleActivity";
     private static final int RC_SIGN_IN = 9001;
     View rootView;
+    ImageButton backButton;
 
     // [START declare_auth]
     private FirebaseAuth mAuth;
@@ -117,6 +109,7 @@ public class FirebaseUIActivity extends AppCompatActivity implements View.OnClic
         setContentView(R.layout.activity_firebase_ui);
         logintext = findViewById(R.id.login_text);
         userProfile = findViewById(R.id.userProfile);
+        backButton = findViewById(R.id.auth_to_mypage);
 
         // Button listeners
         google_login = findViewById(R.id.google_login_button);
@@ -164,7 +157,7 @@ public class FirebaseUIActivity extends AppCompatActivity implements View.OnClic
 
             @Override
             public void failure(TwitterException exception) {
-                Toast.makeText(FirebaseUIActivity.this, "Login failed. No internet or No Twitter app found on your phone", Toast.LENGTH_LONG).show();
+                Toast.makeText(FirebaseUIActivity.this, R.string.twitter_exception_login_failed, Toast.LENGTH_LONG).show();
 //                getWindow().clearFlags(WindowManager.LayoutParams.FLAG_NOT_TOUCHABLE);
                 updateUI(null);
             }
@@ -190,6 +183,7 @@ public class FirebaseUIActivity extends AppCompatActivity implements View.OnClic
         mAuth = FirebaseAuth.getInstance();
         // [END initialize_auth]
 
+        backButton.setOnClickListener(this);
     }
 
     // [START on_start_check_user]
@@ -266,7 +260,7 @@ public class FirebaseUIActivity extends AppCompatActivity implements View.OnClic
                         } else {
                             // If sign in fails, display a message to the user.
                             Log.w(TAG, "signInWithCredential:failure", task.getException());
-                            Toast.makeText(FirebaseUIActivity.this, "login failed",
+                            Toast.makeText(FirebaseUIActivity.this, R.string.login_failed,
                                     Toast.LENGTH_SHORT).show();
                             updateUI(null);
                         }
@@ -307,7 +301,7 @@ public class FirebaseUIActivity extends AppCompatActivity implements View.OnClic
         kakaoLoginManager.requestLogout(new LogoutResponseCallback() {
             @Override
             public void onCompleteLogout() {
-                Toast.makeText(FirebaseUIActivity.this, "로그아웃 되었습니다.", Toast.LENGTH_SHORT).show();
+                Toast.makeText(FirebaseUIActivity.this, R.string.logout, Toast.LENGTH_SHORT).show();
             }
         });
 
@@ -358,7 +352,19 @@ public class FirebaseUIActivity extends AppCompatActivity implements View.OnClic
             signOut();
         } else if (i == R.id.facebook_login_button) {
             facebook_signIn();
+        } else if (i == R.id.auth_to_mypage) {
+            back_to_mypage();
         }
+    }
+
+    private void back_to_mypage() {
+        Intent intent = new Intent(getApplicationContext(), MyPage.class);
+        FirebaseUser user = mAuth.getCurrentUser();
+//        String uid = user.getUid();
+//        if (uid != null) {
+//            intent.putExtra(getString(R.string.FIREBASE_UID), uid);
+//        }
+//        startActivity(intent);
     }
 
     private void signInToFirebaseWithTwitterSession(TwitterSession session) {
@@ -374,8 +380,8 @@ public class FirebaseUIActivity extends AppCompatActivity implements View.OnClic
                             FirebaseUser user = mAuth.getCurrentUser();
                             updateUI(user);
                         } else {
-                            Toast.makeText(FirebaseUIActivity.this, "Auth firebase twitter " +
-                                    "failed", Toast.LENGTH_LONG).show();
+                            Toast.makeText(FirebaseUIActivity.this, R.string.firebase_auth_failed,
+                                    Toast.LENGTH_LONG).show();
                         }
                     }
                 });
@@ -418,7 +424,9 @@ public class FirebaseUIActivity extends AppCompatActivity implements View.OnClic
                         } else {
                             // If sign in fails, display a message to the user.
                             Log.w(TAG, "signInWithCredential:failure", task.getException());
-                            Toast.makeText(FirebaseUIActivity.this, "Authentication failed.",
+                            Toast.makeText(FirebaseUIActivity.this, R.string.auth_failed,
+                                    Toast.LENGTH_SHORT).show();
+                            Toast.makeText(FirebaseUIActivity.this, R.string.email_auth_check,
                                     Toast.LENGTH_SHORT).show();
                             updateUI(null);
                         }
@@ -593,6 +601,5 @@ public class FirebaseUIActivity extends AppCompatActivity implements View.OnClic
             Log.d("kakao", "로그인 도중 오류가 발생했습니다. 인터넷 연결을 확인해주세요: " + e.toString());
         }
     }
-
 
 }
