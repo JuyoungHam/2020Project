@@ -1,15 +1,19 @@
 package com.ici.myproject73029;
 
+import android.content.Context;
 import android.content.pm.PackageInfo;
 import android.content.pm.PackageManager;
 import android.content.pm.Signature;
 import android.os.Bundle;
+import android.util.AttributeSet;
 import android.util.Base64;
 import android.util.Log;
 import android.view.MenuItem;
+import android.view.View;
 import android.widget.Toast;
 
 import androidx.annotation.NonNull;
+import androidx.annotation.Nullable;
 import androidx.appcompat.app.AppCompatActivity;
 
 import com.google.android.material.bottomnavigation.BottomNavigationView;
@@ -25,6 +29,8 @@ import com.ici.myproject73029.tabs.ShowTab;
 
 import java.security.MessageDigest;
 import java.security.NoSuchAlgorithmException;
+
+import static com.kakao.util.helper.Utility.getPackageInfo;
 
 public class MainActivity extends AppCompatActivity {
 
@@ -89,7 +95,6 @@ public class MainActivity extends AppCompatActivity {
                 return false;
             }
         });
-
     }
 
     public void onItemFragmentChanged(Exhibition item) {

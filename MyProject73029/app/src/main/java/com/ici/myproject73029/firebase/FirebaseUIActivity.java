@@ -2,12 +2,10 @@ package com.ici.myproject73029.firebase;
 
 import android.content.Context;
 import android.content.Intent;
-import android.content.pm.PackageInfo;
-import android.content.pm.PackageManager;
-import android.content.pm.Signature;
+import android.net.Uri;
 import android.os.Bundle;
+import android.os.Parcel;
 import android.util.AttributeSet;
-import android.util.Base64;
 import android.util.Log;
 import android.view.View;
 import android.view.WindowManager;
@@ -34,22 +32,33 @@ import com.google.android.gms.auth.api.signin.GoogleSignInClient;
 import com.google.android.gms.auth.api.signin.GoogleSignInOptions;
 import com.google.android.gms.common.SignInButton;
 import com.google.android.gms.common.api.ApiException;
+import com.google.android.gms.internal.firebase_auth.zzff;
 import com.google.android.gms.tasks.OnCompleteListener;
 import com.google.android.gms.tasks.Task;
+import com.google.firebase.FirebaseApp;
 import com.google.firebase.auth.AuthCredential;
 import com.google.firebase.auth.AuthResult;
+import com.google.firebase.auth.EmailAuthCredential;
+import com.google.firebase.auth.EmailAuthProvider;
 import com.google.firebase.auth.FacebookAuthProvider;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.auth.FirebaseUser;
+import com.google.firebase.auth.FirebaseUserMetadata;
 import com.google.firebase.auth.GoogleAuthProvider;
+import com.google.firebase.auth.MultiFactor;
+import com.google.firebase.auth.MultiFactorInfo;
 import com.google.firebase.auth.TwitterAuthProvider;
+import com.google.firebase.auth.UserInfo;
 import com.ici.myproject73029.R;
-//import com.kakao.auth.IApplicationConfig;
-//import com.kakao.auth.ISessionCallback;
-//import com.kakao.auth.KakaoAdapter;
-//import com.kakao.auth.KakaoSDK;
-//import com.kakao.auth.Session;
-//import com.kakao.util.exception.KakaoException;
+import com.kakao.auth.ApiErrorCode;
+import com.kakao.auth.ISessionCallback;
+import com.kakao.auth.Session;
+import com.kakao.network.ErrorResult;
+import com.kakao.usermgmt.UserManagement;
+import com.kakao.usermgmt.callback.MeV2ResponseCallback;
+import com.kakao.usermgmt.response.MeV2Response;
+import com.kakao.usermgmt.response.model.UserAccount;
+import com.kakao.util.exception.KakaoException;
 import com.twitter.sdk.android.core.Callback;
 import com.twitter.sdk.android.core.Result;
 import com.twitter.sdk.android.core.Twitter;
@@ -62,8 +71,7 @@ import com.twitter.sdk.android.core.identity.TwitterLoginButton;
 import com.facebook.FacebookSdk;
 import com.facebook.appevents.AppEventsLogger;
 
-import java.security.MessageDigest;
-import java.security.NoSuchAlgorithmException;
+import java.util.List;
 
 
 public class FirebaseUIActivity extends AppCompatActivity implements View.OnClickListener {
@@ -85,8 +93,8 @@ public class FirebaseUIActivity extends AppCompatActivity implements View.OnClic
     private ImageView userProfile;
     private CallbackManager facebook_login_manager;
     private boolean isLoggedIn;
-    private Button kakao_login;
-//    private ISessionCallback sessionCallback;
+    private com.kakao.usermgmt.LoginButton kakao_login;
+    private ISessionCallback kakaoSessionCallback;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -94,18 +102,6 @@ public class FirebaseUIActivity extends AppCompatActivity implements View.OnClic
 
         FacebookSdk.sdkInitialize(getApplicationContext());
         AppEventsLogger.activateApp(this);
-//        KakaoSDK.init(new KakaoAdapter() {
-//
-//            @Override
-//            public IApplicationConfig getApplicationConfig() {
-//                return new IApplicationConfig() {
-//                    @Override
-//                    public Context getApplicationContext() {
-//                        return FirebaseUIActivity.this;
-//                    }
-//                };
-//            }
-//        });
 
         setContentView(R.layout.activity_firebase_ui);
         logintext = findViewById(R.id.login_text);
@@ -125,7 +121,7 @@ public class FirebaseUIActivity extends AppCompatActivity implements View.OnClic
         facebook_login.setOnClickListener(this);
 
         kakao_login = findViewById(R.id.kakao_login_button);
-//        kakao_login.setOnClickListener(this);
+        kakao_login.setOnClickListener(this);
 
 
         // Configure Google Sign In
@@ -156,8 +152,10 @@ public class FirebaseUIActivity extends AppCompatActivity implements View.OnClic
 
 
         //Configure Kakao Sign In
-//        kakao_signIn();
-//        Session.getCurrentSession().addCallback(sessionCallback);
+        kakaoSessionCallback = new KakaoSessionCallback();
+        Session.getCurrentSession().addCallback(kakaoSessionCallback);
+        Session.getCurrentSession().checkAndImplicitOpen();
+
 
         // [START initialize_auth]
         // Initialize Firebase Auth
@@ -187,6 +185,11 @@ public class FirebaseUIActivity extends AppCompatActivity implements View.OnClic
     // [START onactivityresult]
     @Override
     public void onActivityResult(int requestCode, int resultCode, Intent data) {
+        if (Session.getCurrentSession().handleActivityResult(requestCode, resultCode, data)) {
+            super.onActivityResult(requestCode, resultCode, data);
+            return;
+        }
+
         super.onActivityResult(requestCode, resultCode, data);
 
         // Result returned from launching the Intent from GoogleSignInApi.getSignInIntent(...);
@@ -209,9 +212,6 @@ public class FirebaseUIActivity extends AppCompatActivity implements View.OnClic
         twitter_login.onActivityResult(requestCode, resultCode, data);
         facebook_login_manager.onActivityResult(requestCode, resultCode, data);
 
-//        if (Session.getCurrentSession().handleActivityResult(requestCode, resultCode, data)) {
-//            return;
-//        }
     }
 
     @Override
@@ -219,7 +219,7 @@ public class FirebaseUIActivity extends AppCompatActivity implements View.OnClic
         super.onDestroy();
 
         // kakao session
-     //   Session.getCurrentSession().removeCallback(sessionCallback);
+        Session.getCurrentSession().removeCallback(kakaoSessionCallback);
     }
 
     // [START auth_with_google]
@@ -288,12 +288,16 @@ public class FirebaseUIActivity extends AppCompatActivity implements View.OnClic
             Glide.with(rootView).load(user.getPhotoUrl().toString()).into(userProfile);
             google_login.setVisibility(View.GONE);
             twitter_login.setVisibility(View.GONE);
+            facebook_login.setVisibility(View.GONE);
+            kakao_login.setVisibility(View.GONE);
             logout.setVisibility(View.VISIBLE);
         } else {
             logintext.setText("로그인이 필요합니다");
             Glide.with(rootView).load(R.drawable.ic_baseline_perm_identity_24).into(userProfile);
             google_login.setVisibility(View.VISIBLE);
             twitter_login.setVisibility(View.VISIBLE);
+            facebook_login.setVisibility(View.VISIBLE);
+            kakao_login.setVisibility(View.VISIBLE);
             logout.setVisibility(View.GONE);
         }
     }
@@ -397,18 +401,171 @@ public class FirebaseUIActivity extends AppCompatActivity implements View.OnClic
                 });
     }
 
+    private class KakaoSessionCallback implements ISessionCallback {
+        @Override
+        public void onSessionOpened() {
+            UserManagement.getInstance().me(new MeV2ResponseCallback() {
+                @Override
+                public void onFailure(ErrorResult errorResult) {
+                    int result = errorResult.getErrorCode();
 
-//    private void kakao_signIn() {
-//        sessionCallback = new ISessionCallback() {
-//            @Override
-//            public void onSessionOpened() {
-//                Log.i("KAKAO_SESSION", "로그인 성공");
-//            }
-//
-//            @Override
-//            public void onSessionOpenFailed(KakaoException exception) {
-//                Log.e("KAKAO_SESSION", "로그인 실패", exception);
-//            }
-//        };
-//    }
+                    if (result == ApiErrorCode.CLIENT_ERROR_CODE) {
+                        Toast.makeText(getApplicationContext(), "네트워크 연결이 불안정합니다. 다시 시도해 주세요.", Toast.LENGTH_SHORT).show();
+                        Log.d("kakao", errorResult.getErrorMessage());
+                        finish();
+                    } else {
+                        Toast.makeText(getApplicationContext(), "로그인 도중 오류가 발생했습니다: " + errorResult.getErrorMessage(), Toast.LENGTH_SHORT).show();
+                        Log.d("kakao", errorResult.getErrorMessage());
+                    }
+                }
+
+                @Override
+                public void onSessionClosed(ErrorResult errorResult) {
+                    Toast.makeText(getApplicationContext(), "세션이 닫혔습니다. 다시 시도해 주세요: " + errorResult.getErrorMessage(), Toast.LENGTH_SHORT).show();
+                    Log.d("kakao", errorResult.getErrorMessage());
+                }
+
+                @Override
+                public void onSuccess(final MeV2Response result) {
+                    final UserAccount info = result.getKakaoAccount();
+                    FirebaseUser user = new FirebaseUser() {
+                        @NonNull
+                        @Override
+                        public String getUid() {
+                            return info.getDisplayId();
+                        }
+
+                        @NonNull
+                        @Override
+                        public String getProviderId() {
+                            return null;
+                        }
+
+                        @Override
+                        public boolean isAnonymous() {
+                            return false;
+                        }
+
+                        @Nullable
+                        @Override
+                        public List<String> zza() {
+                            return null;
+                        }
+
+                        @NonNull
+                        @Override
+                        public List<? extends UserInfo> getProviderData() {
+                            return null;
+                        }
+
+                        @NonNull
+                        @Override
+                        public FirebaseUser zza(@NonNull List<? extends UserInfo> list) {
+                            return null;
+                        }
+
+                        @Override
+                        public FirebaseUser zzb() {
+                            return null;
+                        }
+
+                        @NonNull
+                        @Override
+                        public FirebaseApp zzc() {
+                            return null;
+                        }
+
+                        @Nullable
+                        @Override
+                        public String getDisplayName() {
+                            return result.getNickname();
+                        }
+
+                        @Nullable
+                        @Override
+                        public Uri getPhotoUrl() {
+                            return Uri.parse("");
+                        }
+
+                        @Nullable
+                        @Override
+                        public String getEmail() {
+                            return info.getEmail();
+                        }
+
+                        @Nullable
+                        @Override
+                        public String getPhoneNumber() {
+                            return null;
+                        }
+
+                        @Nullable
+                        @Override
+                        public String zzd() {
+                            return null;
+                        }
+
+                        @NonNull
+                        @Override
+                        public zzff zze() {
+                            return null;
+                        }
+
+                        @Override
+                        public void zza(@NonNull zzff zzff) {
+
+                        }
+
+                        @NonNull
+                        @Override
+                        public String zzf() {
+                            return null;
+                        }
+
+                        @NonNull
+                        @Override
+                        public String zzg() {
+                            return null;
+                        }
+
+                        @Nullable
+                        @Override
+                        public FirebaseUserMetadata getMetadata() {
+                            return null;
+                        }
+
+                        @NonNull
+                        @Override
+                        public MultiFactor getMultiFactor() {
+                            return null;
+                        }
+
+                        @Override
+                        public void zzb(List<MultiFactorInfo> list) {
+
+                        }
+
+                        @Override
+                        public void writeToParcel(Parcel dest, int flags) {
+
+                        }
+
+                        @Override
+                        public boolean isEmailVerified() {
+                            return false;
+                        }
+                    };
+                    updateUI(user);
+                }
+            });
+        }
+
+        @Override
+        public void onSessionOpenFailed(KakaoException e) {
+            Toast.makeText(getApplicationContext(), "로그인 도중 오류가 발생했습니다. 인터넷 연결을 확인해주세요: " + e.toString(), Toast.LENGTH_SHORT).show();
+            Log.d("kakao", "로그인 도중 오류가 발생했습니다. 인터넷 연결을 확인해주세요: " + e.toString());
+        }
+    }
+
+
 }
