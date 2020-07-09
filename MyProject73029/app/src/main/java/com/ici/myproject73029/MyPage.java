@@ -2,12 +2,10 @@ package com.ici.myproject73029;
 
 import androidx.annotation.Nullable;
 import androidx.appcompat.app.AppCompatActivity;
-import androidx.fragment.app.FragmentTransaction;
 
 import android.content.Intent;
 import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
-import android.net.Uri;
 import android.os.Bundle;
 import android.view.View;
 import android.widget.Button;
@@ -18,7 +16,6 @@ import android.widget.Toast;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.auth.FirebaseUser;
 
-import java.io.FileNotFoundException;
 import java.io.IOException;
 import java.io.InputStream;
 
@@ -27,6 +24,8 @@ public class MyPage extends AppCompatActivity {
     private ImageView profile;
     private TextView id;
     private Button favorite,review;
+    private FavoriteFragment frgFavorite;
+    View frg;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -37,12 +36,16 @@ public class MyPage extends AppCompatActivity {
         id=findViewById(R.id.txt_id);
         favorite=findViewById(R.id.btnFavorite);
         review=findViewById(R.id.btnReview);
+        frg=findViewById(R.id.frag_main);
+        final Login_main loginMain=new Login_main();
 
         favorite.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-
-
+                frgFavorite=new FavoriteFragment();
+                getSupportFragmentManager().beginTransaction().replace(R.id.frag_main
+                        , frgFavorite).commit();
+                frg.setVisibility(View.GONE);
             }
         });
         review.setOnClickListener(new View.OnClickListener() {

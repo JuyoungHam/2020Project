@@ -1,6 +1,5 @@
 package com.ici.myproject73029.adapters;
 
-import android.net.Uri;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -12,8 +11,7 @@ import androidx.recyclerview.widget.RecyclerView;
 
 import com.bumptech.glide.Glide;
 import com.ici.myproject73029.R;
-import com.ici.myproject73029.items.FavoriteItem;
-import com.ici.myproject73029.items.FundamentalItem;
+import com.ici.myproject73029.FavoriteItem;
 
 import java.util.ArrayList;
 

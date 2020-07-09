@@ -1,9 +1,6 @@
 package com.ici.myproject73029;
 
-import android.app.Activity;
-import android.content.Context;
 import android.content.Intent;
-import android.net.Uri;
 import android.os.Bundle;
 import android.text.Html;
 import android.util.Log;
@@ -20,15 +17,12 @@ import androidx.fragment.app.Fragment;
 import com.bumptech.glide.Glide;
 import com.google.android.gms.tasks.OnCompleteListener;
 import com.google.android.gms.tasks.Task;
-import com.google.firebase.Timestamp;
 import com.google.firebase.firestore.FirebaseFirestore;
 import com.google.firebase.firestore.QueryDocumentSnapshot;
 import com.google.firebase.firestore.QuerySnapshot;
 import com.ici.myproject73029.firebase.Firebase;
 import com.ici.myproject73029.items.Exhibition;
 import com.ici.myproject73029.items.Show;
-
-import java.util.Map;
 
 public class ItemFragment extends Fragment {
     String title;
@@ -72,7 +66,7 @@ public class ItemFragment extends Fragment {
         img_map.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                Intent intent=new Intent(getContext(),MapTest.class);
+                Intent intent=new Intent(getContext(), Map.class);
                 intent.putExtra("venue",venue);
                 startActivity(intent);
             }
@@ -89,7 +83,7 @@ public class ItemFragment extends Fragment {
                     public void onComplete(@NonNull Task<QuerySnapshot> task) {
                         if (task.isSuccessful()) {
                             for (QueryDocumentSnapshot document : task.getResult()) {
-                                Map<String, Object> fieldData = document.getData();
+                                java.util.Map fieldData = document.getData();
                                 if (fieldData.get("poster") != null) {
                                     Glide.with(itemView).load(fieldData.get("poster").toString()).into(img_poster);
                                     img_poster.setVisibility(View.VISIBLE);

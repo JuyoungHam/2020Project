@@ -11,7 +11,9 @@
         android:supportsRtl="true"
         android:theme="@style/AppTheme"
         android:usesCleartextTraffic="true">
-        <activity android:name=".MainActivity">
+        <activity android:name=".MyPage"></activity>
+        <activity android:name=".Map"></activity>
+        <activity android:name=".firebase.FirebaseUIActivity">
             <!--            <intent-filter>-->
             <!--                <action android:name="android.intent.action.MAIN" />-->
 
@@ -19,7 +21,7 @@
             <!--            </intent-filter>-->
         </activity>
 
-        <activity android:name=".firebase.FirebaseUIActivity">
+        <activity android:name=".MainActivity">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
 

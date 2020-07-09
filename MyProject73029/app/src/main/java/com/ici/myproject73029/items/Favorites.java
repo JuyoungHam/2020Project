@@ -1,12 +1,12 @@
 package com.ici.myproject73029.items;
 
-public class FavoriteItem {
+public class Favorites {
     private String title;
     private String poster;
 
-    public FavoriteItem(){}
+    public Favorites(){}
 
-    public FavoriteItem(String title){
+    public Favorites(String title){
         this.title=title;
     }
     public String getTitle(){

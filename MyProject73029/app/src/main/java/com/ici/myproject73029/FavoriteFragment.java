@@ -11,23 +11,18 @@ import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
-import android.widget.Adapter;
-import android.widget.LinearLayout;
 
 import com.google.android.gms.tasks.OnCompleteListener;
 import com.google.android.gms.tasks.OnFailureListener;
 import com.google.android.gms.tasks.Task;
-import com.google.firebase.firestore.DocumentReference;
 import com.google.firebase.firestore.FirebaseFirestore;
 import com.google.firebase.firestore.QueryDocumentSnapshot;
 import com.google.firebase.firestore.QuerySnapshot;
-import com.google.firebase.storage.FirebaseStorage;
 import com.ici.myproject73029.adapters.FavoriteAdapter;
 import com.ici.myproject73029.firebase.Firebase;
-import com.ici.myproject73029.items.FavoriteItem;
 
 
-public class Favorite extends Fragment {
+public class FavoriteFragment extends Fragment {
     private RecyclerView recyclerView;
 
     @Override
@@ -56,9 +51,9 @@ public class Favorite extends Fragment {
                     for(QueryDocumentSnapshot snapshot:task.getResult()){
                         FavoriteItem item=snapshot.toObject(FavoriteItem.class);
                         adapter.addItem(item);
+                        recyclerView.setAdapter(adapter);
                     }
                 }
-                recyclerView.setAdapter(adapter);
                 adapter.notifyDataSetChanged();
             }
         }).addOnFailureListener(new OnFailureListener() {

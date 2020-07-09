@@ -20,7 +20,7 @@ import net.daum.mf.map.api.MapView;
 import java.io.IOException;
 import java.util.List;
 
-public class MapTest extends AppCompatActivity{
+public class Map extends AppCompatActivity{
     private MapView mapView;
     private TextView venue;
     private List<Address> list=null;
