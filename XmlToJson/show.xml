@@ -1,0 +1,58 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<dbs>
+    <db>
+        <mt20id>PF165166</mt20id>
+        <prfnm>흥부놀부 [대학로]</prfnm>
+        <prfpdfrom>2020.06.06</prfpdfrom>
+        <prfpdto>2020.07.12</prfpdto>
+        <fcltynm>명작극장 (구 아츠플레이씨어터)</fcltynm>
+        <poster>http://www.kopis.or.kr/upload/pfmPoster/PF_PF165166_200622_110430.jpg</poster>
+        <genrenm>뮤지컬</genrenm>
+        <prfstate>공연중</prfstate>
+        <openrun>N</openrun>
+    </db>
+    <db>
+        <mt20id>PF164717</mt20id>
+        <prfnm>봄날의 곰</prfnm>
+        <prfpdfrom>2020.07.03</prfpdfrom>
+        <prfpdto>2020.08.30</prfpdto>
+        <fcltynm>세우아트센터</fcltynm>
+        <poster>http://www.kopis.or.kr/upload/pfmPoster/PF_PF164717_200605_102252.gif</poster>
+        <genrenm>뮤지컬</genrenm>
+        <prfstate>공연중</prfstate>
+        <openrun>N</openrun>
+    </db>
+    <db>
+        <mt20id>PF164030</mt20id>
+        <prfnm>엄마는 안가르쳐줘</prfnm>
+        <prfpdfrom>2020.06.25</prfpdfrom>
+        <prfpdto>2020.08.29</prfpdto>
+        <fcltynm>시온아트홀 (구. JK아트홀, 샘아트홀)</fcltynm>
+        <poster>http://www.kopis.or.kr/upload/pfmPoster/PF_PF164030_200511_132248.gif</poster>
+        <genrenm>뮤지컬</genrenm>
+        <prfstate>공연중</prfstate>
+        <openrun>N</openrun>
+    </db>
+    <db>
+        <mt20id>PF162493</mt20id>
+        <prfnm>도서관에 간 사자</prfnm>
+        <prfpdfrom>2020.05.02</prfpdfrom>
+        <prfpdto>2020.08.29</prfpdto>
+        <fcltynm>북촌아트홀</fcltynm>
+        <poster>http://www.kopis.or.kr/upload/pfmPoster/PF_PF162493_200310_102517.gif</poster>
+        <genrenm>뮤지컬</genrenm>
+        <prfstate>공연중</prfstate>
+        <openrun>N</openrun>
+    </db>
+    <db>
+        <mt20id>PF161396</mt20id>
+        <prfnm>노리야 학교가자 [마당세실극장]</prfnm>
+        <prfpdfrom>2020.01.08</prfpdfrom>
+        <prfpdto>2020.12.31</prfpdto>
+        <fcltynm>마당세실극장</fcltynm>
+        <poster>http://www.kopis.or.kr/upload/pfmPoster/PF_PF161396_200128_140656.gif</poster>
+        <genrenm>연극</genrenm>
+        <prfstate>공연중</prfstate>
+        <openrun>Y</openrun>
+    </db>
+</dbs>

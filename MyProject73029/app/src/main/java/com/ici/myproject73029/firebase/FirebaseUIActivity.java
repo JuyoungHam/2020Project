@@ -44,12 +44,12 @@ import com.google.firebase.auth.FirebaseUser;
 import com.google.firebase.auth.GoogleAuthProvider;
 import com.google.firebase.auth.TwitterAuthProvider;
 import com.ici.myproject73029.R;
-import com.kakao.auth.IApplicationConfig;
-import com.kakao.auth.ISessionCallback;
-import com.kakao.auth.KakaoAdapter;
-import com.kakao.auth.KakaoSDK;
-import com.kakao.auth.Session;
-import com.kakao.util.exception.KakaoException;
+//import com.kakao.auth.IApplicationConfig;
+//import com.kakao.auth.ISessionCallback;
+//import com.kakao.auth.KakaoAdapter;
+//import com.kakao.auth.KakaoSDK;
+//import com.kakao.auth.Session;
+//import com.kakao.util.exception.KakaoException;
 import com.twitter.sdk.android.core.Callback;
 import com.twitter.sdk.android.core.Result;
 import com.twitter.sdk.android.core.Twitter;
@@ -86,7 +86,7 @@ public class FirebaseUIActivity extends AppCompatActivity implements View.OnClic
     private CallbackManager facebook_login_manager;
     private boolean isLoggedIn;
     private Button kakao_login;
-    private ISessionCallback sessionCallback;
+//    private ISessionCallback sessionCallback;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -219,7 +219,7 @@ public class FirebaseUIActivity extends AppCompatActivity implements View.OnClic
         super.onDestroy();
 
         // kakao session
-        Session.getCurrentSession().removeCallback(sessionCallback);
+     //   Session.getCurrentSession().removeCallback(sessionCallback);
     }
 
     // [START auth_with_google]
@@ -398,17 +398,17 @@ public class FirebaseUIActivity extends AppCompatActivity implements View.OnClic
     }
 
 
-    private void kakao_signIn() {
-        sessionCallback = new ISessionCallback() {
-            @Override
-            public void onSessionOpened() {
-                Log.i("KAKAO_SESSION", "로그인 성공");
-            }
-
-            @Override
-            public void onSessionOpenFailed(KakaoException exception) {
-                Log.e("KAKAO_SESSION", "로그인 실패", exception);
-            }
-        };
-    }
+//    private void kakao_signIn() {
+//        sessionCallback = new ISessionCallback() {
+//            @Override
+//            public void onSessionOpened() {
+//                Log.i("KAKAO_SESSION", "로그인 성공");
+//            }
+//
+//            @Override
+//            public void onSessionOpenFailed(KakaoException exception) {
+//                Log.e("KAKAO_SESSION", "로그인 실패", exception);
+//            }
+//        };
+//    }
 }
