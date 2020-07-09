@@ -9,9 +9,8 @@ import android.widget.TextView;
 import androidx.annotation.NonNull;
 import androidx.recyclerview.widget.RecyclerView;
 
-import com.bumptech.glide.Glide;
-import com.ici.myproject73029.R;
 import com.ici.myproject73029.FavoriteItem;
+import com.ici.myproject73029.R;
 
 import java.util.ArrayList;
 
@@ -40,17 +39,17 @@ public class FavoriteAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolde
         public Viewholder(@NonNull View itemView) {
             super(itemView);
 
-            title=itemView.findViewById(R.id.txt_id);
-            poster=itemView.findViewById(R.id.img_favorite);
+            title = itemView.findViewById(R.id.txt_id);
+            poster = itemView.findViewById(R.id.img_favorite);
 
         }
-        public void setItems(FavoriteItem items) {
-            title.setText(items.getTitle());
-            if (items.getPoster() != null) {
-                Glide.with(itemView).load(items.getPoster()).into(poster);
-                poster.setVisibility(View.VISIBLE);
-            }
-        }
+//        public void setItems(FavoriteItem items) {
+//            title.setText(items.getTitle());
+//            if (items.getPoster() != null) {
+//                Glide.with(itemView).load(items.getPoster()).into(poster);
+//                poster.setVisibility(View.VISIBLE);
+//            }
+//        }
     }
     @Override
     public int getItemCount() {

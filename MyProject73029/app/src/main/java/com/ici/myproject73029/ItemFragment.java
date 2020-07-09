@@ -1,9 +1,6 @@
 package com.ici.myproject73029;
 
-import android.app.Activity;
-import android.content.Context;
 import android.content.Intent;
-import android.net.Uri;
 import android.os.Bundle;
 import android.text.Html;
 import android.util.Log;
@@ -21,7 +18,6 @@ import androidx.fragment.app.Fragment;
 import com.bumptech.glide.Glide;
 import com.google.android.gms.tasks.OnCompleteListener;
 import com.google.android.gms.tasks.Task;
-import com.google.firebase.Timestamp;
 import com.google.firebase.firestore.FirebaseFirestore;
 import com.google.firebase.firestore.QueryDocumentSnapshot;
 import com.google.firebase.firestore.QuerySnapshot;
@@ -36,7 +32,6 @@ public class ItemFragment extends Fragment implements View.OnClickListener {
     String description;
     public String venue;
     int type;
-    private String poster_url;
 
     public ItemFragment(Exhibition item) {
         this.title = item.getTitle();
@@ -76,7 +71,7 @@ public class ItemFragment extends Fragment implements View.OnClickListener {
         img_map.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                Intent intent = new Intent(getContext(), MapTest.class);
+                Intent intent = new Intent(getContext(), com.ici.myproject73029.Map.class);
                 intent.putExtra("venue", venue);
                 startActivity(intent);
             }
@@ -95,8 +90,7 @@ public class ItemFragment extends Fragment implements View.OnClickListener {
                             for (QueryDocumentSnapshot document : task.getResult()) {
                                 Map<String, Object> fieldData = document.getData();
                                 if (fieldData.get("poster") != null) {
-                                    poster_url = fieldData.get("poster").toString();
-                                    Glide.with(itemView).load(poster_url).into(img_poster);
+                                    Glide.with(itemView).load(fieldData.get("poster").toString()).into(img_poster);
                                     img_poster.setVisibility(View.VISIBLE);
                                 } else {
                                     img_poster.setVisibility(View.GONE);
@@ -124,13 +118,8 @@ public class ItemFragment extends Fragment implements View.OnClickListener {
         Intent sendIntent = new Intent();
         sendIntent.setAction(Intent.ACTION_SEND);
         sendIntent.putExtra(Intent.EXTRA_TEXT, title + "\n" + (description != null ? description : ""));
-        if (poster_url != null) {
-            Uri imageUri = Uri.parse(poster_url);
-            sendIntent.putExtra(Intent.EXTRA_STREAM, imageUri);
-            sendIntent.setType("image/*");
-            sendIntent.addFlags(Intent.FLAG_GRANT_READ_URI_PERMISSION);
-        }
-        Intent shareIntent = Intent.createChooser(sendIntent, "send");
+        sendIntent.setType("text/*");
+        Intent shareIntent = Intent.createChooser(sendIntent, "공유하기");
         startActivity(shareIntent);
     }
 }
