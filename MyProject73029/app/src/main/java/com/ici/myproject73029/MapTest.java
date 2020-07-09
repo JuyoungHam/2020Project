@@ -26,6 +26,7 @@ public class MapTest extends AppCompatActivity{
     private List<Address> list=null;
     private MapPOIItem marker;
     private String strVenus;
+    private ViewGroup viewGroup;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -33,7 +34,7 @@ public class MapTest extends AppCompatActivity{
         setContentView(R.layout.activity_map_test);
         mapView=new MapView(this);
         final Geocoder geocoder=new Geocoder(this);
-        ViewGroup viewGroup=findViewById(R.id.map_view);
+        viewGroup=findViewById(R.id.map_view);
         venue=findViewById(R.id.item_venue);
         Intent intent=getIntent();
         strVenus=intent.getStringExtra("venue");
@@ -63,7 +64,10 @@ public class MapTest extends AppCompatActivity{
             }
         }
     }
-
-
+    @Override
+    protected void onStop() {
+        super.onStop();
+        viewGroup.removeView(mapView);
+    }
 
 }
