@@ -10,6 +10,7 @@ import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.ImageButton;
 import android.widget.ImageView;
 import android.widget.TextView;
 
@@ -30,11 +31,12 @@ import com.ici.myproject73029.items.Show;
 
 import java.util.Map;
 
-public class ItemFragment extends Fragment {
+public class ItemFragment extends Fragment implements View.OnClickListener {
     String title;
     String description;
     public String venue;
     int type;
+    private String poster_url;
 
     public ItemFragment(Exhibition item) {
         this.title = item.getTitle();
@@ -45,7 +47,7 @@ public class ItemFragment extends Fragment {
     public ItemFragment(Show item) {
         this.title = item.getTitle();
         this.description = item.getDescription();
-        this.venue=item.getVenue();
+        this.venue = item.getVenue();
         type = Constant.SHOW;
     }
 
@@ -61,8 +63,10 @@ public class ItemFragment extends Fragment {
         TextView item_venue = itemView.findViewById(R.id.item_venue);
         TextView item_period = itemView.findViewById(R.id.item_period);
         TextView item_description = itemView.findViewById(R.id.item_description);
-        ImageView img_map=itemView.findViewById(R.id.map);
+        ImageView img_map = itemView.findViewById(R.id.map);
         img_map.setImageResource(R.mipmap.ic_launcher_foreground);
+        ImageButton share_button = itemView.findViewById(R.id.share_button);
+        share_button.setOnClickListener(this);
 
         item_title.setText(title);
         if (description != null)
@@ -72,8 +76,8 @@ public class ItemFragment extends Fragment {
         img_map.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                Intent intent=new Intent(getContext(),MapTest.class);
-                intent.putExtra("venue",venue);
+                Intent intent = new Intent(getContext(), MapTest.class);
+                intent.putExtra("venue", venue);
                 startActivity(intent);
             }
         });
@@ -91,7 +95,8 @@ public class ItemFragment extends Fragment {
                             for (QueryDocumentSnapshot document : task.getResult()) {
                                 Map<String, Object> fieldData = document.getData();
                                 if (fieldData.get("poster") != null) {
-                                    Glide.with(itemView).load(fieldData.get("poster").toString()).into(img_poster);
+                                    poster_url = fieldData.get("poster").toString();
+                                    Glide.with(itemView).load(poster_url).into(img_poster);
                                     img_poster.setVisibility(View.VISIBLE);
                                 } else {
                                     img_poster.setVisibility(View.GONE);
@@ -105,5 +110,27 @@ public class ItemFragment extends Fragment {
                 });
 
         return itemView;
+    }
+
+    @Override
+    public void onClick(View v) {
+        int i = v.getId();
+        if (i == R.id.share_button) {
+            start_share();
+        }
+    }
+
+    private void start_share() {
+        Intent sendIntent = new Intent();
+        sendIntent.setAction(Intent.ACTION_SEND);
+        sendIntent.putExtra(Intent.EXTRA_TEXT, title + "\n" + (description != null ? description : ""));
+        if (poster_url != null) {
+            Uri imageUri = Uri.parse(poster_url);
+            sendIntent.putExtra(Intent.EXTRA_STREAM, imageUri);
+            sendIntent.setType("image/*");
+            sendIntent.addFlags(Intent.FLAG_GRANT_READ_URI_PERMISSION);
+        }
+        Intent shareIntent = Intent.createChooser(sendIntent, "send");
+        startActivity(shareIntent);
     }
 }

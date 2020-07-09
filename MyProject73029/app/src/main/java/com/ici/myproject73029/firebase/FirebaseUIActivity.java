@@ -9,6 +9,7 @@ import android.util.AttributeSet;
 import android.util.Log;
 import android.view.View;
 import android.widget.Button;
+import android.widget.ImageButton;
 import android.widget.ImageView;
 import android.widget.TextView;
 import android.widget.Toast;
@@ -46,6 +47,8 @@ import com.google.firebase.auth.MultiFactorInfo;
 import com.google.firebase.auth.OAuthProvider;
 import com.google.firebase.auth.TwitterAuthProvider;
 import com.google.firebase.auth.UserInfo;
+import com.ici.myproject73029.Constant;
+import com.ici.myproject73029.MyPage;
 import com.ici.myproject73029.R;
 import com.kakao.auth.ApiErrorCode;
 import com.kakao.auth.ISessionCallback;
@@ -78,6 +81,7 @@ public class FirebaseUIActivity extends AppCompatActivity implements View.OnClic
     private static final String TAG = "GoogleActivity";
     private static final int RC_SIGN_IN = 9001;
     View rootView;
+    ImageButton backButton;
 
     // [START declare_auth]
     private FirebaseAuth mAuth;
@@ -105,6 +109,7 @@ public class FirebaseUIActivity extends AppCompatActivity implements View.OnClic
         setContentView(R.layout.activity_firebase_ui);
         logintext = findViewById(R.id.login_text);
         userProfile = findViewById(R.id.userProfile);
+        backButton = findViewById(R.id.auth_to_mypage);
 
         // Button listeners
         google_login = findViewById(R.id.google_login_button);
@@ -178,6 +183,7 @@ public class FirebaseUIActivity extends AppCompatActivity implements View.OnClic
         mAuth = FirebaseAuth.getInstance();
         // [END initialize_auth]
 
+        backButton.setOnClickListener(this);
     }
 
     // [START on_start_check_user]
@@ -346,7 +352,19 @@ public class FirebaseUIActivity extends AppCompatActivity implements View.OnClic
             signOut();
         } else if (i == R.id.facebook_login_button) {
             facebook_signIn();
+        } else if (i == R.id.auth_to_mypage) {
+            back_to_mypage();
         }
+    }
+
+    private void back_to_mypage() {
+        Intent intent = new Intent(getApplicationContext(), MyPage.class);
+        FirebaseUser user = mAuth.getCurrentUser();
+//        String uid = user.getUid();
+//        if (uid != null) {
+//            intent.putExtra(getString(R.string.FIREBASE_UID), uid);
+//        }
+//        startActivity(intent);
     }
 
     private void signInToFirebaseWithTwitterSession(TwitterSession session) {
@@ -583,6 +601,5 @@ public class FirebaseUIActivity extends AppCompatActivity implements View.OnClic
             Log.d("kakao", "로그인 도중 오류가 발생했습니다. 인터넷 연결을 확인해주세요: " + e.toString());
         }
     }
-
 
 }

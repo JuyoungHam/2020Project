@@ -24,4 +24,5 @@
     <string name="auth_failed">인증 실패</string>
     <string name="login_failed">로그인 실패</string>
     <string name="email_auth_check">동일한 이메일주소로 가입되어 있는지 확인해 주세요</string>
+    <string name="FIREBASE_UID">userid</string>
 </resources>

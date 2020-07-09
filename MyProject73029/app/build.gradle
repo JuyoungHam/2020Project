@@ -13,7 +13,7 @@ android {
         versionName "1.0"
         multiDexEnabled true
         resConfigs "kr", "en"
-
+        vectorDrawables.useSupportLibrary = true
         testInstrumentationRunner "androidx.test.runner.AndroidJUnitRunner"
     }
 
