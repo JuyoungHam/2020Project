@@ -27,6 +27,8 @@ public class Constant {
 
     public static final int LOGIN_REQUEST_FROM_MYPAGE = 8921;
 
+    public static final String pwd_kakao = "kakaopasswordformyproject73029!";
+
 
     //How to get hashcode
     public static String getKeyHash(final Context context) {
