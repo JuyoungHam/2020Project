@@ -11,17 +11,21 @@ public class FundamentalItem {
     private String phone;
     private String period;
 
+    public FundamentalItem() {
+    }
+
+    public FundamentalItem(String title) {
+    this.title = title;
+    }
+
     public FundamentalItem(String title, String description) {
         this.title = title;
         this.description = description;
     }
 
-    public FundamentalItem() {
-    }
-
     public FundamentalItem(String title, String description, String poster) {
         this.title = title;
-        this.description = title;
+        this.description = description;
         this.poster = poster;
     }
 

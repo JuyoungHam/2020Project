@@ -9,14 +9,21 @@ import androidx.annotation.NonNull;
 import androidx.appcompat.app.AppCompatActivity;
 
 import com.google.android.material.bottomnavigation.BottomNavigationView;
+import com.google.firebase.auth.FirebaseAuth;
+import com.google.firebase.auth.FirebaseUser;
 import com.google.firebase.firestore.FirebaseFirestore;
 import com.ici.myproject73029.firebase.Firebase;
 import com.ici.myproject73029.items.Exhibition;
-import com.ici.myproject73029.items.MyPage;
+import com.ici.myproject73029.items.Review;
 import com.ici.myproject73029.items.Show;
+import com.ici.myproject73029.mypage.FavoritePage;
+import com.ici.myproject73029.mypage.MyPageTab;
+import com.ici.myproject73029.mypage.MyReviewPage;
+import com.ici.myproject73029.mypage.ReviewFragment;
 import com.ici.myproject73029.tabs.ExhibitionTab;
 import com.ici.myproject73029.tabs.GridTab;
 import com.ici.myproject73029.tabs.HomeTab;
+import com.ici.myproject73029.tabs.ItemFragment;
 import com.ici.myproject73029.tabs.ShowTab;
 
 import static com.kakao.util.helper.Utility.getPackageInfo;
@@ -28,7 +35,23 @@ public class MainActivity extends AppCompatActivity {
     ShowTab showTab;
     ItemFragment item_Show;
     ItemFragment item_Exhibition;
+    ReviewFragment item_review;
     GridTab gridTab;
+    private MyPageTab myPageTab;
+    private BottomNavigationView bottomNavigation;
+
+    private FirebaseAuth mAuth;
+
+    public FirebaseUser getUser() {
+        return user;
+    }
+
+    public void setUser(FirebaseUser user) {
+        this.user = user;
+    }
+
+    private FirebaseUser user;
+
 
     @Override
     public void onBackPressed() {
@@ -48,22 +71,28 @@ public class MainActivity extends AppCompatActivity {
 
         Firebase firebase = new Firebase();
         FirebaseFirestore db = firebase.startFirebase();
-//        firebase.addData(db);
+
+        mAuth = FirebaseAuth.getInstance();
+        if (mAuth.getCurrentUser() != null) {
+            user = mAuth.getCurrentUser();
+            Toast.makeText(this, user.getDisplayName() + "님, 환영합니다", Toast.LENGTH_SHORT).show();
+        }
 
         homeTab =
                 (HomeTab) getSupportFragmentManager().findFragmentById(R.id.main_fragment);
         exhibitionTab = new ExhibitionTab();
         showTab = new ShowTab();
         gridTab = new GridTab();
+        myPageTab = new MyPageTab();
 
-        BottomNavigationView bottomNavigation = findViewById(R.id.bottom_navigation);
+        bottomNavigation = findViewById(R.id.bottom_navigation);
         bottomNavigation.setSelectedItemId(R.id.tab_home);
 
         bottomNavigation.setOnNavigationItemSelectedListener(new BottomNavigationView.OnNavigationItemSelectedListener() {
             @Override
             public boolean onNavigationItemSelected(@NonNull MenuItem item) {
                 switch (item.getItemId()) {
-                    case R.id.tab1:
+                    case R.id.tab_exhibition:
                         getSupportFragmentManager().beginTransaction().replace(R.id.main_fragment
                                 , exhibitionTab).commit();
                         return true;
@@ -71,18 +100,29 @@ public class MainActivity extends AppCompatActivity {
                         getSupportFragmentManager().beginTransaction().replace(R.id.main_fragment
                                 , homeTab).commit();
                         return true;
-                    case R.id.tab2:
+                    case R.id.tab_show:
                         getSupportFragmentManager().beginTransaction().replace(R.id.main_fragment
                                 , gridTab).commit();
                         return true;
-                    case R.id.tab_auth:
-                        Intent intent=new Intent(getApplicationContext(), MyPage.class);
-                        startActivity(intent);
+                    case R.id.tab_mypage:
+                        getSupportFragmentManager().beginTransaction().replace(R.id.main_fragment,
+                                myPageTab).commit();
                         return true;
                 }
                 return false;
             }
         });
+    }
+
+
+    @Override
+    protected void onStart() {
+        super.onStart();
+        Intent intent = getIntent();
+        if (intent.getStringExtra("purpose") != null) {
+            bottomNavigation.setSelectedItemId(R.id.tab_mypage);
+            Toast.makeText(this, intent.getStringExtra(Constant.USERNAME), Toast.LENGTH_SHORT).show();
+        }
     }
 
     public void onItemFragmentChanged(Exhibition item) {
@@ -97,6 +137,23 @@ public class MainActivity extends AppCompatActivity {
 
         Toast.makeText(this, "공연제목 : " + item.getTitle(), Toast.LENGTH_SHORT).show();
         getSupportFragmentManager().beginTransaction().replace(R.id.main_fragment, item_Show).commit();
+    }
+
+    public void onMyPageChanged(int i) {
+        if (i == R.id.button_favorite) {
+            getSupportFragmentManager().beginTransaction().replace(R.id.main_fragment,
+                    new FavoritePage()).commit();
+        } else if (i == R.id.button_myreview) {
+            getSupportFragmentManager().beginTransaction().replace(R.id.main_fragment,
+                    new MyReviewPage()).commit();
+        }
+    }
+
+    public void onItemFragmentChanged(Review item) {
+        item_review = new ReviewFragment(item);
+
+        Toast.makeText(this, "마이리뷰" + item.getTitle(), Toast.LENGTH_SHORT).show();
+        getSupportFragmentManager().beginTransaction().replace(R.id.frame_myreview, item_review).commit();
     }
 
 }

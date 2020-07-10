@@ -26,9 +26,10 @@ public class main {
 				new URL("http://175.125.91.94/oasis/service/rest/other/getSEMN5601"),
 				new URL("http://175.125.91.94/oasis/service/rest/meta4/getARKA1202"),
 				new URL("http://175.125.91.94/oasis/service/rest/meta16/getPf2Gn2"),
-				new URL("http://175.125.91.94/oasis/service/rest/meta2020/getKOCAperf") };
-		urlList = {new URL("http://www.kopis.or.kr/openApi/restful/pblprfr?service=f6df0872521e43949660886c45aa2670&stdate=20200707&eddate=20301230&cpage=1&rows=5&prfstate=02&signgucode=11&signgucodesub=1111&kidstate=Y")};
-
+				new URL("http://175.125.91.94/oasis/service/rest/meta2020/getKOCAperf"),
+				new URL("http://www.culture.go.kr/openapi/rest/publicperformancedisplays/period?from=20200701&to=20301230&cPage=1&rows=10&sortStdr=1&serviceKey=XAQRkAc4BBj5RWTWfdEX5Oc5ry0o4j74tmxD5R4HhJoegNLrNTlRZl6%2BCW%2BX%2BC28DAwBYq73UvcNcdB6n591bg%3D%3D")};
+		
+		
 		for (int i = 0; i < urlList.length; i++) {
 			HttpURLConnection conn = (HttpURLConnection) urlList[i].openConnection();
 			conn.connect();
@@ -45,7 +46,7 @@ public class main {
 			String jsonPrettyPrintString = xmlJSONObj.toString(INDENT_FACTOR);
 			System.out.println(jsonPrettyPrintString);
 
-			FileOutputStream fos = new FileOutputStream("../../JsonFiles/" + 7 + ".json");
+			FileOutputStream fos = new FileOutputStream("../../JsonFiles/" + i + ".json");
 			DataOutputStream outStream = new DataOutputStream(new BufferedOutputStream(fos));
 			outStream.writeUTF(jsonPrettyPrintString);
 			outStream.close();

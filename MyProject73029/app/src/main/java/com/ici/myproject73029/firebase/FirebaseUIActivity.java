@@ -2,9 +2,7 @@ package com.ici.myproject73029.firebase;
 
 import android.content.Context;
 import android.content.Intent;
-import android.net.Uri;
 import android.os.Bundle;
-import android.os.Parcel;
 import android.util.AttributeSet;
 import android.util.Log;
 import android.view.View;
@@ -31,23 +29,18 @@ import com.google.android.gms.auth.api.signin.GoogleSignInClient;
 import com.google.android.gms.auth.api.signin.GoogleSignInOptions;
 import com.google.android.gms.common.SignInButton;
 import com.google.android.gms.common.api.ApiException;
-import com.google.android.gms.internal.firebase_auth.zzff;
 import com.google.android.gms.tasks.OnCompleteListener;
 import com.google.android.gms.tasks.Task;
-import com.google.firebase.FirebaseApp;
 import com.google.firebase.auth.AuthCredential;
 import com.google.firebase.auth.AuthResult;
 import com.google.firebase.auth.FacebookAuthProvider;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.auth.FirebaseUser;
-import com.google.firebase.auth.FirebaseUserMetadata;
 import com.google.firebase.auth.GoogleAuthProvider;
-import com.google.firebase.auth.MultiFactor;
-import com.google.firebase.auth.MultiFactorInfo;
 import com.google.firebase.auth.OAuthProvider;
 import com.google.firebase.auth.TwitterAuthProvider;
-import com.google.firebase.auth.UserInfo;
-import com.ici.myproject73029.items.MyPage;
+import com.ici.myproject73029.Constant;
+import com.ici.myproject73029.MainActivity;
 import com.ici.myproject73029.R;
 import com.kakao.auth.ApiErrorCode;
 import com.kakao.auth.ISessionCallback;
@@ -71,8 +64,6 @@ import com.twitter.sdk.android.core.TwitterSession;
 import com.twitter.sdk.android.core.identity.TwitterLoginButton;
 import com.facebook.FacebookSdk;
 import com.facebook.appevents.AppEventsLogger;
-
-import java.util.List;
 
 
 public class FirebaseUIActivity extends AppCompatActivity implements View.OnClickListener {
@@ -273,7 +264,7 @@ public class FirebaseUIActivity extends AppCompatActivity implements View.OnClic
     }
     // [END signin]
 
-    private void signOut() {
+    public void signOut() {
         // Firebase sign out
         mAuth.signOut();
 
@@ -356,13 +347,15 @@ public class FirebaseUIActivity extends AppCompatActivity implements View.OnClic
     }
 
     private void back_to_mypage() {
-        Intent intent = new Intent(getApplicationContext(), MyPage.class);
+        Intent intent = new Intent(getApplicationContext(), MainActivity.class);
         FirebaseUser user = mAuth.getCurrentUser();
-//        if (user != null) {
-//        String uid = user.getUid();
-//            intent.putExtra("userID", uid);
-//        }
-//        startActivity(intent);
+        if (user != null) {
+            String uid = user.getUid();
+            intent.putExtra(Constant.USERID, uid);
+            intent.putExtra(Constant.USERNAME,user.getDisplayName());
+            intent.putExtra("purpose", Constant.AUTHTOMYPAGE);
+        }
+        startActivity(intent);
     }
 
     private void signInToFirebaseWithTwitterSession(TwitterSession session) {

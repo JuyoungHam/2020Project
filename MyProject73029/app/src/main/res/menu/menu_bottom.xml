@@ -3,7 +3,7 @@
     xmlns:android="http://schemas.android.com/apk/res/android">
 
     <item
-        android:id="@+id/tab1"
+        android:id="@+id/tab_exhibition"
         android:enabled="true"
         android:icon="@drawable/ic_baseline_portrait_24"
         android:title="전시"
@@ -14,13 +14,13 @@
         android:title="홈"
         app:showAsAction="always" />
     <item
-        android:id="@+id/tab2"
+        android:id="@+id/tab_show"
         android:enabled="true"
         android:icon="@drawable/ic_baseline_favorite_24"
         android:title="공연"
         app:showAsAction="ifRoom" />
     <item
-        android:id="@+id/tab_auth"
+        android:id="@+id/tab_mypage"
         android:icon="@drawable/ic_baseline_perm_identity_24"
         android:title="마이페이지" />
 </menu>

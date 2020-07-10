@@ -1,144 +1,110 @@
-{"response": {
+�{"response": {
     "header": {
         "resultCode": "0000",
         "resultMsg": "OK"
     },
     "body": {
         "pageNo": 1,
-        "totalCount": 9519,
+        "totalCount": 9546,
         "items": {"item": [
             {
-                "venue": "만리포고등학교 실내체육관",
+                "venue": "네이버TV 생중계(하남문화예술회관)",
                 "creator": "한국문화예술회관연합회",
-                "period": "20200624~20200624",
-                "charge": "-",
+                "period": "20200701~20200701",
+                "charge": "내이버TV 생중계",
                 "referenceIdentifier": "http://www.kocaca.or.kr/Pages/Perf/Images/한국문화예술회관연합회.gif",
                 "collectionDb": "한국문화예술회관연합회 DB",
                 "publisher": "KOCA16",
-                "regDate": "2020-06-18T07:30:26+09:00",
-                "time": "(19:00)",
-                "title": "익스트림 매직 & POP",
-                "url": "http://www.kocaca.or.kr/Pages/Perf/Search/Detail.aspx?id=36110"
-            },
-            {
-                "venue": "도안초등학교",
-                "creator": "한국문화예술회관연합회",
-                "period": "20200626~20200626",
-                "charge": "-",
-                "referenceIdentifier": "http://www.kocaca.or.kr/Pages/Perf/Images/한국문화예술회관연합회.gif",
-                "collectionDb": "한국문화예술회관연합회 DB",
-                "publisher": "KOCA16",
-                "regDate": "2020-06-18T07:30:26+09:00",
-                "time": "(11:00)",
-                "title": "백두산 호랭이",
-                "url": "http://www.kocaca.or.kr/Pages/Perf/Search/Detail.aspx?id=36111"
-            },
-            {
-                "venue": "강릉아트센터 제3전시실",
-                "creator": "한국문화예술회관연합회",
-                "period": "20200627~20200627",
-                "charge": "무료",
-                "referenceIdentifier": "http://www.kocaca.or.kr/Pages/Perf/Images/한국문화예술회관연합회.gif",
-                "collectionDb": "한국문화예술회관연합회 DB",
-                "publisher": "KOCA16",
-                "regDate": "2020-06-18T07:30:25+09:00",
-                "time": "(14:00)",
-                "title": "그림 읽어주는 베토벤-앙리 마티스",
-                "url": "http://www.kocaca.or.kr/Pages/Perf/Search/Detail.aspx?id=36085"
-            },
-            {
-                "venue": "의령군민문화회관 공연장",
-                "creator": "한국문화예술회관연합회",
-                "period": "20200624~20200624",
-                "charge": "2,000원",
-                "referenceIdentifier": "http://www.kocaca.or.kr/Pages/Perf/Images/한국문화예술회관연합회.gif",
-                "collectionDb": "한국문화예술회관연합회 DB",
-                "publisher": "KOCA16",
-                "regDate": "2020-06-18T07:30:25+09:00",
-                "time": "(19:00)",
-                "title": "전영랑, 온희정의 - 국악과 트로트 크로스 오버",
-                "url": "http://www.kocaca.or.kr/Pages/Perf/Search/Detail.aspx?id=36092"
-            },
-            {
-                "venue": "이반성초등학교 강당",
-                "creator": "한국문화예술회관연합회",
-                "period": "20200624~20200624",
-                "charge": "-",
-                "referenceIdentifier": "http://www.kocaca.or.kr/Pages/Perf/Images/한국문화예술회관연합회.gif",
-                "collectionDb": "한국문화예술회관연합회 DB",
-                "publisher": "KOCA16",
-                "regDate": "2020-06-18T07:30:25+09:00",
-                "time": "(11:00)",
-                "title": "전통 나들이",
-                "url": "http://www.kocaca.or.kr/Pages/Perf/Search/Detail.aspx?id=36091"
-            },
-            {
-                "venue": "온라인 공연",
-                "creator": "한국문화예술회관연합회",
-                "period": "20200627~20200627",
-                "charge": "유튜브 생중계",
-                "referenceIdentifier": "http://www.kocaca.or.kr/Pages/Perf/Images/한국문화예술회관연합회.gif",
-                "collectionDb": "한국문화예술회관연합회 DB",
-                "publisher": "KOCA16",
-                "regDate": "2020-06-18T07:30:25+09:00",
-                "source": "https://www.youtube.com/channel/UCicR_6NEnfhLP-FvM4txuUA",
+                "regDate": "2020-06-25T04:18:36+09:00",
+                "source": "https://www.vlive.tv/video/199550",
                 "time": "(20:00)",
-                "title": "유니크와 샌드아트가 들려주는 - 어린왕자 이야기",
-                "url": "http://www.kocaca.or.kr/Pages/Perf/Search/Detail.aspx?id=36090"
+                "title": "피아니스트 조재혁의 - 음악의 발견",
+                "url": "http://www.kocaca.or.kr/Pages/Perf/Search/Detail.aspx?id=36112"
             },
             {
-                "venue": "온라인 공연",
                 "creator": "한국문화예술회관연합회",
-                "period": "20200627~20200627",
-                "charge": "네이버TV 생중계",
-                "referenceIdentifier": "http://www.kocaca.or.kr/Pages/Perf/Images/한국문화예술회관연합회.gif",
+                "period": "~",
+                "referenceIdentifier": "http://www.kocaca.or.kr",
                 "collectionDb": "한국문화예술회관연합회 DB",
                 "publisher": "KOCA16",
-                "regDate": "2020-06-18T07:30:25+09:00",
-                "source": "https://tv.naver.com/l/48324",
-                "time": "(19:30)",
-                "title": "매직드로잉쇼 - 두들팝",
-                "url": "http://www.kocaca.or.kr/Pages/Perf/Search/Detail.aspx?id=36089"
+                "regDate": "2020-06-25T04:18:36+09:00",
+                "url": "http://www.kocaca.or.kr/Pages/Perf/Search/Detail.aspx?id=36121"
             },
             {
-                "venue": "온라인 공연",
                 "creator": "한국문화예술회관연합회",
-                "period": "20200624~20200624",
-                "charge": "네이버TV 생중계",
-                "referenceIdentifier": "http://www.kocaca.or.kr/Pages/Perf/Images/한국문화예술회관연합회.gif",
+                "period": "~",
+                "referenceIdentifier": "http://www.kocaca.or.kr",
                 "collectionDb": "한국문화예술회관연합회 DB",
                 "publisher": "KOCA16",
-                "regDate": "2020-06-18T07:30:25+09:00",
-                "source": "https://m.tv.naver.com/gmcf",
-                "time": "(19:30)",
-                "title": "Moon(혜원)의 재즈 콘서트 - Love Songs",
-                "url": "http://www.kocaca.or.kr/Pages/Perf/Search/Detail.aspx?id=36088"
+                "regDate": "2020-06-25T04:18:36+09:00",
+                "url": "http://www.kocaca.or.kr/Pages/Perf/Search/Detail.aspx?id=36120"
             },
             {
-                "venue": "댄싱공연장 야외공연장(야외돔)",
                 "creator": "한국문화예술회관연합회",
-                "period": "20200624~20200624",
+                "period": "~",
+                "referenceIdentifier": "http://www.kocaca.or.kr",
+                "collectionDb": "한국문화예술회관연합회 DB",
+                "publisher": "KOCA16",
+                "regDate": "2020-06-25T04:18:36+09:00",
+                "url": "http://www.kocaca.or.kr/Pages/Perf/Search/Detail.aspx?id=36119"
+            },
+            {
+                "creator": "한국문화예술회관연합회",
+                "period": "~",
+                "referenceIdentifier": "http://www.kocaca.or.kr",
+                "collectionDb": "한국문화예술회관연합회 DB",
+                "publisher": "KOCA16",
+                "regDate": "2020-06-25T04:18:36+09:00",
+                "url": "http://www.kocaca.or.kr/Pages/Perf/Search/Detail.aspx?id=36118"
+            },
+            {
+                "creator": "한국문화예술회관연합회",
+                "period": "~",
+                "referenceIdentifier": "http://www.kocaca.or.kr",
+                "collectionDb": "한국문화예술회관연합회 DB",
+                "publisher": "KOCA16",
+                "regDate": "2020-06-25T04:18:36+09:00",
+                "url": "http://www.kocaca.or.kr/Pages/Perf/Search/Detail.aspx?id=36117"
+            },
+            {
+                "creator": "한국문화예술회관연합회",
+                "period": "~",
+                "referenceIdentifier": "http://www.kocaca.or.kr",
+                "collectionDb": "한국문화예술회관연합회 DB",
+                "publisher": "KOCA16",
+                "regDate": "2020-06-25T04:18:36+09:00",
+                "url": "http://www.kocaca.or.kr/Pages/Perf/Search/Detail.aspx?id=36116"
+            },
+            {
+                "creator": "한국문화예술회관연합회",
+                "period": "~",
+                "referenceIdentifier": "http://www.kocaca.or.kr",
+                "collectionDb": "한국문화예술회관연합회 DB",
+                "publisher": "KOCA16",
+                "regDate": "2020-06-25T04:18:36+09:00",
+                "url": "http://www.kocaca.or.kr/Pages/Perf/Search/Detail.aspx?id=36115"
+            },
+            {
+                "creator": "한국문화예술회관연합회",
+                "period": "~",
+                "referenceIdentifier": "http://www.kocaca.or.kr",
+                "collectionDb": "한국문화예술회관연합회 DB",
+                "publisher": "KOCA16",
+                "regDate": "2020-06-25T04:18:36+09:00",
+                "url": "http://www.kocaca.or.kr/Pages/Perf/Search/Detail.aspx?id=36114"
+            },
+            {
+                "venue": "광주남구문화예술회관 공연장",
+                "creator": "한국문화예술회관연합회",
+                "period": "20200729~20200729",
                 "charge": "무료",
                 "referenceIdentifier": "http://www.kocaca.or.kr/Pages/Perf/Images/한국문화예술회관연합회.gif",
                 "collectionDb": "한국문화예술회관연합회 DB",
                 "publisher": "KOCA16",
-                "regDate": "2020-06-18T07:30:25+09:00",
-                "time": "(10:00)",
-                "title": "댄스 테라피",
-                "url": "http://www.kocaca.or.kr/Pages/Perf/Search/Detail.aspx?id=36087"
-            },
-            {
-                "venue": "영월문화예술회관 공연장",
-                "creator": "한국문화예술회관연합회",
-                "period": "20200625~20200625",
-                "charge": "무료",
-                "referenceIdentifier": "http://www.kocaca.or.kr/Pages/Perf/Images/한국문화예술회관연합회.gif",
-                "collectionDb": "한국문화예술회관연합회 DB",
-                "publisher": "KOCA16",
-                "regDate": "2020-06-18T07:30:25+09:00",
-                "time": "(11:00)",
-                "title": "관객과 하나 되는 음악회 Slur & Tie (이음줄과 붙임줄)",
-                "url": "http://www.kocaca.or.kr/Pages/Perf/Search/Detail.aspx?id=36086"
+                "regDate": "2020-06-25T04:18:36+09:00",
+                "time": "(19:00)",
+                "title": "귄(Queen)있다 전라도 춤!",
+                "url": "http://www.kocaca.or.kr/Pages/Perf/Search/Detail.aspx?id=36113"
             }
         ]},
         "numOfRows": 10

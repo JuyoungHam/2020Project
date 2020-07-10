@@ -17,7 +17,7 @@ public class Constant {
     //공연 카테고리를 숫자로 표현함
     public static final int EXHIBITION = 1111;
     public static final int SHOW = 2222;
-
+    public static final int REVIEW = 3333;
 
     public static final int RC_SIGN_IN = 9001;
     public static final String GOOGLE_AUTH = "google";
@@ -28,6 +28,14 @@ public class Constant {
     public static final int LOGIN_REQUEST_FROM_MYPAGE = 8921;
 
     public static final String pwd_kakao = "kakaopasswordformyproject73029!";
+
+    public static final String MYFAVORITE = "favorite";
+    public static final String MYPAGE = "mypage";
+    public static final String MYREVIEW = "review";
+
+    public static final String AUTHTOMYPAGE = "BACKTOMYPAGE";
+    public static final String USERID = "USERID";
+    public static final String USERNAME = "USERNAME";
 
 
     //How to get hashcode

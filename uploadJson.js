@@ -27,10 +27,12 @@ for (var i = 0; i < 7; i++) {
   var menu = require("./JsonFiles/"+i+".json");
   menu.response.body.items.item.forEach(function(obj) {
     var config = {
-      title: obj.title
+      title: obj.title,
+      poster: obj.thumbnail,
+
     };
-    if (!isNull(obj.venue)) {
-      config.venue = obj.venue;
+    if (!isNull(obj.place)) {
+      config.venue = obj.place;
     }
     if (!isNull(obj.referenceIdentifier)) {
       config.poster = obj.referenceIdentifier;
@@ -38,8 +40,8 @@ for (var i = 0; i < 7; i++) {
     if (!isNull(obj.period)) {
       config.period = obj.period;
     }
-    if (!isNull(obj.subjectCategory)) {
-      config.subjectCategory = obj.subjectCategory;
+    if (!isNull(obj.realmName)) {
+      config.subjectCategory = obj.realmName;
     }
     if (!isNull(obj.creator)) {
       config.creator = obj.creator;

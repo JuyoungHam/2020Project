@@ -1,4 +1,4 @@
-package com.ici.myproject73029;
+package com.ici.myproject73029.tabs;
 
 import android.content.Intent;
 import android.os.Bundle;
@@ -21,6 +21,9 @@ import com.google.android.gms.tasks.Task;
 import com.google.firebase.firestore.FirebaseFirestore;
 import com.google.firebase.firestore.QueryDocumentSnapshot;
 import com.google.firebase.firestore.QuerySnapshot;
+import com.ici.myproject73029.Constant;
+import com.ici.myproject73029.MapActivity;
+import com.ici.myproject73029.R;
 import com.ici.myproject73029.firebase.Firebase;
 import com.ici.myproject73029.items.Exhibition;
 import com.ici.myproject73029.items.Show;
@@ -57,7 +60,7 @@ public class ItemFragment extends Fragment implements View.OnClickListener {
         TextView item_title = itemView.findViewById(R.id.item_title);
         TextView item_venue = itemView.findViewById(R.id.item_venue);
         TextView item_period = itemView.findViewById(R.id.item_period);
-        TextView item_description = itemView.findViewById(R.id.item_description);
+        TextView item_description = itemView.findViewById(R.id.item_comments);
         ImageView img_map = itemView.findViewById(R.id.map);
         img_map.setImageResource(R.mipmap.ic_launcher_foreground);
         ImageButton share_button = itemView.findViewById(R.id.share_button);
@@ -71,7 +74,7 @@ public class ItemFragment extends Fragment implements View.OnClickListener {
         img_map.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                Intent intent = new Intent(getContext(), com.ici.myproject73029.Map.class);
+                Intent intent = new Intent(getContext(), MapActivity.class);
                 intent.putExtra("venue", venue);
                 startActivity(intent);
             }
