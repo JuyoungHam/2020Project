@@ -26,8 +26,6 @@ import com.ici.myproject73029.tabs.HomeTab;
 import com.ici.myproject73029.tabs.ItemFragment;
 import com.ici.myproject73029.tabs.ShowTab;
 
-import static com.kakao.util.helper.Utility.getPackageInfo;
-
 public class MainActivity extends AppCompatActivity {
 
     HomeTab homeTab;
@@ -63,6 +61,7 @@ public class MainActivity extends AppCompatActivity {
             super.onBackPressed();
         }
     }
+
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -154,6 +153,16 @@ public class MainActivity extends AppCompatActivity {
 
         Toast.makeText(this, "마이리뷰" + item.getTitle(), Toast.LENGTH_SHORT).show();
         getSupportFragmentManager().beginTransaction().replace(R.id.frame_myreview, item_review).commit();
+    }
+
+    public void goToFragment(int i) {
+        if (i == R.id.review_to_mypage) {
+            getSupportFragmentManager().beginTransaction().replace(R.id.main_fragment,
+                    myPageTab).commit();
+        } else if (i == R.id.item_to_review) {
+            getSupportFragmentManager().beginTransaction().remove(item_review).commit();
+        }
+
     }
 
 }
