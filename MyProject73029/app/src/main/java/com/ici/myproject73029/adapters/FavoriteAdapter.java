@@ -9,17 +9,19 @@ import android.widget.TextView;
 import androidx.annotation.NonNull;
 import androidx.recyclerview.widget.RecyclerView;
 
-import com.ici.myproject73029.FavoriteItem;
+import com.bumptech.glide.Glide;
 import com.ici.myproject73029.R;
+import com.ici.myproject73029.items.Favorites;
+import com.ici.myproject73029.items.FundamentalItem;
 
 import java.util.ArrayList;
 
-public class FavoriteAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolder> {
-    private ArrayList<FavoriteItem> items=new ArrayList<>();
+public class FavoriteAdapter extends RecyclerView.Adapter<FavoriteAdapter.Viewholder> {
+    private ArrayList<Favorites> items=new ArrayList<>();
 
     @NonNull
     @Override
-    public RecyclerView.ViewHolder onCreateViewHolder(@NonNull ViewGroup parent, int viewType) {
+    public Viewholder onCreateViewHolder(@NonNull ViewGroup parent, int viewType) {
         LayoutInflater inflater = LayoutInflater.from(parent.getContext());
         View itemView = inflater.inflate(R.layout.item,parent,false);
 
@@ -27,9 +29,14 @@ public class FavoriteAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolde
     }
 
     @Override
-    public void onBindViewHolder(@NonNull RecyclerView.ViewHolder holder, int position) {
-        FavoriteItem item=items.get(position);
+    public void onBindViewHolder(@NonNull Viewholder holder, int position) {
+        Favorites item=items.get(position);
+        holder.setItems(item);
+    }
 
+    @Override
+    public int getItemCount() {
+        return items.size();
     }
 
     public class Viewholder extends RecyclerView.ViewHolder{
@@ -38,36 +45,31 @@ public class FavoriteAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolde
 
         public Viewholder(@NonNull View itemView) {
             super(itemView);
-
             title = itemView.findViewById(R.id.txt_id);
             poster = itemView.findViewById(R.id.img_favorite);
-
         }
-//        public void setItems(FavoriteItem items) {
-//            title.setText(items.getTitle());
-//            if (items.getPoster() != null) {
-//                Glide.with(itemView).load(items.getPoster()).into(poster);
-//                poster.setVisibility(View.VISIBLE);
-//            }
-//        }
+
+        public void setItems(Favorites items) {
+            title.setText(items.getTitle());
+            if (items.getPoster() != null) {
+                Glide.with(itemView).load(items.getPoster()).into(poster);
+                poster.setVisibility(View.VISIBLE);
+            }
+        }
     }
-    @Override
-    public int getItemCount() {
-        return items.size();
-    }
-    public void addItem(FavoriteItem item) {
+    public void addItem(Favorites item) {
         items.add(item);
     }
 
-    public void setItems(ArrayList<FavoriteItem> items) {
+    public void setItems(ArrayList<Favorites> items) {
         this.items = items;
     }
 
-    public FavoriteItem getItem(int position) {
+    public Favorites getItem(int position) {
         return items.get(position);
     }
 
-    public void setItem(int position, FavoriteItem item) {
+    public void setItem(int position, Favorites item) {
         items.set(position, item);
     }
 }

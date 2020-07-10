@@ -20,6 +20,7 @@ import com.google.firebase.firestore.QueryDocumentSnapshot;
 import com.google.firebase.firestore.QuerySnapshot;
 import com.ici.myproject73029.adapters.FavoriteAdapter;
 import com.ici.myproject73029.firebase.Firebase;
+import com.ici.myproject73029.items.Favorites;
 
 
 public class FavoriteFragment extends Fragment {
@@ -49,7 +50,7 @@ public class FavoriteFragment extends Fragment {
             public void onComplete(@NonNull Task<QuerySnapshot> task) {
                 if(task.isSuccessful()){
                     for(QueryDocumentSnapshot snapshot:task.getResult()){
-                        FavoriteItem item=snapshot.toObject(FavoriteItem.class);
+                        Favorites item=snapshot.toObject(Favorites.class);
                         adapter.addItem(item);
                         recyclerView.setAdapter(adapter);
                     }

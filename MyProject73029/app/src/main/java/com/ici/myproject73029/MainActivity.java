@@ -12,6 +12,7 @@ import com.google.android.material.bottomnavigation.BottomNavigationView;
 import com.google.firebase.firestore.FirebaseFirestore;
 import com.ici.myproject73029.firebase.Firebase;
 import com.ici.myproject73029.items.Exhibition;
+import com.ici.myproject73029.items.MyPage;
 import com.ici.myproject73029.items.Show;
 import com.ici.myproject73029.tabs.ExhibitionTab;
 import com.ici.myproject73029.tabs.GridTab;
@@ -75,7 +76,7 @@ public class MainActivity extends AppCompatActivity {
                                 , gridTab).commit();
                         return true;
                     case R.id.tab_auth:
-                        Intent intent=new Intent(getApplicationContext(),MyPage.class);
+                        Intent intent=new Intent(getApplicationContext(), MyPage.class);
                         startActivity(intent);
                         return true;
                 }

@@ -1,4 +1,4 @@
-package com.ici.myproject73029;
+package com.ici.myproject73029.items;
 
 import androidx.annotation.Nullable;
 import androidx.appcompat.app.AppCompatActivity;
@@ -15,6 +15,8 @@ import android.widget.Toast;
 
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.auth.FirebaseUser;
+import com.ici.myproject73029.FavoriteFragment;
+import com.ici.myproject73029.R;
 
 import java.io.IOException;
 import java.io.InputStream;
@@ -37,7 +39,8 @@ public class MyPage extends AppCompatActivity {
         favorite=findViewById(R.id.btnFavorite);
         review=findViewById(R.id.btnReview);
         frg=findViewById(R.id.frag_main);
-        final Login_main loginMain=new Login_main();
+
+       // Login_main loginMain= (Login_main) getSupportFragmentManager().findFragmentById(R.id.frag_main);
 
         favorite.setOnClickListener(new View.OnClickListener() {
             @Override
