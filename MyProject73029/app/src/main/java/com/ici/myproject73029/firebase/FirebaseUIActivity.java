@@ -125,8 +125,6 @@ public class FirebaseUIActivity extends AppCompatActivity implements View.OnClic
         facebook_login.setOnClickListener(this);
 
         kakao_login = findViewById(R.id.kakao_login_button);
-        kakao_login.setOnClickListener(this);
-
 
         // Configure Google Sign In
         GoogleSignInOptions gso = new GoogleSignInOptions.Builder(GoogleSignInOptions.DEFAULT_SIGN_IN)
@@ -324,13 +322,14 @@ public class FirebaseUIActivity extends AppCompatActivity implements View.OnClic
 
     private void updateUI(FirebaseUser user) {
         if (user != null) {
-            logintext.setText(user.getDisplayName() + "님, 환영합니다");
+            logintext.setText(user.getEmail() + "님, 환영합니다");
 //                Glide.with(rootView).load(user.getPhotoUrl().toString()).into(userProfile);
             google_login.setVisibility(View.GONE);
             twitter_login.setVisibility(View.GONE);
             facebook_login.setVisibility(View.GONE);
             kakao_login.setVisibility(View.GONE);
             logout.setVisibility(View.VISIBLE);
+            Toast.makeText(this, user.getUid(), Toast.LENGTH_SHORT).show();
         } else {
             logintext.setText("로그인이 필요합니다");
 //            userProfile.setImageBitmap(Bitmap.);
@@ -360,9 +359,9 @@ public class FirebaseUIActivity extends AppCompatActivity implements View.OnClic
     private void back_to_mypage() {
         Intent intent = new Intent(getApplicationContext(), MyPage.class);
         FirebaseUser user = mAuth.getCurrentUser();
+//        if (user != null) {
 //        String uid = user.getUid();
-//        if (uid != null) {
-//            intent.putExtra(getString(R.string.FIREBASE_UID), uid);
+//            intent.putExtra("userID", uid);
 //        }
 //        startActivity(intent);
     }
@@ -463,134 +462,7 @@ public class FirebaseUIActivity extends AppCompatActivity implements View.OnClic
                 @Override
                 public void onSuccess(final MeV2Response result) {
                     final UserAccount info = result.getKakaoAccount();
-                    FirebaseUser user = new FirebaseUser() {
-                        @NonNull
-                        @Override
-                        public String getUid() {
-                            return info.getDisplayId();
-                        }
-
-                        @NonNull
-                        @Override
-                        public String getProviderId() {
-                            return "Kakao";
-                        }
-
-                        @Override
-                        public boolean isAnonymous() {
-                            return false;
-                        }
-
-                        @Nullable
-                        @Override
-                        public List<String> zza() {
-                            return null;
-                        }
-
-                        @NonNull
-                        @Override
-                        public List<? extends UserInfo> getProviderData() {
-                            return null;
-                        }
-
-                        @NonNull
-                        @Override
-                        public FirebaseUser zza(@NonNull List<? extends UserInfo> list) {
-                            return null;
-                        }
-
-                        @Override
-                        public FirebaseUser zzb() {
-                            return null;
-                        }
-
-                        @NonNull
-                        @Override
-                        public FirebaseApp zzc() {
-                            return null;
-                        }
-
-                        @Nullable
-                        @Override
-                        public String getDisplayName() {
-                            return result.getNickname();
-                        }
-
-                        @Nullable
-                        @Override
-                        public Uri getPhotoUrl() {
-                            return Uri.parse("");
-                        }
-
-                        @Nullable
-                        @Override
-                        public String getEmail() {
-                            return info.getEmail();
-                        }
-
-                        @Nullable
-                        @Override
-                        public String getPhoneNumber() {
-                            return null;
-                        }
-
-                        @Nullable
-                        @Override
-                        public String zzd() {
-                            return null;
-                        }
-
-                        @NonNull
-                        @Override
-                        public zzff zze() {
-                            return null;
-                        }
-
-                        @Override
-                        public void zza(@NonNull zzff zzff) {
-
-                        }
-
-                        @NonNull
-                        @Override
-                        public String zzf() {
-                            return null;
-                        }
-
-                        @NonNull
-                        @Override
-                        public String zzg() {
-                            return null;
-                        }
-
-                        @Nullable
-                        @Override
-                        public FirebaseUserMetadata getMetadata() {
-                            return null;
-                        }
-
-                        @NonNull
-                        @Override
-                        public MultiFactor getMultiFactor() {
-                            return null;
-                        }
-
-                        @Override
-                        public void zzb(List<MultiFactorInfo> list) {
-
-                        }
-
-                        @Override
-                        public void writeToParcel(Parcel dest, int flags) {
-
-                        }
-
-                        @Override
-                        public boolean isEmailVerified() {
-                            return false;
-                        }
-                    };
-                    updateUI(user);
+                    createUserForKakao(info.getEmail());
                 }
             });
         }
@@ -600,6 +472,49 @@ public class FirebaseUIActivity extends AppCompatActivity implements View.OnClic
             Toast.makeText(getApplicationContext(), "로그인 도중 오류가 발생했습니다. 인터넷 연결을 확인해주세요: " + e.toString(), Toast.LENGTH_SHORT).show();
             Log.d("kakao", "로그인 도중 오류가 발생했습니다. 인터넷 연결을 확인해주세요: " + e.toString());
         }
+    }
+
+    private void createUserForKakao(final String email) {
+        mAuth.createUserWithEmailAndPassword(email, Constant.pwd_kakao)
+                .addOnCompleteListener(this, new OnCompleteListener<AuthResult>() {
+                    @Override
+                    public void onComplete(@NonNull Task<AuthResult> task) {
+                        if (task.isSuccessful()) {
+                            // Sign in success, update UI with the signed-in user's information
+                            Log.d("createUserForKakao", "createUserWithEmail:success");
+                            FirebaseUser user = mAuth.getCurrentUser();
+                            updateUI(user);
+                        } else {
+                            signInForKakao(email);
+                        }
+                    }
+                });
+        FirebaseUser user = mAuth.getCurrentUser();
+    }
+
+    private void signInForKakao(String email) {
+        mAuth.signInWithEmailAndPassword(email, Constant.pwd_kakao)
+                .addOnCompleteListener(this, new OnCompleteListener<AuthResult>() {
+                    @Override
+                    public void onComplete(@NonNull Task<AuthResult> task) {
+                        if (task.isSuccessful()) {
+                            // Sign in success, update UI with the signed-in user's information
+                            Log.d(TAG, "signInWithEmail:success");
+                            FirebaseUser user = mAuth.getCurrentUser();
+                            updateUI(user);
+                        } else {
+                            // If sign in fails, display a message to the user.
+                            Log.w(TAG, "signInWithEmail:failure", task.getException());
+                            Toast.makeText(FirebaseUIActivity.this,
+                                    "로그인 실패",
+                                    Toast.LENGTH_SHORT).show();
+                            Toast.makeText(FirebaseUIActivity.this,
+                                    R.string.email_auth_check,
+                                    Toast.LENGTH_SHORT).show();
+                            updateUI(null);
+                        }
+                    }
+                });
     }
 
 }
