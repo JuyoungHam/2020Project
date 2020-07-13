@@ -1,11 +1,15 @@
 package com.ici.myproject73029;
 
+import android.annotation.SuppressLint;
 import android.content.Intent;
 import android.os.Bundle;
+import android.util.Log;
+import android.view.Menu;
 import android.view.MenuItem;
 import android.widget.Toast;
 
 import androidx.annotation.NonNull;
+import androidx.appcompat.app.ActionBar;
 import androidx.appcompat.app.AppCompatActivity;
 
 import com.google.android.material.bottomnavigation.BottomNavigationView;
@@ -13,9 +17,8 @@ import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.auth.FirebaseUser;
 import com.google.firebase.firestore.FirebaseFirestore;
 import com.ici.myproject73029.firebase.Firebase;
-import com.ici.myproject73029.items.Exhibition;
+import com.ici.myproject73029.items.FundamentalItem;
 import com.ici.myproject73029.items.Review;
-import com.ici.myproject73029.items.Show;
 import com.ici.myproject73029.mypage.FavoritePage;
 import com.ici.myproject73029.mypage.MyPageTab;
 import com.ici.myproject73029.mypage.MyReviewPage;
@@ -28,17 +31,22 @@ import com.ici.myproject73029.tabs.ShowTab;
 
 public class MainActivity extends AppCompatActivity {
 
-    HomeTab homeTab;
-    ExhibitionTab exhibitionTab;
-    ShowTab showTab;
+    public HomeTab homeTab;
+    public ExhibitionTab exhibitionTab;
+    public ShowTab showTab;
+    public ReviewFragment item_review;
+    public MyPageTab myPageTab;
+    public FavoritePage favoritePage;
+    public MyReviewPage myReviewPage;
     ItemFragment item_Show;
     ItemFragment item_Exhibition;
-    ReviewFragment item_review;
     GridTab gridTab;
-    private MyPageTab myPageTab;
     private BottomNavigationView bottomNavigation;
-
+    private ActionBar actionBar;
+    private long pressedTime = 0;
     private FirebaseAuth mAuth;
+    private FirebaseUser user;
+    private onBackPressedListener onBackPressedListener;
 
     public FirebaseUser getUser() {
         return user;
@@ -48,21 +56,7 @@ public class MainActivity extends AppCompatActivity {
         this.user = user;
     }
 
-    private FirebaseUser user;
-
-
-    @Override
-    public void onBackPressed() {
-        if (item_Show.isAdded()) {
-            getSupportFragmentManager().beginTransaction().remove(item_Show).commit();
-        } else if (item_Exhibition.isAdded()) {
-//            getSupportFragmentManager().beginTransaction().remove(item_Show).commit();
-        } else {
-            super.onBackPressed();
-        }
-    }
-
-
+    @SuppressLint("RestrictedApi")
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -83,6 +77,9 @@ public class MainActivity extends AppCompatActivity {
         showTab = new ShowTab();
         gridTab = new GridTab();
         myPageTab = new MyPageTab();
+
+        favoritePage = new FavoritePage();
+        myReviewPage = new MyReviewPage();
 
         bottomNavigation = findViewById(R.id.bottom_navigation);
         bottomNavigation.setSelectedItemId(R.id.tab_home);
@@ -111,8 +108,11 @@ public class MainActivity extends AppCompatActivity {
                 return false;
             }
         });
-    }
 
+        actionBar = getSupportActionBar();
+        isActionBarVisible(false);
+
+    }
 
     @Override
     protected void onStart() {
@@ -124,45 +124,107 @@ public class MainActivity extends AppCompatActivity {
         }
     }
 
-    public void onItemFragmentChanged(Exhibition item) {
-        item_Exhibition = new ItemFragment(item);
-
-        Toast.makeText(this, "전시제목 : " + item.getTitle(), Toast.LENGTH_SHORT).show();
-        getSupportFragmentManager().beginTransaction().replace(R.id.main_fragment, item_Exhibition).commit();
+    public void setOnBackPressedListener(onBackPressedListener listener) {
+        onBackPressedListener = listener;
     }
 
-    public void onItemFragmentChanged(Show item) {
-        item_Show = new ItemFragment(item);
+    @Override
+    public void onBackPressed() {
+        // 다른 Fragment 에서 리스너를 설정했을 때 처리됩니다.
+        if (onBackPressedListener != null) {
+            onBackPressedListener.onBack();
+            Log.e("!!!", "Listener is not null");
+        } else {
+            Log.e("!!!", "Listener is null");
+            if (pressedTime == 0) {
+                Toast.makeText(this,
+                        " 한 번 더 누르면 종료됩니다.", Toast.LENGTH_LONG).show();
+                pressedTime = System.currentTimeMillis();
+            } else {
+                int seconds = (int) (System.currentTimeMillis() - pressedTime);
+                if (seconds > 2000) {
+                    Toast.makeText(this,
+                            " 한 번 더 누르면 종료됩니다.", Toast.LENGTH_LONG).show();
+                    pressedTime = 0;
+                } else {
+                    super.onBackPressed();
+                    Log.e("!!!", "onBackPressed : finish, killProcess");
+                    finish();
+                    android.os.Process.killProcess(android.os.Process.myPid());
+                }
+            }
+        }
+    }
 
-        Toast.makeText(this, "공연제목 : " + item.getTitle(), Toast.LENGTH_SHORT).show();
-        getSupportFragmentManager().beginTransaction().replace(R.id.main_fragment, item_Show).commit();
+    public void onItemFragmentChanged(FundamentalItem item) {
+        if (item.getType() == Constant.EXHIBITION) {
+            item_Exhibition = new ItemFragment(item);
+
+            Toast.makeText(this, "전시제목 : " + item.getTitle(), Toast.LENGTH_SHORT).show();
+            getSupportFragmentManager().beginTransaction().replace(R.id.main_fragment, item_Exhibition).commit();
+        } else if (item.getType() == Constant.SHOW) {
+            item_Show = new ItemFragment(item);
+
+            Toast.makeText(this, "공연제목 : " + item.getTitle(), Toast.LENGTH_SHORT).show();
+            getSupportFragmentManager().beginTransaction().replace(R.id.main_fragment, item_Show).commit();
+        } else if (item.getType() == Constant.REVIEW) {
+            item_review = new ReviewFragment((Review) item);
+            Toast.makeText(this, "마이리뷰 : " + item.getTitle(), Toast.LENGTH_SHORT).show();
+            getSupportFragmentManager().beginTransaction().replace(R.id.main_fragment, item_review).commit();
+        } else if (item.getType() == Constant.FAVORITE) {
+            item_Exhibition = new ItemFragment(item);
+            getSupportFragmentManager().beginTransaction().replace(R.id.main_fragment, item_Exhibition).commit();
+        }
+
     }
 
     public void onMyPageChanged(int i) {
         if (i == R.id.button_favorite) {
             getSupportFragmentManager().beginTransaction().replace(R.id.main_fragment,
-                    new FavoritePage()).commit();
+                    favoritePage).commit();
         } else if (i == R.id.button_myreview) {
             getSupportFragmentManager().beginTransaction().replace(R.id.main_fragment,
-                    new MyReviewPage()).commit();
+                    myReviewPage).commit();
         }
     }
 
-    public void onItemFragmentChanged(Review item) {
-        item_review = new ReviewFragment(item);
-
-        Toast.makeText(this, "마이리뷰" + item.getTitle(), Toast.LENGTH_SHORT).show();
-        getSupportFragmentManager().beginTransaction().replace(R.id.frame_myreview, item_review).commit();
+    @Override
+    public boolean onCreateOptionsMenu(Menu menu) {
+        getMenuInflater().inflate(R.menu.menu_main, menu);
+        return true;
     }
 
-    public void goToFragment(int i) {
-        if (i == R.id.review_to_mypage) {
-            getSupportFragmentManager().beginTransaction().replace(R.id.main_fragment,
-                    myPageTab).commit();
-        } else if (i == R.id.item_to_review) {
-            getSupportFragmentManager().beginTransaction().remove(item_review).commit();
+    @Override
+    public boolean onOptionsItemSelected(MenuItem item) {
+        switch (item.getItemId()) {
+            case android.R.id.home:
+                onBackPressed();
+                break;
         }
+        return true;
+    }
 
+    @SuppressLint("RestrictedApi")
+    public void isActionBarVisible(Boolean b) {
+        actionBar.setShowHideAnimationEnabled(false);
+        actionBar.setDisplayHomeAsUpEnabled(true);
+        if (b == true) {
+            actionBar.show();
+        } else {
+            actionBar.hide();
+        }
+    }
+
+    public void setActionBarTitle(String title) {
+        actionBar.setTitle(title);
+    }
+
+    public void setActionBarOption(int option) {
+        actionBar.setDisplayOptions(option);
+    }
+
+    public interface onBackPressedListener {
+        void onBack();
     }
 
 }

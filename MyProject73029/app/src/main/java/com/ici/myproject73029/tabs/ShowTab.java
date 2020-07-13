@@ -27,6 +27,7 @@ import com.ici.myproject73029.items.Show;
 
 public class ShowTab extends Fragment {
     private RecyclerView recyclerView;
+    private MainActivity mainActivity;
 
 
     @Override
@@ -46,6 +47,9 @@ public class ShowTab extends Fragment {
                 LinearLayoutManager.VERTICAL, false);
         recyclerView.setLayoutManager(layoutManager);
         final FundamentalAdapter adapter = new FundamentalAdapter();
+
+        mainActivity = (MainActivity) getActivity();
+        mainActivity.isActionBarVisible(false);
 
         Firebase firebase = new Firebase();
         FirebaseFirestore db = firebase.startFirebase();

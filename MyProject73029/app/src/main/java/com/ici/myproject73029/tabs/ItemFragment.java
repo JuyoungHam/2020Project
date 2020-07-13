@@ -1,5 +1,7 @@
 package com.ici.myproject73029.tabs;
 
+import android.app.ActionBar;
+import android.content.Context;
 import android.content.Intent;
 import android.os.Bundle;
 import android.text.Html;
@@ -10,6 +12,7 @@ import android.view.ViewGroup;
 import android.widget.ImageButton;
 import android.widget.ImageView;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
@@ -22,31 +25,30 @@ import com.google.firebase.firestore.FirebaseFirestore;
 import com.google.firebase.firestore.QueryDocumentSnapshot;
 import com.google.firebase.firestore.QuerySnapshot;
 import com.ici.myproject73029.Constant;
+import com.ici.myproject73029.MainActivity;
 import com.ici.myproject73029.MapActivity;
 import com.ici.myproject73029.R;
 import com.ici.myproject73029.firebase.Firebase;
 import com.ici.myproject73029.items.Exhibition;
+import com.ici.myproject73029.items.FundamentalItem;
 import com.ici.myproject73029.items.Show;
 
 import java.util.Map;
 
-public class ItemFragment extends Fragment implements View.OnClickListener {
+public class ItemFragment extends Fragment implements View.OnClickListener, MainActivity.onBackPressedListener {
     String title;
     String description;
     public String venue;
     int type;
+    private MainActivity mainActivity;
 
-    public ItemFragment(Exhibition item) {
+    public ItemFragment(FundamentalItem item) {
         this.title = item.getTitle();
         this.description = item.getDescription();
-        type = Constant.EXHIBITION;
-    }
-
-    public ItemFragment(Show item) {
-        this.title = item.getTitle();
-        this.description = item.getDescription();
-        this.venue = item.getVenue();
-        type = Constant.SHOW;
+        if (item.getVenue() != null) {
+            this.venue = item.getVenue();
+        }
+        this.type = item.getType();
     }
 
 
@@ -55,6 +57,11 @@ public class ItemFragment extends Fragment implements View.OnClickListener {
     public View onCreateView(@NonNull final LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
         final ViewGroup itemView = (ViewGroup) inflater.inflate(R.layout.fragment_item, container,
                 false);
+
+        mainActivity = (MainActivity) getActivity();
+        mainActivity.isActionBarVisible(true);
+        mainActivity.setActionBarTitle(title);
+        mainActivity.setActionBarOption(ActionBar.DISPLAY_HOME_AS_UP | ActionBar.DISPLAY_SHOW_TITLE);
 
         final ImageView img_poster = itemView.findViewById(R.id.item_poster);
         TextView item_title = itemView.findViewById(R.id.item_title);
@@ -124,5 +131,29 @@ public class ItemFragment extends Fragment implements View.OnClickListener {
         sendIntent.setType("text/*");
         Intent shareIntent = Intent.createChooser(sendIntent, "공유하기");
         startActivity(shareIntent);
+    }
+
+    @Override
+    public void onBack() {
+        Log.d("Other", "onBack()");
+        mainActivity.setOnBackPressedListener(null);
+        if (type == Constant.EXHIBITION) {
+            mainActivity.getSupportFragmentManager().beginTransaction()
+                    .replace(R.id.main_fragment, mainActivity.exhibitionTab).commit();
+        } else if (type == Constant.SHOW) {
+            mainActivity.getSupportFragmentManager().beginTransaction()
+                    .replace(R.id.main_fragment, mainActivity.showTab).commit();
+        } else if (type == Constant.FAVORITE) {
+            mainActivity.getSupportFragmentManager().beginTransaction()
+                    .replace(R.id.main_fragment, mainActivity.favoritePage).commit();
+        }
+    }
+
+    // Fragment 호출 시 반드시 호출되는 오버라이드 메소드입니다.
+    @Override
+    public void onAttach(Context context) {
+        super.onAttach(context);
+        Log.e("Other", "onAttach()");
+        ((MainActivity) context).setOnBackPressedListener(this);
     }
 }

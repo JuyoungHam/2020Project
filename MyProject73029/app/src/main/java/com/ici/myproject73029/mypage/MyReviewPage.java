@@ -1,11 +1,12 @@
 package com.ici.myproject73029.mypage;
 
+import android.app.ActionBar;
+import android.content.Context;
 import android.os.Bundle;
 import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
-import android.widget.ImageButton;
 import android.widget.Toast;
 
 import androidx.annotation.NonNull;
@@ -26,12 +27,10 @@ import com.ici.myproject73029.adapters.ReviewAdapter;
 import com.ici.myproject73029.firebase.Firebase;
 import com.ici.myproject73029.items.Review;
 
-public class MyReviewPage extends Fragment implements View.OnClickListener {
+public class MyReviewPage extends Fragment implements MainActivity.onBackPressedListener {
 
     private RecyclerView recyclerView;
     MainActivity mainActivity;
-    private ImageButton review_to_mypage;
-    private ImageButton item_to_review;
 
     @Override
     public void onCreate(Bundle savedInstanceState) {
@@ -52,17 +51,14 @@ public class MyReviewPage extends Fragment implements View.OnClickListener {
         final ReviewAdapter adapter = new ReviewAdapter();
 
         mainActivity = (MainActivity) getActivity();
-
-        review_to_mypage = rootView.findViewById(R.id.review_to_mypage);
-        review_to_mypage.setOnClickListener(this);
-        item_to_review = rootView.findViewById(R.id.item_to_review);
-        item_to_review.setOnClickListener(this);
-        item_to_review.setVisibility(View.GONE);
+        mainActivity.isActionBarVisible(true);
+        mainActivity.setActionBarTitle("내 리뷰");
+        mainActivity.setActionBarOption(ActionBar.DISPLAY_HOME_AS_UP | ActionBar.DISPLAY_SHOW_TITLE);
 
         Firebase firebase = new Firebase();
         FirebaseFirestore db = firebase.startFirebase();
         {
-            db.collection("Users").document("comments").collection("comments").get()
+            db.collection("Users").document("user1").collection("comments").get()
                     .addOnCompleteListener(new OnCompleteListener<QuerySnapshot>() {
                         @Override
                         public void onComplete(@NonNull Task<QuerySnapshot> task) {
@@ -83,8 +79,6 @@ public class MyReviewPage extends Fragment implements View.OnClickListener {
                                     Review item = (Review) adapter.getItem(position);
                                     MainActivity mainActivity = (MainActivity) getActivity();
                                     mainActivity.onItemFragmentChanged(item);
-                                    review_to_mypage.setVisibility(View.GONE);
-                                    item_to_review.setVisibility(View.VISIBLE);
                                 }
                             });
                         }
@@ -96,17 +90,20 @@ public class MyReviewPage extends Fragment implements View.OnClickListener {
     }
 
     @Override
-    public void onClick(View v) {
-        int i = v.getId();
-        if (i == R.id.item_to_review) {
-            Toast.makeText(mainActivity, "to review", Toast.LENGTH_SHORT).show();
-            mainActivity.goToFragment(R.id.item_to_review);
-            item_to_review.setVisibility(View.GONE);
-            review_to_mypage.setVisibility(View.VISIBLE);
-        } else if (i == R.id.review_to_mypage) {
-            Toast.makeText(mainActivity, "to mypage", Toast.LENGTH_SHORT).show();
-            mainActivity.goToFragment(R.id.review_to_mypage);
-            item_to_review.setVisibility(View.GONE);
-        }
+    public void onBack() {
+        Log.e("Other", "onBack()");
+        mainActivity.setOnBackPressedListener(null);
+        mainActivity.getSupportFragmentManager().beginTransaction()
+                .replace(R.id.main_fragment, mainActivity.myPageTab).commit();
+
     }
+
+    @Override
+    public void onAttach(Context context) {
+        super.onAttach(context);
+        Log.e("Other", "onAttach()");
+        ((MainActivity) context).setOnBackPressedListener(this);
+    }
+
+
 }

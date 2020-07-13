@@ -8,54 +8,11 @@
     android:background="#FFFFFF"
     tools:context=".mypage.FavoritePage">
 
-    <LinearLayout
-        android:id="@+id/linearLayout"
+    <androidx.recyclerview.widget.RecyclerView
+        android:id="@+id/myreview_recyclerView"
         android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:orientation="horizontal"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toTopOf="parent">
-
-        <ImageButton
-            android:id="@+id/review_to_mypage"
-            android:layout_width="50dp"
-            android:layout_height="50dp"
-            android:background="@android:color/white"
-            android:visibility="visible"
-            app:srcCompat="@drawable/ic_baseline_arrow_back_24" />
-
-        <ImageButton
-            android:id="@+id/item_to_review"
-            android:layout_width="50dp"
-            android:layout_height="50dp"
-            android:background="@android:color/white"
-            android:visibility="visible"
-            app:srcCompat="@drawable/ic_baseline_arrow_back_24" />
-
-        <TextView
-            android:id="@+id/text_myreview"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:text="내 리뷰"
-            android:textAppearance="@style/TextAppearance.AppCompat.Large" />
-    </LinearLayout>
-
-    <FrameLayout
-        android:id="@+id/frame_myreview"
-        android:layout_width="0dp"
-        android:layout_height="0dp"
-        app:layout_constraintBottom_toBottomOf="parent"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/linearLayout">
-
-        <androidx.recyclerview.widget.RecyclerView
-            android:id="@+id/myreview_recyclerView"
-            android:layout_width="match_parent"
-            android:layout_height="match_parent"
-            tools:listitem="@layout/item" />
-
-    </FrameLayout>
+        android:layout_height="match_parent"
+        tools:layout_editor_absoluteY="602dp"
+        tools:listitem="@layout/item" />
 
 </androidx.constraintlayout.widget.ConstraintLayout>

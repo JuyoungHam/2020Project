@@ -28,6 +28,7 @@ import com.ici.myproject73029.items.Exhibition;
 
 public class HomeTab extends Fragment {
     private RecyclerView recyclerView;
+    private MainActivity mainActivity;
 
     @Override
     public void onCreate(@Nullable Bundle savedInstanceState) {
