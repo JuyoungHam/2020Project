@@ -29,6 +29,7 @@ import com.ici.myproject73029.items.Exhibition;
 
 public class ExhibitionTab extends Fragment {
     private RecyclerView recyclerView;
+    private MainActivity mainActivity;
 
     @Override
     public void onCreate(@Nullable Bundle savedInstanceState) {
@@ -58,6 +59,9 @@ public class ExhibitionTab extends Fragment {
 
         recyclerView.setLayoutManager(layoutManager);
         final FundamentalAdapter adapter = new FundamentalAdapter();
+
+        mainActivity = (MainActivity) getActivity();
+        mainActivity.isActionBarVisible(false);
 
         Firebase firebase = new Firebase();
         FirebaseFirestore db = firebase.startFirebase();

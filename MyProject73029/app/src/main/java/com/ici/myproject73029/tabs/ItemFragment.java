@@ -1,5 +1,7 @@
 package com.ici.myproject73029.tabs;
 
+import android.app.ActionBar;
+import android.content.Context;
 import android.content.Intent;
 import android.content.pm.PackageManager;
 import android.content.pm.ResolveInfo;
@@ -31,37 +33,41 @@ import com.ici.myproject73029.Constant;
 import com.ici.myproject73029.R;
 import com.ici.myproject73029.firebase.Firebase;
 import com.ici.myproject73029.items.Exhibition;
+import com.ici.myproject73029.items.FundamentalItem;
 import com.ici.myproject73029.items.Show;
 
 import java.io.IOException;
 import java.util.List;
 import java.util.Map;
 
-public class ItemFragment extends Fragment implements View.OnClickListener {
+public class ItemFragment extends Fragment implements View.OnClickListener, MainActivity.onBackPressedListener {
     String title;
     String description;
     public String venue;
-    int type;
-    private List<Address> list=null;
+    int type;    private List<Address> list=null;
 
-    public ItemFragment(Exhibition item) {
+    private MainActivity mainActivity;
+
+    public ItemFragment(FundamentalItem item) {
         this.title = item.getTitle();
         this.description = item.getDescription();
-        type = Constant.EXHIBITION;
+        if (item.getVenue() != null) {
+            this.venue = item.getVenue();
+        }
+        this.type = item.getType();
     }
 
-    public ItemFragment(Show item) {
-        this.title = item.getTitle();
-        this.description = item.getDescription();
-        this.venue = item.getVenue();
-        type = Constant.SHOW;
-    }
 
     @Nullable
     @Override
     public View onCreateView(@NonNull final LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
         final ViewGroup itemView = (ViewGroup) inflater.inflate(R.layout.fragment_item, container,
                 false);
+
+        mainActivity = (MainActivity) getActivity();
+        mainActivity.isActionBarVisible(true);
+        mainActivity.setActionBarTitle(title);
+        mainActivity.setActionBarOption(ActionBar.DISPLAY_HOME_AS_UP | ActionBar.DISPLAY_SHOW_TITLE);
 
         final ImageView img_poster = itemView.findViewById(R.id.item_poster);
         TextView item_title = itemView.findViewById(R.id.item_title);
@@ -154,4 +160,27 @@ public class ItemFragment extends Fragment implements View.OnClickListener {
         startActivity(shareIntent);
     }
 
+    @Override
+    public void onBack() {
+        Log.d("Other", "onBack()");
+        mainActivity.setOnBackPressedListener(null);
+        if (type == Constant.EXHIBITION) {
+            mainActivity.getSupportFragmentManager().beginTransaction()
+                    .replace(R.id.main_fragment, mainActivity.exhibitionTab).commit();
+        } else if (type == Constant.SHOW) {
+            mainActivity.getSupportFragmentManager().beginTransaction()
+                    .replace(R.id.main_fragment, mainActivity.showTab).commit();
+        } else if (type == Constant.FAVORITE) {
+            mainActivity.getSupportFragmentManager().beginTransaction()
+                    .replace(R.id.main_fragment, mainActivity.favoritePage).commit();
+        }
+    }
+
+    // Fragment 호출 시 반드시 호출되는 오버라이드 메소드입니다.
+    @Override
+    public void onAttach(Context context) {
+        super.onAttach(context);
+        Log.e("Other", "onAttach()");
+        ((MainActivity) context).setOnBackPressedListener(this);
+    }
 }

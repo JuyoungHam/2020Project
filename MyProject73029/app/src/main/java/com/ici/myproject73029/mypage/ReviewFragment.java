@@ -1,11 +1,13 @@
 package com.ici.myproject73029.mypage;
 
+import android.content.Context;
 import android.os.Bundle;
 import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
@@ -17,16 +19,18 @@ import com.google.firebase.firestore.FirebaseFirestore;
 import com.google.firebase.firestore.QueryDocumentSnapshot;
 import com.google.firebase.firestore.QuerySnapshot;
 import com.ici.myproject73029.Constant;
+import com.ici.myproject73029.MainActivity;
 import com.ici.myproject73029.R;
 import com.ici.myproject73029.firebase.Firebase;
 import com.ici.myproject73029.items.Review;
 
 import java.util.Map;
 
-public class ReviewFragment extends Fragment {
+public class ReviewFragment extends Fragment implements MainActivity.onBackPressedListener {
     String title;
     String comments;
     int type;
+    private MainActivity mainActivity;
 
     public ReviewFragment(Review item) {
         this.title = item.getTitle();
@@ -40,6 +44,7 @@ public class ReviewFragment extends Fragment {
     public View onCreateView(@NonNull final LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
         final ViewGroup itemView = (ViewGroup) inflater.inflate(R.layout.fragment_review, container,
                 false);
+        mainActivity = (MainActivity) getActivity();
 
         TextView item_title = itemView.findViewById(R.id.item_title);
         TextView item_description = itemView.findViewById(R.id.item_comments);
@@ -70,4 +75,23 @@ public class ReviewFragment extends Fragment {
     }
 
 
+    @Override
+    public void onBack() {
+        Log.d("Other", "onBack()");
+        mainActivity.setOnBackPressedListener(null);
+        if (type == Constant.REVIEW) {
+            mainActivity.getSupportFragmentManager().beginTransaction()
+                    .replace(R.id.main_fragment, mainActivity.myReviewPage).commit();
+        } else if (type == Constant.FAVORITE) {
+            mainActivity.getSupportFragmentManager().beginTransaction()
+                    .replace(R.id.main_fragment, mainActivity.favoritePage).commit();
+        }
+    }
+
+    @Override
+    public void onAttach(Context context) {
+        super.onAttach(context);
+        Log.e("Other", "onAttach()");
+        ((MainActivity) context).setOnBackPressedListener(this);
+    }
 }

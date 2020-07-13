@@ -5,6 +5,7 @@ import android.content.Intent;
 import android.os.Bundle;
 import android.util.AttributeSet;
 import android.util.Log;
+import android.view.MenuItem;
 import android.view.View;
 import android.widget.Button;
 import android.widget.ImageButton;
@@ -14,7 +15,9 @@ import android.widget.Toast;
 
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
+import androidx.appcompat.app.ActionBar;
 import androidx.appcompat.app.AppCompatActivity;
+import androidx.fragment.app.DialogFragment;
 
 import com.facebook.AccessToken;
 import com.facebook.CallbackManager;
@@ -71,7 +74,6 @@ public class FirebaseUIActivity extends AppCompatActivity implements View.OnClic
     private static final String TAG = "GoogleActivity";
     private static final int RC_SIGN_IN = 9001;
     View rootView;
-    ImageButton backButton;
 
     // [START declare_auth]
     private FirebaseAuth mAuth;
@@ -88,10 +90,30 @@ public class FirebaseUIActivity extends AppCompatActivity implements View.OnClic
     private boolean isLoggedIn;
     private com.kakao.usermgmt.LoginButton kakao_login;
     private ISessionCallback kakaoSessionCallback;
+    private Button unregister;
+
+    @Override
+    public void onBackPressed() {
+        super.onBackPressed();
+    }
+
+    @Override
+    public boolean onOptionsItemSelected(@NonNull MenuItem item) {
+        switch (item.getItemId()) {
+            case android.R.id.home:
+                onBackPressed();
+                break;
+        }
+        return true;
+    }
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
+
+        ActionBar actionBar = getSupportActionBar();
+        actionBar.setDisplayOptions(ActionBar.DISPLAY_HOME_AS_UP | ActionBar.DISPLAY_SHOW_TITLE);
+        actionBar.setTitle("로그인");
 
         FacebookSdk.sdkInitialize(getApplicationContext());
         AppEventsLogger.activateApp(this);
@@ -99,7 +121,6 @@ public class FirebaseUIActivity extends AppCompatActivity implements View.OnClic
         setContentView(R.layout.activity_firebase_ui);
         logintext = findViewById(R.id.login_text);
         userProfile = findViewById(R.id.userProfile);
-        backButton = findViewById(R.id.auth_to_mypage);
 
         // Button listeners
         google_login = findViewById(R.id.google_login_button);
@@ -107,6 +128,8 @@ public class FirebaseUIActivity extends AppCompatActivity implements View.OnClic
 
         logout = findViewById(R.id.logout);
         logout.setOnClickListener(this);
+        unregister = findViewById(R.id.unregister);
+        unregister.setOnClickListener(this);
 
         twitter_login = findViewById(R.id.twitter_login_button);
         twitter_login.setEnabled(true);
@@ -170,8 +193,6 @@ public class FirebaseUIActivity extends AppCompatActivity implements View.OnClic
         // Initialize Firebase Auth
         mAuth = FirebaseAuth.getInstance();
         // [END initialize_auth]
-
-        backButton.setOnClickListener(this);
     }
 
     // [START on_start_check_user]
@@ -319,7 +340,7 @@ public class FirebaseUIActivity extends AppCompatActivity implements View.OnClic
             facebook_login.setVisibility(View.GONE);
             kakao_login.setVisibility(View.GONE);
             logout.setVisibility(View.VISIBLE);
-            Toast.makeText(this, user.getUid(), Toast.LENGTH_SHORT).show();
+            unregister.setVisibility(View.VISIBLE);
         } else {
             logintext.setText("로그인이 필요합니다");
 //            userProfile.setImageBitmap(Bitmap.);
@@ -329,6 +350,7 @@ public class FirebaseUIActivity extends AppCompatActivity implements View.OnClic
             kakao_login.setVisibility(View.VISIBLE);
             logout.setVisibility(View.GONE);
             logout.setEnabled(true);
+            unregister.setVisibility(View.GONE);
         }
     }
 
@@ -341,8 +363,9 @@ public class FirebaseUIActivity extends AppCompatActivity implements View.OnClic
             signOut();
         } else if (i == R.id.facebook_login_button) {
             facebook_signIn();
-        } else if (i == R.id.auth_to_mypage) {
-            back_to_mypage();
+        } else if (i == R.id.unregister) {
+            DialogFragment confirm = new UnregisterConfirmFragment();
+            confirm.show(getSupportFragmentManager(), "confirm");
         }
     }
 
@@ -352,7 +375,7 @@ public class FirebaseUIActivity extends AppCompatActivity implements View.OnClic
         if (user != null) {
             String uid = user.getUid();
             intent.putExtra(Constant.USERID, uid);
-            intent.putExtra(Constant.USERNAME,user.getDisplayName());
+            intent.putExtra(Constant.USERNAME, user.getDisplayName());
             intent.putExtra("purpose", Constant.AUTHTOMYPAGE);
         }
         startActivity(intent);
@@ -426,6 +449,7 @@ public class FirebaseUIActivity extends AppCompatActivity implements View.OnClic
                     }
                 });
     }
+
 
     private class KakaoSessionCallback implements ISessionCallback {
         @Override
@@ -507,6 +531,21 @@ public class FirebaseUIActivity extends AppCompatActivity implements View.OnClic
                         }
                     }
                 });
+    }
+
+    public void unregister() {
+        FirebaseUser user = mAuth.getCurrentUser();
+        user.delete()
+                .addOnCompleteListener(new OnCompleteListener<Void>() {
+                    @Override
+                    public void onComplete(@NonNull Task<Void> task) {
+                        if (task.isSuccessful()) {
+                            Log.d(TAG, "User account deleted.");
+                            Toast.makeText(FirebaseUIActivity.this, "탈퇴 완료", Toast.LENGTH_LONG).show();
+                        }
+                    }
+                });
+        updateUI(null);
     }
 
 }

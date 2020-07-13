@@ -10,6 +10,7 @@ public class FundamentalItem {
     private String venue;
     private String phone;
     private String period;
+    private int type;
 
     public FundamentalItem() {
     }
@@ -27,6 +28,14 @@ public class FundamentalItem {
         this.title = title;
         this.description = description;
         this.poster = poster;
+    }
+
+    public int getType() {
+        return type;
+    }
+
+    public void setType(int type) {
+        this.type = type;
     }
 
     public String getCreator() {

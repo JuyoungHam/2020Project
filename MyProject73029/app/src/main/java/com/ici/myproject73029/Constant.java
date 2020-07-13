@@ -18,6 +18,8 @@ public class Constant {
     public static final int EXHIBITION = 1111;
     public static final int SHOW = 2222;
     public static final int REVIEW = 3333;
+    public static final int FAVORITE = 4444;
+    public static final int MYREVIEWPAGE = 5555;
 
     public static final int RC_SIGN_IN = 9001;
     public static final String GOOGLE_AUTH = "google";
