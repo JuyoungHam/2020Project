@@ -22,14 +22,15 @@ firebase.initializeApp({
 
 var db = firebase.firestore();
 
-for (var i = 0; i < 7; i++) {
-  if(i == 3) continue;
-  var menu = require("./JsonFiles/"+i+".json");
-  menu.response.body.items.item.forEach(function(obj) {
+
+  
+  var menu = require("./JsonFiles/"+7+".json");
+  menu.response.msgBody.perforList.forEach(function(obj) {
     var config = {
       title: obj.title,
       poster: obj.thumbnail,
-
+      category: 101,
+	
     };
     if (!isNull(obj.place)) {
       config.venue = obj.place;
@@ -58,4 +59,4 @@ for (var i = 0; i < 7; i++) {
         console.error("Error adding document: ", error);
       });
   });
-}
+
