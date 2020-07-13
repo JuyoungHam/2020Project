@@ -30,6 +30,7 @@ import com.google.firebase.firestore.FirebaseFirestore;
 import com.google.firebase.firestore.QueryDocumentSnapshot;
 import com.google.firebase.firestore.QuerySnapshot;
 import com.ici.myproject73029.Constant;
+import com.ici.myproject73029.MainActivity;
 import com.ici.myproject73029.R;
 import com.ici.myproject73029.firebase.Firebase;
 import com.ici.myproject73029.items.Exhibition;
@@ -44,7 +45,8 @@ public class ItemFragment extends Fragment implements View.OnClickListener, Main
     String title;
     String description;
     public String venue;
-    int type;    private List<Address> list=null;
+    int type;
+    private List<Address> list = null;
 
     private MainActivity mainActivity;
 

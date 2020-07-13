@@ -19,6 +19,7 @@ import androidx.appcompat.app.ActionBar;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.fragment.app.DialogFragment;
 
+import com.bumptech.glide.Glide;
 import com.facebook.AccessToken;
 import com.facebook.CallbackManager;
 import com.facebook.FacebookCallback;
@@ -33,6 +34,8 @@ import com.google.android.gms.auth.api.signin.GoogleSignInOptions;
 import com.google.android.gms.common.SignInButton;
 import com.google.android.gms.common.api.ApiException;
 import com.google.android.gms.tasks.OnCompleteListener;
+import com.google.android.gms.tasks.OnFailureListener;
+import com.google.android.gms.tasks.OnSuccessListener;
 import com.google.android.gms.tasks.Task;
 import com.google.firebase.auth.AuthCredential;
 import com.google.firebase.auth.AuthResult;
@@ -42,9 +45,13 @@ import com.google.firebase.auth.FirebaseUser;
 import com.google.firebase.auth.GoogleAuthProvider;
 import com.google.firebase.auth.OAuthProvider;
 import com.google.firebase.auth.TwitterAuthProvider;
+import com.google.firebase.firestore.FirebaseFirestore;
+import com.google.firebase.firestore.QueryDocumentSnapshot;
+import com.google.firebase.firestore.QuerySnapshot;
 import com.ici.myproject73029.Constant;
 import com.ici.myproject73029.MainActivity;
 import com.ici.myproject73029.R;
+import com.ici.myproject73029.mypage.MyPageTab;
 import com.kakao.auth.ApiErrorCode;
 import com.kakao.auth.ISessionCallback;
 import com.kakao.auth.Session;
@@ -68,6 +75,9 @@ import com.twitter.sdk.android.core.identity.TwitterLoginButton;
 import com.facebook.FacebookSdk;
 import com.facebook.appevents.AppEventsLogger;
 
+import java.util.HashMap;
+import java.util.Map;
+
 
 public class FirebaseUIActivity extends AppCompatActivity implements View.OnClickListener {
 
@@ -75,9 +85,7 @@ public class FirebaseUIActivity extends AppCompatActivity implements View.OnClic
     private static final int RC_SIGN_IN = 9001;
     View rootView;
 
-    // [START declare_auth]
     private FirebaseAuth mAuth;
-    // [END declare_auth]
 
     private GoogleSignInClient mGoogleSignInClient;
     private SignInButton google_login;
@@ -91,18 +99,18 @@ public class FirebaseUIActivity extends AppCompatActivity implements View.OnClic
     private com.kakao.usermgmt.LoginButton kakao_login;
     private ISessionCallback kakaoSessionCallback;
     private Button unregister;
-
-    @Override
-    public void onBackPressed() {
-        super.onBackPressed();
-    }
+    private Firebase firebase;
+    private FirebaseFirestore db;
+    private Button nickname;
+    private FirebaseUser currentUser;
 
     @Override
     public boolean onOptionsItemSelected(@NonNull MenuItem item) {
         switch (item.getItemId()) {
             case android.R.id.home:
-                onBackPressed();
-                break;
+                Intent intent = new Intent(getApplicationContext(), MainActivity.class);
+                intent.putExtra("purpose", "login");
+                startActivity(intent);
         }
         return true;
     }
@@ -111,9 +119,12 @@ public class FirebaseUIActivity extends AppCompatActivity implements View.OnClic
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
 
+        firebase = new Firebase();
+        db = firebase.startFirebase();
+
         ActionBar actionBar = getSupportActionBar();
         actionBar.setDisplayOptions(ActionBar.DISPLAY_HOME_AS_UP | ActionBar.DISPLAY_SHOW_TITLE);
-        actionBar.setTitle("로그인");
+        actionBar.setTitle("계정 관리");
 
         FacebookSdk.sdkInitialize(getApplicationContext());
         AppEventsLogger.activateApp(this);
@@ -121,6 +132,8 @@ public class FirebaseUIActivity extends AppCompatActivity implements View.OnClic
         setContentView(R.layout.activity_firebase_ui);
         logintext = findViewById(R.id.login_text);
         userProfile = findViewById(R.id.userProfile);
+        nickname = findViewById(R.id.change_nickname);
+        nickname.setOnClickListener(this);
 
         // Button listeners
         google_login = findViewById(R.id.google_login_button);
@@ -200,7 +213,7 @@ public class FirebaseUIActivity extends AppCompatActivity implements View.OnClic
     public void onStart() {
         super.onStart();
         // Check if user is signed in (non-null) and update UI accordingly.
-        FirebaseUser currentUser = mAuth.getCurrentUser();
+        currentUser = mAuth.getCurrentUser();
         updateUI(currentUser);
     }
     // [END on_start_check_user]
@@ -265,6 +278,7 @@ public class FirebaseUIActivity extends AppCompatActivity implements View.OnClic
                             // Sign in success, update UI with the signed-in user's information
                             Log.d(TAG, "signInWithCredential:success");
                             FirebaseUser user = mAuth.getCurrentUser();
+                            createUserDB(user);
                             updateUI(user);
                         } else {
                             // If sign in fails, display a message to the user.
@@ -341,6 +355,7 @@ public class FirebaseUIActivity extends AppCompatActivity implements View.OnClic
             kakao_login.setVisibility(View.GONE);
             logout.setVisibility(View.VISIBLE);
             unregister.setVisibility(View.VISIBLE);
+
         } else {
             logintext.setText("로그인이 필요합니다");
 //            userProfile.setImageBitmap(Bitmap.);
@@ -366,19 +381,10 @@ public class FirebaseUIActivity extends AppCompatActivity implements View.OnClic
         } else if (i == R.id.unregister) {
             DialogFragment confirm = new UnregisterConfirmFragment();
             confirm.show(getSupportFragmentManager(), "confirm");
+        } else if (i == R.id.change_nickname) {
+            DialogFragment update = new ProfileUpdateFragment();
+            update.show(getSupportFragmentManager(), "update");
         }
-    }
-
-    private void back_to_mypage() {
-        Intent intent = new Intent(getApplicationContext(), MainActivity.class);
-        FirebaseUser user = mAuth.getCurrentUser();
-        if (user != null) {
-            String uid = user.getUid();
-            intent.putExtra(Constant.USERID, uid);
-            intent.putExtra(Constant.USERNAME, user.getDisplayName());
-            intent.putExtra("purpose", Constant.AUTHTOMYPAGE);
-        }
-        startActivity(intent);
     }
 
     private void signInToFirebaseWithTwitterSession(TwitterSession session) {
@@ -392,6 +398,7 @@ public class FirebaseUIActivity extends AppCompatActivity implements View.OnClic
                             Toast.makeText(FirebaseUIActivity.this, "로그인 성공",
                                     Toast.LENGTH_SHORT).show();
                             FirebaseUser user = mAuth.getCurrentUser();
+                            createUserDB(user);
                             updateUI(user);
                         } else {
                             Toast.makeText(FirebaseUIActivity.this, R.string.firebase_auth_failed,
@@ -434,6 +441,7 @@ public class FirebaseUIActivity extends AppCompatActivity implements View.OnClic
                             // Sign in success, update UI with the signed-in user's information
                             Log.d(TAG, "signInWithCredential:success");
                             FirebaseUser user = mAuth.getCurrentUser();
+                            createUserDB(user);
                             updateUI(user);
                         } else {
                             // If sign in fails, display a message to the user.
@@ -499,13 +507,13 @@ public class FirebaseUIActivity extends AppCompatActivity implements View.OnClic
                             // Sign in success, update UI with the signed-in user's information
                             Log.d("createUserForKakao", "createUserWithEmail:success");
                             FirebaseUser user = mAuth.getCurrentUser();
+                            createUserDB(user);
                             updateUI(user);
                         } else {
                             signInForKakao(email);
                         }
                     }
                 });
-        FirebaseUser user = mAuth.getCurrentUser();
     }
 
     private void signInForKakao(String email) {
@@ -534,8 +542,7 @@ public class FirebaseUIActivity extends AppCompatActivity implements View.OnClic
     }
 
     public void unregister() {
-        FirebaseUser user = mAuth.getCurrentUser();
-        user.delete()
+        currentUser.delete()
                 .addOnCompleteListener(new OnCompleteListener<Void>() {
                     @Override
                     public void onComplete(@NonNull Task<Void> task) {
@@ -545,7 +552,61 @@ public class FirebaseUIActivity extends AppCompatActivity implements View.OnClic
                         }
                     }
                 });
+
+        db.collection("Users").document(currentUser.getUid()).delete()
+                .addOnSuccessListener(new OnSuccessListener<Void>() {
+                    @Override
+                    public void onSuccess(Void aVoid) {
+                        Log.d(Constant.TAG, "DocumentSnapshot successfully written!");
+                    }
+                })
+                .addOnFailureListener(new OnFailureListener() {
+                    @Override
+                    public void onFailure(@NonNull Exception e) {
+                        Log.w(Constant.TAG, "Error writing document", e);
+                    }
+                });
         updateUI(null);
+    }
+
+    public void createUserDB(FirebaseUser user) {
+
+        Map<String, Object> data = new HashMap<>();
+        data.put("nickname", user.getDisplayName());
+        data.put("email", user.getEmail());
+
+        db.collection("Users").document(user.getUid()).set(data)
+                .addOnSuccessListener(new OnSuccessListener<Void>() {
+                    @Override
+                    public void onSuccess(Void aVoid) {
+                        Log.d(Constant.TAG, "DocumentSnapshot successfully written!");
+                    }
+                })
+                .addOnFailureListener(new OnFailureListener() {
+                    @Override
+                    public void onFailure(@NonNull Exception e) {
+                        Log.w(Constant.TAG, "Error writing document", e);
+                    }
+                });
+    }
+
+    public void change_nickname(String nickname) {
+        Map<String, Object> data = new HashMap<>();
+        data.put("nickname", nickname);
+
+        db.collection("Users").document(currentUser.getUid()).set(data)
+                .addOnSuccessListener(new OnSuccessListener<Void>() {
+                    @Override
+                    public void onSuccess(Void aVoid) {
+                        Log.d(Constant.TAG, "DocumentSnapshot successfully written!");
+                    }
+                })
+                .addOnFailureListener(new OnFailureListener() {
+                    @Override
+                    public void onFailure(@NonNull Exception e) {
+                        Log.w(Constant.TAG, "Error writing document", e);
+                    }
+                });
     }
 
 }

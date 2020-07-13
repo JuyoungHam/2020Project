@@ -34,9 +34,9 @@ public class MyPageTab extends Fragment implements View.OnClickListener {
     @Override
     public void startActivityForResult(Intent intent, int requestCode, @Nullable Bundle options) {
         super.startActivityForResult(intent, requestCode, options);
-        if (requestCode == Constant.LOGIN_REQUEST_FROM_MYPAGE) {
-        }
+        updateUI(mainActivity.getUser());
     }
+
 
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
@@ -72,7 +72,7 @@ public class MyPageTab extends Fragment implements View.OnClickListener {
         }
     }
 
-    private void updateUI(FirebaseUser user){
+    public void updateUI(FirebaseUser user) {
         if (user != null) {
             text_profile.setText(user.getDisplayName());
         } else {

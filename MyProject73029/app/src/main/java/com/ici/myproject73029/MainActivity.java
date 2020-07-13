@@ -122,7 +122,6 @@ public class MainActivity extends AppCompatActivity {
         Intent intent = getIntent();
         if (intent.getStringExtra("purpose") != null) {
             bottomNavigation.setSelectedItemId(R.id.tab_mypage);
-            Toast.makeText(this, intent.getStringExtra(Constant.USERNAME), Toast.LENGTH_SHORT).show();
         }
     }
 

@@ -50,7 +50,7 @@
             android:id="@+id/button_login_control"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:text="로그인 관리" />
+            android:text="계정 관리" />
 
     </LinearLayout>
 </androidx.constraintlayout.widget.ConstraintLayout>
