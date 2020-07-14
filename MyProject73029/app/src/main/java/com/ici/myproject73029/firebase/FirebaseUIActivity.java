@@ -2,13 +2,16 @@ package com.ici.myproject73029.firebase;
 
 import android.content.Context;
 import android.content.Intent;
+import android.graphics.Bitmap;
+import android.graphics.BitmapFactory;
+import android.net.Uri;
 import android.os.Bundle;
+import android.provider.MediaStore;
 import android.util.AttributeSet;
 import android.util.Log;
 import android.view.MenuItem;
 import android.view.View;
 import android.widget.Button;
-import android.widget.ImageButton;
 import android.widget.ImageView;
 import android.widget.TextView;
 import android.widget.Toast;
@@ -45,13 +48,14 @@ import com.google.firebase.auth.FirebaseUser;
 import com.google.firebase.auth.GoogleAuthProvider;
 import com.google.firebase.auth.OAuthProvider;
 import com.google.firebase.auth.TwitterAuthProvider;
+import com.google.firebase.firestore.DocumentSnapshot;
 import com.google.firebase.firestore.FirebaseFirestore;
-import com.google.firebase.firestore.QueryDocumentSnapshot;
-import com.google.firebase.firestore.QuerySnapshot;
+import com.google.firebase.storage.FileDownloadTask;
+import com.google.firebase.storage.FirebaseStorage;
+import com.google.firebase.storage.StorageReference;
 import com.ici.myproject73029.Constant;
 import com.ici.myproject73029.MainActivity;
 import com.ici.myproject73029.R;
-import com.ici.myproject73029.mypage.MyPageTab;
 import com.kakao.auth.ApiErrorCode;
 import com.kakao.auth.ISessionCallback;
 import com.kakao.auth.Session;
@@ -75,6 +79,8 @@ import com.twitter.sdk.android.core.identity.TwitterLoginButton;
 import com.facebook.FacebookSdk;
 import com.facebook.appevents.AppEventsLogger;
 
+import java.io.File;
+import java.io.IOException;
 import java.util.HashMap;
 import java.util.Map;
 
@@ -101,8 +107,11 @@ public class FirebaseUIActivity extends AppCompatActivity implements View.OnClic
     private Button unregister;
     private Firebase firebase;
     private FirebaseFirestore db;
-    private Button nickname;
+    private Button profile_update;
     private FirebaseUser currentUser;
+    private String nickname;
+    private FirebaseStorage storage;
+    private StorageReference storageRef;
 
     @Override
     public boolean onOptionsItemSelected(@NonNull MenuItem item) {
@@ -121,6 +130,8 @@ public class FirebaseUIActivity extends AppCompatActivity implements View.OnClic
 
         firebase = new Firebase();
         db = firebase.startFirebase();
+        storage = FirebaseStorage.getInstance();
+        storageRef = storage.getReference().child("profile_images");
 
         ActionBar actionBar = getSupportActionBar();
         actionBar.setDisplayOptions(ActionBar.DISPLAY_HOME_AS_UP | ActionBar.DISPLAY_SHOW_TITLE);
@@ -132,8 +143,8 @@ public class FirebaseUIActivity extends AppCompatActivity implements View.OnClic
         setContentView(R.layout.activity_firebase_ui);
         logintext = findViewById(R.id.login_text);
         userProfile = findViewById(R.id.userProfile);
-        nickname = findViewById(R.id.change_nickname);
-        nickname.setOnClickListener(this);
+        profile_update = findViewById(R.id.update_profile);
+        profile_update.setOnClickListener(this);
 
         // Button listeners
         google_login = findViewById(R.id.google_login_button);
@@ -328,7 +339,7 @@ public class FirebaseUIActivity extends AppCompatActivity implements View.OnClic
             }
         });
 
-        userProfile = null;
+        userProfile.setImageBitmap(null);
     }
 
     private void google_revokeAccess() {
@@ -345,9 +356,8 @@ public class FirebaseUIActivity extends AppCompatActivity implements View.OnClic
                 });
     }
 
-    private void updateUI(FirebaseUser user) {
+    private void updateUI(final FirebaseUser user) {
         if (user != null) {
-            logintext.setText(user.getEmail() + "님, 환영합니다");
 //                Glide.with(rootView).load(user.getPhotoUrl().toString()).into(userProfile);
             google_login.setVisibility(View.GONE);
             twitter_login.setVisibility(View.GONE);
@@ -355,6 +365,29 @@ public class FirebaseUIActivity extends AppCompatActivity implements View.OnClic
             kakao_login.setVisibility(View.GONE);
             logout.setVisibility(View.VISIBLE);
             unregister.setVisibility(View.VISIBLE);
+            profile_update.setVisibility(View.VISIBLE);
+
+            getUserProfileImage(userProfile);
+
+            db.collection("Users").document(user.getUid()).get().addOnCompleteListener(new OnCompleteListener<DocumentSnapshot>() {
+                @Override
+                public void onComplete(@NonNull Task<DocumentSnapshot> task) {
+                    if (task.isSuccessful()) {
+                        DocumentSnapshot document = task.getResult();
+                        if (document.exists()) {
+                            nickname = document.get("nickname").toString();
+                            logintext.setText(nickname + "님, 환영합니다");
+                            Log.d(TAG, "DocumentSnapshot data: " + document.getData());
+                        } else {
+                            Toast.makeText(FirebaseUIActivity.this, "DB에 사용자 정보가 존재하지 않습니다.", Toast.LENGTH_SHORT).show();
+                            Log.d(TAG, "No such document");
+                        }
+                    } else {
+                        Toast.makeText(FirebaseUIActivity.this, "DB접속에 실패했습니다.", Toast.LENGTH_SHORT).show();
+                        Log.d(TAG, "get failed with ", task.getException());
+                    }
+                }
+            });
 
         } else {
             logintext.setText("로그인이 필요합니다");
@@ -366,6 +399,26 @@ public class FirebaseUIActivity extends AppCompatActivity implements View.OnClic
             logout.setVisibility(View.GONE);
             logout.setEnabled(true);
             unregister.setVisibility(View.GONE);
+            profile_update.setVisibility(View.GONE);
+            getUserProfileImage(userProfile);
+        }
+    }
+
+    public void getUserProfileImage(final ImageView userProfile) {
+        if (currentUser != null) {
+            storageRef.child(currentUser.getUid()).getDownloadUrl().addOnSuccessListener(new OnSuccessListener<Uri>() {
+                @Override
+                public void onSuccess(Uri uri) {
+                    Glide.with(getApplicationContext())
+                            .load(uri)
+                            .into(userProfile);
+                }
+            }).addOnFailureListener(new OnFailureListener() {
+                @Override
+                public void onFailure(@NonNull Exception exception) {
+                    // Handle any errors
+                }
+            });
         }
     }
 
@@ -381,8 +434,8 @@ public class FirebaseUIActivity extends AppCompatActivity implements View.OnClic
         } else if (i == R.id.unregister) {
             DialogFragment confirm = new UnregisterConfirmFragment();
             confirm.show(getSupportFragmentManager(), "confirm");
-        } else if (i == R.id.change_nickname) {
-            DialogFragment update = new ProfileUpdateFragment();
+        } else if (i == R.id.update_profile) {
+            DialogFragment update = new ProfileUpdateFragment(nickname, storage, currentUser);
             update.show(getSupportFragmentManager(), "update");
         }
     }
@@ -566,13 +619,26 @@ public class FirebaseUIActivity extends AppCompatActivity implements View.OnClic
                         Log.w(Constant.TAG, "Error writing document", e);
                     }
                 });
+
+        storageRef.child(currentUser.getUid()).delete().addOnSuccessListener(new OnSuccessListener<Void>() {
+            @Override
+            public void onSuccess(Void aVoid) {
+                // File deleted successfully
+            }
+        }).addOnFailureListener(new OnFailureListener() {
+            @Override
+            public void onFailure(@NonNull Exception exception) {
+                // Uh-oh, an error occurred!
+            }
+        });
+
         updateUI(null);
     }
 
     public void createUserDB(FirebaseUser user) {
 
         Map<String, Object> data = new HashMap<>();
-        data.put("nickname", user.getDisplayName());
+        data.put("nickname", (user.getDisplayName() != null ? user.getDisplayName() : user.getEmail()));
         data.put("email", user.getEmail());
 
         db.collection("Users").document(user.getUid()).set(data)
@@ -590,7 +656,7 @@ public class FirebaseUIActivity extends AppCompatActivity implements View.OnClic
                 });
     }
 
-    public void change_nickname(String nickname) {
+    public void change_profile(String nickname) {
         Map<String, Object> data = new HashMap<>();
         data.put("nickname", nickname);
 
@@ -599,6 +665,7 @@ public class FirebaseUIActivity extends AppCompatActivity implements View.OnClic
                     @Override
                     public void onSuccess(Void aVoid) {
                         Log.d(Constant.TAG, "DocumentSnapshot successfully written!");
+                        updateUI(currentUser);
                     }
                 })
                 .addOnFailureListener(new OnFailureListener() {

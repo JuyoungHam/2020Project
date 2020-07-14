@@ -2,20 +2,30 @@ package com.ici.myproject73029;
 
 import android.annotation.SuppressLint;
 import android.content.Intent;
+import android.net.Uri;
 import android.os.Bundle;
 import android.util.Log;
 import android.view.Menu;
 import android.view.MenuItem;
+import android.widget.ImageView;
 import android.widget.Toast;
 
 import androidx.annotation.NonNull;
 import androidx.appcompat.app.ActionBar;
 import androidx.appcompat.app.AppCompatActivity;
 
+import com.bumptech.glide.Glide;
+import com.google.android.gms.tasks.OnCompleteListener;
+import com.google.android.gms.tasks.OnFailureListener;
+import com.google.android.gms.tasks.OnSuccessListener;
+import com.google.android.gms.tasks.Task;
 import com.google.android.material.bottomnavigation.BottomNavigationView;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.auth.FirebaseUser;
+import com.google.firebase.firestore.DocumentSnapshot;
 import com.google.firebase.firestore.FirebaseFirestore;
+import com.google.firebase.storage.FirebaseStorage;
+import com.google.firebase.storage.StorageReference;
 import com.ici.myproject73029.firebase.Firebase;
 import com.ici.myproject73029.items.FundamentalItem;
 import com.ici.myproject73029.items.Review;
@@ -29,6 +39,9 @@ import com.ici.myproject73029.tabs.GridTab;
 import com.ici.myproject73029.tabs.HomeTab;
 import com.ici.myproject73029.tabs.ItemFragment;
 import com.ici.myproject73029.tabs.ShowTab;
+
+import java.util.HashMap;
+import java.util.Map;
 
 public class MainActivity extends AppCompatActivity {
 
@@ -45,17 +58,13 @@ public class MainActivity extends AppCompatActivity {
     private BottomNavigationView bottomNavigation;
     private ActionBar actionBar;
     private long pressedTime = 0;
-    private FirebaseAuth mAuth;
+    public FirebaseAuth mAuth;
     private FirebaseUser user;
     private onBackPressedListener onBackPressedListener;
-
-    public FirebaseUser getUser() {
-        return user;
-    }
-
-    public void setUser(FirebaseUser user) {
-        this.user = user;
-    }
+    public FirebaseFirestore db;
+    private FirebaseStorage storage;
+    private StorageReference storageRef;
+    private Uri user_image_uri;
 
     @SuppressLint("RestrictedApi")
     @Override
@@ -64,12 +73,13 @@ public class MainActivity extends AppCompatActivity {
         setContentView(R.layout.activity_main);
 
         Firebase firebase = new Firebase();
-        FirebaseFirestore db = firebase.startFirebase();
+        db = firebase.startFirebase();
 
         mAuth = FirebaseAuth.getInstance();
         if (mAuth.getCurrentUser() != null) {
             user = mAuth.getCurrentUser();
-            Toast.makeText(this, user.getDisplayName() + "님, 환영합니다", Toast.LENGTH_SHORT).show();
+            storage = FirebaseStorage.getInstance();
+            storageRef = storage.getReference().child("profile_images");
         }
 
         homeTab =
@@ -119,6 +129,7 @@ public class MainActivity extends AppCompatActivity {
     @Override
     protected void onStart() {
         super.onStart();
+        user = mAuth.getCurrentUser();
         Intent intent = getIntent();
         if (intent.getStringExtra("purpose") != null) {
             bottomNavigation.setSelectedItemId(R.id.tab_mypage);
@@ -228,4 +239,23 @@ public class MainActivity extends AppCompatActivity {
         void onBack();
     }
 
+    public void getUserProfileImage(final ImageView imageView) {
+        if (user != null) {
+            storageRef.child(user.getUid()).getDownloadUrl().addOnSuccessListener(new OnSuccessListener<Uri>() {
+                @Override
+                public void onSuccess(Uri uri) {
+                    Glide.with(getApplicationContext())
+                            .load(uri)
+                            .into(imageView);
+                }
+            }).addOnFailureListener(new OnFailureListener() {
+                @Override
+                public void onFailure(@NonNull Exception exception) {
+                    // Handle any errors
+                }
+            });
+        } else {
+            imageView.setImageBitmap(null);
+        }
+    }
 }

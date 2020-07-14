@@ -32,22 +32,22 @@
         android:id="@+id/login_text"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_marginTop="32dp"
         android:text="로그인이 필요합니다"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/userProfile" />
+        app:layout_constraintTop_toBottomOf="@+id/update_profile" />
 
     <Button
-        android:id="@+id/change_nickname"
+        android:id="@+id/update_profile"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:text="nickname"
+        android:text="update profile"
         app:layout_constraintBottom_toBottomOf="parent"
-        app:layout_constraintEnd_toStartOf="@+id/login_text"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintHorizontal_bias="0.498"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toTopOf="parent"
-        app:layout_constraintVertical_bias="0.358" />
+        app:layout_constraintTop_toBottomOf="@+id/userProfile"
+        app:layout_constraintVertical_bias="0.0" />
 
     <com.facebook.login.widget.LoginButton
         android:id="@+id/facebook_login_button"
