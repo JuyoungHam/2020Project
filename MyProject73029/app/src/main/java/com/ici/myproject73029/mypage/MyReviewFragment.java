@@ -26,13 +26,13 @@ import com.ici.myproject73029.items.Review;
 
 import java.util.Map;
 
-public class ReviewFragment extends Fragment implements MainActivity.onBackPressedListener {
+public class MyReviewFragment extends Fragment implements MainActivity.onBackPressedListener {
     String title;
     String comments;
     int type;
     private MainActivity mainActivity;
 
-    public ReviewFragment(Review item) {
+    public MyReviewFragment(Review item) {
         this.title = item.getTitle();
         this.comments = item.getComments();
         type = Constant.REVIEW;

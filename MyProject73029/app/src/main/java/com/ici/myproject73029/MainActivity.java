@@ -15,40 +15,34 @@ import androidx.appcompat.app.ActionBar;
 import androidx.appcompat.app.AppCompatActivity;
 
 import com.bumptech.glide.Glide;
-import com.google.android.gms.tasks.OnCompleteListener;
 import com.google.android.gms.tasks.OnFailureListener;
 import com.google.android.gms.tasks.OnSuccessListener;
-import com.google.android.gms.tasks.Task;
 import com.google.android.material.bottomnavigation.BottomNavigationView;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.auth.FirebaseUser;
-import com.google.firebase.firestore.DocumentSnapshot;
 import com.google.firebase.firestore.FirebaseFirestore;
 import com.google.firebase.storage.FirebaseStorage;
 import com.google.firebase.storage.StorageReference;
 import com.ici.myproject73029.firebase.Firebase;
 import com.ici.myproject73029.items.FundamentalItem;
 import com.ici.myproject73029.items.Review;
-import com.ici.myproject73029.items.Show;
 import com.ici.myproject73029.mypage.FavoritePage;
 import com.ici.myproject73029.mypage.MyPageTab;
 import com.ici.myproject73029.mypage.MyReviewPage;
-import com.ici.myproject73029.mypage.ReviewFragment;
+import com.ici.myproject73029.mypage.MyReviewFragment;
 import com.ici.myproject73029.tabs.ExhibitionTab;
 import com.ici.myproject73029.tabs.GridTab;
 import com.ici.myproject73029.tabs.HomeTab;
 import com.ici.myproject73029.tabs.ItemFragment;
+import com.ici.myproject73029.tabs.ReviewListFragment;
 import com.ici.myproject73029.tabs.ShowTab;
-
-import java.util.HashMap;
-import java.util.Map;
 
 public class MainActivity extends AppCompatActivity {
 
     public HomeTab homeTab;
     public ExhibitionTab exhibitionTab;
     public ShowTab showTab;
-    public ReviewFragment item_review;
+    public MyReviewFragment item_review;
     public MyPageTab myPageTab;
     public FavoritePage favoritePage;
     public MyReviewPage myReviewPage;
@@ -180,7 +174,7 @@ public class MainActivity extends AppCompatActivity {
             Toast.makeText(this, "공연제목 : " + item.getTitle(), Toast.LENGTH_SHORT).show();
             getSupportFragmentManager().beginTransaction().replace(R.id.main_fragment, item_Show).commit();
         } else if (item.getType() == Constant.REVIEW) {
-            item_review = new ReviewFragment((Review) item);
+            item_review = new MyReviewFragment((Review) item);
             Toast.makeText(this, "마이리뷰 : " + item.getTitle(), Toast.LENGTH_SHORT).show();
             getSupportFragmentManager().beginTransaction().replace(R.id.main_fragment, item_review).commit();
         } else if (item.getType() == Constant.FAVORITE) {

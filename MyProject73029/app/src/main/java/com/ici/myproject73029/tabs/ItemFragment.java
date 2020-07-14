@@ -21,11 +21,13 @@ import android.widget.Toast;
 
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
+import androidx.fragment.app.DialogFragment;
 import androidx.fragment.app.Fragment;
 
 import com.bumptech.glide.Glide;
 import com.google.android.gms.tasks.OnCompleteListener;
 import com.google.android.gms.tasks.Task;
+import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.firestore.FirebaseFirestore;
 import com.google.firebase.firestore.QueryDocumentSnapshot;
 import com.google.firebase.firestore.QuerySnapshot;
@@ -33,9 +35,8 @@ import com.ici.myproject73029.Constant;
 import com.ici.myproject73029.MainActivity;
 import com.ici.myproject73029.R;
 import com.ici.myproject73029.firebase.Firebase;
-import com.ici.myproject73029.items.Exhibition;
+import com.ici.myproject73029.firebase.UnregisterConfirmFragment;
 import com.ici.myproject73029.items.FundamentalItem;
-import com.ici.myproject73029.items.Show;
 
 import java.io.IOException;
 import java.util.List;
@@ -49,6 +50,7 @@ public class ItemFragment extends Fragment implements View.OnClickListener, Main
     private List<Address> list = null;
 
     private MainActivity mainActivity;
+    private Geocoder geocoder;
 
     public ItemFragment(FundamentalItem item) {
         this.title = item.getTitle();
@@ -63,7 +65,7 @@ public class ItemFragment extends Fragment implements View.OnClickListener, Main
     @Nullable
     @Override
     public View onCreateView(@NonNull final LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
-        final ViewGroup itemView = (ViewGroup) inflater.inflate(R.layout.fragment_item, container,
+        final ViewGroup rootView = (ViewGroup) inflater.inflate(R.layout.fragment_item, container,
                 false);
 
         mainActivity = (MainActivity) getActivity();
@@ -71,51 +73,29 @@ public class ItemFragment extends Fragment implements View.OnClickListener, Main
         mainActivity.setActionBarTitle(title);
         mainActivity.setActionBarOption(ActionBar.DISPLAY_HOME_AS_UP | ActionBar.DISPLAY_SHOW_TITLE);
 
-        final ImageView img_poster = itemView.findViewById(R.id.item_poster);
-        TextView item_title = itemView.findViewById(R.id.item_title);
-        TextView item_venue = itemView.findViewById(R.id.item_venue);
-        TextView item_period = itemView.findViewById(R.id.item_period);
-        TextView item_description = itemView.findViewById(R.id.item_comments);
-        ImageView img_map = itemView.findViewById(R.id.map);
-        img_map.setImageResource(R.mipmap.ic_launcher_foreground);
-        ImageButton share_button = itemView.findViewById(R.id.share_button);
+        final ImageView img_poster = rootView.findViewById(R.id.item_poster);
+        TextView item_title = rootView.findViewById(R.id.item_title);
+        TextView item_venue = rootView.findViewById(R.id.item_venue);
+        TextView item_period = rootView.findViewById(R.id.item_period);
+        TextView item_description = rootView.findViewById(R.id.item_comments);
+        ImageButton img_map = rootView.findViewById(R.id.connect_map);
+        img_map.setOnClickListener(this);
+        ImageButton make_comment = rootView.findViewById(R.id.make_comment);
+        make_comment.setOnClickListener(this);
+        if (FirebaseAuth.getInstance().getCurrentUser() == null)
+            make_comment.setVisibility(View.GONE);
+        geocoder = new Geocoder(getContext());
+
+        ImageButton share_button = rootView.findViewById(R.id.share_button);
         share_button.setOnClickListener(this);
-        final Geocoder geocoder=new Geocoder(getContext());
-
-
-        img_map.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                try {
-                    list=geocoder.getFromLocationName(venue,100);
-
-                } catch (IOException e) {
-                    Log.d("Map Error",e.toString());
-                }
-                if(list!=null){
-                    if(list.size()==0){
-                        Toast.makeText(getContext(),"주소 없음",Toast.LENGTH_SHORT).show();
-                    }else{
-                        double lat=list.get(0).getLatitude();
-                        double lon=list.get(0).getLongitude();
-                        Uri location=Uri.parse(("geo:"+lat+","+lon));
-                        Intent mapIntent=new Intent(Intent.ACTION_VIEW,location);
-                        PackageManager packageManager=getActivity().getPackageManager();
-                        List<ResolveInfo> resolveInfoList=packageManager.queryIntentActivities(mapIntent,0);
-                        boolean result=resolveInfoList.size()>0;
-                        if(result){
-                            startActivity(mapIntent);
-                        }
-                    }
-                }
-            }
-        });
 
         item_title.setText(title);
         if (description != null)
             item_description.setText(Html.fromHtml(description));
         item_venue.setText(venue);
 
+        getChildFragmentManager().beginTransaction().replace(R.id.framelayout_review_list,
+                new ReviewListFragment(title)).commit();
 
         Firebase firebase = new Firebase();
         FirebaseFirestore db = firebase.startFirebase();
@@ -129,7 +109,7 @@ public class ItemFragment extends Fragment implements View.OnClickListener, Main
                             for (QueryDocumentSnapshot document : task.getResult()) {
                                 Map<String, Object> fieldData = document.getData();
                                 if (fieldData.get("poster") != null) {
-                                    Glide.with(itemView).load(fieldData.get("poster").toString()).into(img_poster);
+                                    Glide.with(rootView).load(fieldData.get("poster").toString()).into(img_poster);
                                     img_poster.setVisibility(View.VISIBLE);
                                 } else {
                                     img_poster.setVisibility(View.GONE);
@@ -142,7 +122,7 @@ public class ItemFragment extends Fragment implements View.OnClickListener, Main
                     }
                 });
 
-        return itemView;
+        return rootView;
     }
 
     @Override
@@ -150,6 +130,40 @@ public class ItemFragment extends Fragment implements View.OnClickListener, Main
         int i = v.getId();
         if (i == R.id.share_button) {
             start_share();
+        } else if (i == R.id.connect_map) {
+            get_geoApp();
+        } else if (i == R.id.make_comment) {
+            make_comment();
+        }
+    }
+
+    private void make_comment() {
+        DialogFragment make_comment = new CreateReviewFragment(title);
+        make_comment.show(getChildFragmentManager(), "comment");
+    }
+
+    private void get_geoApp() {
+        try {
+            list = geocoder.getFromLocationName(venue, 100);
+
+        } catch (IOException e) {
+            Log.d("Map Error", e.toString());
+        }
+        if (list != null) {
+            if (list.size() == 0) {
+                Toast.makeText(getContext(), "주소 없음", Toast.LENGTH_SHORT).show();
+            } else {
+                double lat = list.get(0).getLatitude();
+                double lon = list.get(0).getLongitude();
+                Uri location = Uri.parse(("geo:" + lat + "," + lon));
+                Intent mapIntent = new Intent(Intent.ACTION_VIEW, location);
+                PackageManager packageManager = getActivity().getPackageManager();
+                List<ResolveInfo> resolveInfoList = packageManager.queryIntentActivities(mapIntent, 0);
+                boolean result = resolveInfoList.size() > 0;
+                if (result) {
+                    startActivity(mapIntent);
+                }
+            }
         }
     }
 

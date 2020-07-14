@@ -52,6 +52,7 @@ public class ReviewAdapter extends RecyclerView.Adapter<ReviewAdapter.ViewHolder
     }
 
     public class ViewHolder extends RecyclerView.ViewHolder {
+        TextView creator;
         TextView title;
         TextView comments;
         LinearLayout linearLayout = itemView.findViewById(R.id.list_container);
@@ -59,8 +60,10 @@ public class ReviewAdapter extends RecyclerView.Adapter<ReviewAdapter.ViewHolder
         public ViewHolder(@NonNull View itemView, final OnItemClickListener listener) {
             super(itemView);
 
+            creator = itemView.findViewById(R.id.review_item_creator);
             title = itemView.findViewById(R.id.title_list);
             comments = itemView.findViewById(R.id.description_list);
+
             linearLayout.setVisibility(View.VISIBLE);
 
             itemView.setOnClickListener(new View.OnClickListener() {
