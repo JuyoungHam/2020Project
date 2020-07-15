@@ -1,9 +1,9 @@
-Z{"response": {
+{"response": {
     "header": {
         "resultCode": "0000",
         "resultMsg": "OK"
     },
-    "body": {"item": {
+    "body": {"item": [{
         "venue": "서울시립미술관 남서울미술관 1, 2층 전관",
         "creator": "서울시립미술관",
         "period": "2005-06-01~2005-09-04",
@@ -13,5 +13,5 @@
         "language": "Kor",
         "title": "자연의 기록展",
         "url": "http://sema.seoul.go.kr/korean/exhibition/exhibitionView.jsp?seq=23"
-    }}
+    }]}
 }}

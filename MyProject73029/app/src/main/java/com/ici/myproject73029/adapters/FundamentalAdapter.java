@@ -1,5 +1,6 @@
 package com.ici.myproject73029.adapters;
 
+import android.text.Html;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -98,11 +99,12 @@ public class FundamentalAdapter extends RecyclerView.Adapter<FundamentalAdapter.
 
         public void setItem(FundamentalItem item) {
             listTitle.setText(item.getTitle());
-            listDescription.setText(item.getDescription());
-
+            listDescription.setText((item.getDescription() != null ?
+                    Html.fromHtml(item.getDescription()) : ""));
             if (isGrid) {
                 gridTitle.setText(item.getTitle());
-                gridDescription.setText(item.getDescription());
+                gridDescription.setText((item.getDescription() != null ?
+                        Html.fromHtml(item.getDescription()) : ""));
                 if (item.getPoster() != null) {
                     Glide.with(itemView).load(item.getPoster()).into(imageView);
                     imageView.setVisibility(View.VISIBLE);

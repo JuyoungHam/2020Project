@@ -5,7 +5,7 @@ const firebase = require("firebase");
 require("firebase/firestore");
 
 function isNull(v) {
-    return (v === undefined || v === null) ? true : false;
+  return (v === undefined || v === null) ? true : false;
 }
 
 // Initialize Cloud Firestore through Firebase
@@ -23,40 +23,40 @@ firebase.initializeApp({
 var db = firebase.firestore();
 
 
-  
-  var menu = require("./JsonFiles/"+7+".json");
-  menu.response.msgBody.perforList.forEach(function(obj) {
-    var config = {
-      title: obj.title,
-      poster: obj.thumbnail,
-      category: 101,
-	
-    };
-    if (!isNull(obj.place)) {
-      config.venue = obj.place;
-    }
-    if (!isNull(obj.referenceIdentifier)) {
-      config.poster = obj.referenceIdentifier;
-    }
-    if (!isNull(obj.period)) {
-      config.period = obj.period;
-    }
-    if (!isNull(obj.realmName)) {
-      config.subjectCategory = obj.realmName;
-    }
-    if (!isNull(obj.creator)) {
-      config.creator = obj.creator;
-    }
-    if (!isNull(obj.url)) {
-      config.url = obj.url;
-    }
 
-
-    db.collection("All").doc(obj.title).set(config).then(function(docRef) {
-        console.log("Document written with ID: ");
-      })
-      .catch(function(error) {
-        console.error("Error adding document: ", error);
-      });
-  });
-
+var menu = require("./JsonFiles/6.json");
+menu.response.body.items.item.forEach(function(obj) {
+  var config = {
+    title: obj.title,
+    publisher: "administrator"
+  };
+  if (!isNull(obj.description)) {
+    config.description = obj.description;
+  }
+  if (!isNull(obj.venue)) {
+    config.venue = obj.venue;
+  }
+  if (!isNull(obj.referenceIdentifier)) {
+    config.poster = obj.referenceIdentifier;
+  }
+  if (!isNull(obj.period)) {
+    config.period = obj.period;
+  }
+  if (!isNull(obj.subjectCategory)) {
+    config.subjectCategory = obj.subjectCategory;
+  }
+  if (!isNull(obj.creator)) {
+    config.creator = obj.creator;
+  }
+  if (!isNull(obj.url)) {
+    config.url = obj.url;
+  }
+  db.collection("All").doc(obj.title).set(config, {
+      merge: true
+    }).then(function(docRef) {
+      console.log("Document written with ID: ");
+    })
+    .catch(function(error) {
+      console.error("Error adding document: ", error);
+    });
+});
