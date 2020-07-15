@@ -15,7 +15,10 @@ import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
 import com.google.android.gms.tasks.OnCompleteListener;
+import com.google.android.gms.tasks.OnFailureListener;
+import com.google.android.gms.tasks.OnSuccessListener;
 import com.google.android.gms.tasks.Task;
+import com.google.firebase.auth.FirebaseUser;
 import com.google.firebase.firestore.FirebaseFirestore;
 import com.google.firebase.firestore.QueryDocumentSnapshot;
 import com.google.firebase.firestore.QuerySnapshot;
@@ -27,10 +30,14 @@ import com.ici.myproject73029.adapters.ReviewAdapter;
 import com.ici.myproject73029.firebase.Firebase;
 import com.ici.myproject73029.items.Review;
 
+import java.util.ArrayList;
+import java.util.List;
+
 public class MyReviewPage extends Fragment implements MainActivity.onBackPressedListener {
 
     private RecyclerView recyclerView;
     MainActivity mainActivity;
+    FirebaseUser user;
 
     @Override
     public void onCreate(Bundle savedInstanceState) {
@@ -41,6 +48,8 @@ public class MyReviewPage extends Fragment implements MainActivity.onBackPressed
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
+
+
         ViewGroup rootView = (ViewGroup) inflater.inflate(R.layout.page_myreview, container, false);
 
         recyclerView = rootView.findViewById(R.id.myreview_recyclerView);
@@ -48,17 +57,20 @@ public class MyReviewPage extends Fragment implements MainActivity.onBackPressed
         LinearLayoutManager layoutManager = new LinearLayoutManager(getContext(),
                 LinearLayoutManager.VERTICAL, false);
         recyclerView.setLayoutManager(layoutManager);
-        final ReviewAdapter adapter = new ReviewAdapter();
+        final ReviewAdapter adapter = new ReviewAdapter(Constant.MYREVIEWPAGE);
 
         mainActivity = (MainActivity) getActivity();
         mainActivity.isActionBarVisible(true);
         mainActivity.setActionBarTitle("내 리뷰");
         mainActivity.setActionBarOption(ActionBar.DISPLAY_HOME_AS_UP | ActionBar.DISPLAY_SHOW_TITLE);
 
+        user = mainActivity.mAuth.getCurrentUser();
+
         Firebase firebase = new Firebase();
         FirebaseFirestore db = firebase.startFirebase();
         {
-            db.collection("Users").document("user1").collection("comments").get()
+            db.collectionGroup("comments").whereEqualTo("userId",
+                    user.getUid()).get()
                     .addOnCompleteListener(new OnCompleteListener<QuerySnapshot>() {
                         @Override
                         public void onComplete(@NonNull Task<QuerySnapshot> task) {
@@ -73,18 +85,23 @@ public class MyReviewPage extends Fragment implements MainActivity.onBackPressed
 
                             recyclerView.setAdapter(adapter);
 
-                            adapter.setOnItemClickListener(new OnItemClickListener() {
-                                @Override
-                                public void onItemClick(View view, int position) {
-                                    Review item = (Review) adapter.getItem(position);
-                                    MainActivity mainActivity = (MainActivity) getActivity();
-                                    mainActivity.onItemFragmentChanged(item);
-                                }
-                            });
+//                            adapter.setOnItemClickListener(new OnItemClickListener() {
+//                                @Override
+//                                public void onItemClick(View view, int position) {
+//                                    Review item = (Review) adapter.getItem(position);
+//                                    MainActivity mainActivity = (MainActivity) getActivity();
+//                                    mainActivity.onItemFragmentChanged(item);
+//                                }
+//                            });
+                        }
+                    })
+                    .addOnFailureListener(new OnFailureListener() {
+                        @Override
+                        public void onFailure(@NonNull Exception e) {
+                            adapter.addItem(null);
                         }
                     });
         }
-
 
         return rootView;
     }

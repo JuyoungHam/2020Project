@@ -18,6 +18,7 @@ import android.widget.Toast;
 
 import com.google.android.gms.tasks.OnCompleteListener;
 import com.google.android.gms.tasks.Task;
+import com.google.firebase.auth.FirebaseUser;
 import com.google.firebase.firestore.FirebaseFirestore;
 import com.google.firebase.firestore.Query;
 import com.google.firebase.firestore.QueryDocumentSnapshot;
@@ -33,12 +34,12 @@ import com.ici.myproject73029.items.FundamentalItem;
 
 public class FavoritePage extends Fragment implements View.OnClickListener, MainActivity.onBackPressedListener {
 
-
     private RecyclerView recyclerView;
     private Firebase firebase;
     private FirebaseFirestore db;
     private FundamentalAdapter adapter;
     private MainActivity mainActivity;
+    private FirebaseUser user;
 
     @Override
     public void onCreate(Bundle savedInstanceState) {
@@ -51,6 +52,8 @@ public class FavoritePage extends Fragment implements View.OnClickListener, Main
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
         ViewGroup rootView = (ViewGroup) inflater.inflate(R.layout.page_favorite, container, false);
+
+        user = mainActivity.mAuth.getCurrentUser();
 
         recyclerView = rootView.findViewById(R.id.favorite_recyclerView);
 
@@ -66,7 +69,7 @@ public class FavoritePage extends Fragment implements View.OnClickListener, Main
         firebase = new Firebase();
         db = firebase.startFirebase();
         {
-            db.collection("Users").document("user1").collection("favorite").get()
+            db.collection("Users").document(user.getUid()).collection("favorite").get()
                     .addOnCompleteListener(new OnCompleteListener<QuerySnapshot>() {
                         @Override
                         public void onComplete(@NonNull Task<QuerySnapshot> task) {
@@ -80,7 +83,6 @@ public class FavoritePage extends Fragment implements View.OnClickListener, Main
                         }
                     });
         }
-
 
         return rootView;
     }

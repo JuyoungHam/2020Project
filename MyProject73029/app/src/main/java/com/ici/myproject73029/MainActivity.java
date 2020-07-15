@@ -234,6 +234,7 @@ public class MainActivity extends AppCompatActivity {
     }
 
     public void getUserProfileImage(final ImageView imageView) {
+        user = mAuth.getCurrentUser();
         if (user != null) {
             storageRef.child(user.getUid()).getDownloadUrl().addOnSuccessListener(new OnSuccessListener<Uri>() {
                 @Override

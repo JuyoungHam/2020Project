@@ -2,11 +2,8 @@ package com.ici.myproject73029.firebase;
 
 import android.content.Context;
 import android.content.Intent;
-import android.graphics.Bitmap;
-import android.graphics.BitmapFactory;
 import android.net.Uri;
 import android.os.Bundle;
-import android.provider.MediaStore;
 import android.util.AttributeSet;
 import android.util.Log;
 import android.view.MenuItem;
@@ -48,9 +45,9 @@ import com.google.firebase.auth.FirebaseUser;
 import com.google.firebase.auth.GoogleAuthProvider;
 import com.google.firebase.auth.OAuthProvider;
 import com.google.firebase.auth.TwitterAuthProvider;
+import com.google.firebase.auth.UserProfileChangeRequest;
 import com.google.firebase.firestore.DocumentSnapshot;
 import com.google.firebase.firestore.FirebaseFirestore;
-import com.google.firebase.storage.FileDownloadTask;
 import com.google.firebase.storage.FirebaseStorage;
 import com.google.firebase.storage.StorageReference;
 import com.ici.myproject73029.Constant;
@@ -79,8 +76,6 @@ import com.twitter.sdk.android.core.identity.TwitterLoginButton;
 import com.facebook.FacebookSdk;
 import com.facebook.appevents.AppEventsLogger;
 
-import java.io.File;
-import java.io.IOException;
 import java.util.HashMap;
 import java.util.Map;
 
@@ -289,7 +284,7 @@ public class FirebaseUIActivity extends AppCompatActivity implements View.OnClic
                             // Sign in success, update UI with the signed-in user's information
                             Log.d(TAG, "signInWithCredential:success");
                             FirebaseUser user = mAuth.getCurrentUser();
-                            createUserDB(user);
+                            updateUserDB(user);
                             updateUI(user);
                         } else {
                             // If sign in fails, display a message to the user.
@@ -368,26 +363,7 @@ public class FirebaseUIActivity extends AppCompatActivity implements View.OnClic
             profile_update.setVisibility(View.VISIBLE);
 
             getUserProfileImage(userProfile);
-
-            db.collection("Users").document(user.getUid()).get().addOnCompleteListener(new OnCompleteListener<DocumentSnapshot>() {
-                @Override
-                public void onComplete(@NonNull Task<DocumentSnapshot> task) {
-                    if (task.isSuccessful()) {
-                        DocumentSnapshot document = task.getResult();
-                        if (document.exists()) {
-                            nickname = document.get("nickname").toString();
-                            logintext.setText(nickname + "님, 환영합니다");
-                            Log.d(TAG, "DocumentSnapshot data: " + document.getData());
-                        } else {
-                            Toast.makeText(FirebaseUIActivity.this, "DB에 사용자 정보가 존재하지 않습니다.", Toast.LENGTH_SHORT).show();
-                            Log.d(TAG, "No such document");
-                        }
-                    } else {
-                        Toast.makeText(FirebaseUIActivity.this, "DB접속에 실패했습니다.", Toast.LENGTH_SHORT).show();
-                        Log.d(TAG, "get failed with ", task.getException());
-                    }
-                }
-            });
+            logintext.setText(user.getDisplayName() + "님, 환영합니다");
 
         } else {
             logintext.setText("로그인이 필요합니다");
@@ -435,7 +411,7 @@ public class FirebaseUIActivity extends AppCompatActivity implements View.OnClic
             DialogFragment confirm = new UnregisterConfirmFragment();
             confirm.show(getSupportFragmentManager(), "confirm");
         } else if (i == R.id.update_profile) {
-            DialogFragment update = new ProfileUpdateFragment(nickname, storage, currentUser);
+            DialogFragment update = new ProfileUpdateFragment(storage, currentUser);
             update.show(getSupportFragmentManager(), "update");
         }
     }
@@ -451,7 +427,7 @@ public class FirebaseUIActivity extends AppCompatActivity implements View.OnClic
                             Toast.makeText(FirebaseUIActivity.this, "로그인 성공",
                                     Toast.LENGTH_SHORT).show();
                             FirebaseUser user = mAuth.getCurrentUser();
-                            createUserDB(user);
+                            updateUserDB(user);
                             updateUI(user);
                         } else {
                             Toast.makeText(FirebaseUIActivity.this, R.string.firebase_auth_failed,
@@ -494,7 +470,7 @@ public class FirebaseUIActivity extends AppCompatActivity implements View.OnClic
                             // Sign in success, update UI with the signed-in user's information
                             Log.d(TAG, "signInWithCredential:success");
                             FirebaseUser user = mAuth.getCurrentUser();
-                            createUserDB(user);
+                            updateUserDB(user);
                             updateUI(user);
                         } else {
                             // If sign in fails, display a message to the user.
@@ -560,7 +536,7 @@ public class FirebaseUIActivity extends AppCompatActivity implements View.OnClic
                             // Sign in success, update UI with the signed-in user's information
                             Log.d("createUserForKakao", "createUserWithEmail:success");
                             FirebaseUser user = mAuth.getCurrentUser();
-                            createUserDB(user);
+                            updateUserDB(user);
                             updateUI(user);
                         } else {
                             signInForKakao(email);
@@ -635,7 +611,7 @@ public class FirebaseUIActivity extends AppCompatActivity implements View.OnClic
         updateUI(null);
     }
 
-    public void createUserDB(FirebaseUser user) {
+    public void updateUserDB(FirebaseUser user) {
 
         Map<String, Object> data = new HashMap<>();
         data.put("nickname", (user.getDisplayName() != null ? user.getDisplayName() : user.getEmail()));
@@ -656,24 +632,20 @@ public class FirebaseUIActivity extends AppCompatActivity implements View.OnClic
                 });
     }
 
-    public void change_profile(String nickname) {
-        Map<String, Object> data = new HashMap<>();
-        data.put("nickname", nickname);
-
-        db.collection("Users").document(currentUser.getUid()).set(data)
-                .addOnSuccessListener(new OnSuccessListener<Void>() {
-                    @Override
-                    public void onSuccess(Void aVoid) {
-                        Log.d(Constant.TAG, "DocumentSnapshot successfully written!");
-                        updateUI(currentUser);
-                    }
-                })
-                .addOnFailureListener(new OnFailureListener() {
-                    @Override
-                    public void onFailure(@NonNull Exception e) {
-                        Log.w(Constant.TAG, "Error writing document", e);
-                    }
-                });
+    public void change_profile(final FirebaseUser user, String nickname) {
+        UserProfileChangeRequest request =
+                new UserProfileChangeRequest.Builder().setDisplayName(nickname).build();
+        user.updateProfile(request).addOnCompleteListener(new OnCompleteListener<Void>() {
+            @Override
+            public void onComplete(@NonNull Task<Void> task) {
+                if (task.isSuccessful()) {
+                    Log.d("Display name: ", user.getDisplayName());
+                } else {
+                    Toast.makeText(getApplicationContext(), "닉네임 변경 실패", Toast.LENGTH_SHORT).show();
+                }
+            }
+        });
+        updateUserDB(user);
     }
 
 }

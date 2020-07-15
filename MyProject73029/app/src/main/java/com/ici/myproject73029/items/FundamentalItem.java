@@ -11,6 +11,7 @@ public class FundamentalItem {
     private String phone;
     private String period;
     private int type;
+    private int favorite_count;
 
     public FundamentalItem() {
     }
@@ -28,6 +29,14 @@ public class FundamentalItem {
         this.title = title;
         this.description = description;
         this.poster = poster;
+    }
+
+    public int getFavorite_count() {
+        return favorite_count;
+    }
+
+    public void setFavorite_count(int favorite_count) {
+        this.favorite_count = favorite_count;
     }
 
     public int getType() {

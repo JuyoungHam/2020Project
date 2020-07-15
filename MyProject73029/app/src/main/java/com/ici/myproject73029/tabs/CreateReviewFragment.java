@@ -20,6 +20,8 @@ import com.ici.myproject73029.Constant;
 import com.ici.myproject73029.MainActivity;
 import com.ici.myproject73029.R;
 
+import java.util.Calendar;
+import java.util.Date;
 import java.util.HashMap;
 import java.util.Map;
 
@@ -62,7 +64,12 @@ public class CreateReviewFragment extends DialogFragment {
                         Map<String, String> comment = new HashMap<>();
                         comment.put("title", review_title.getText().toString());
                         comment.put("comments", review_comments.getText().toString());
+                        Date currentTime = Calendar.getInstance().getTime();
+                        comment.put("date", currentTime.toString());
+                        comment.put("itemInfo", item);
                         if (user != null) {
+                            comment.put("userId", user.getUid());
+                            comment.put("creator", user.getDisplayName());
                             mainActivity.db.collection("All").document(item).collection("comments")
                                     .document(user.getUid()).set(comment)
                                     .addOnSuccessListener(new OnSuccessListener<Void>() {

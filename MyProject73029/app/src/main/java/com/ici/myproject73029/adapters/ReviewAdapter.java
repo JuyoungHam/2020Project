@@ -9,6 +9,7 @@ import android.widget.TextView;
 import androidx.annotation.NonNull;
 import androidx.recyclerview.widget.RecyclerView;
 
+import com.ici.myproject73029.Constant;
 import com.ici.myproject73029.R;
 import com.ici.myproject73029.items.Review;
 
@@ -18,12 +19,23 @@ public class ReviewAdapter extends RecyclerView.Adapter<ReviewAdapter.ViewHolder
         implements OnItemClickListener {
     ArrayList<Review> items = new ArrayList<>();
     OnItemClickListener onItemClickListener;
+    int type;
+    int item_limit = 10;
+
+    public ReviewAdapter() {
+        super();
+    }
+
+    public ReviewAdapter(int i) {
+        super();
+        this.type = i;
+    }
 
     @NonNull
     @Override
     public ViewHolder onCreateViewHolder(@NonNull ViewGroup parent, int viewType) {
         LayoutInflater inflater = LayoutInflater.from(parent.getContext());
-        View itemView = inflater.inflate(R.layout.item, parent, false);
+        View itemView = inflater.inflate(R.layout.review, parent, false);
 
         return new ViewHolder(itemView, this);
     }
@@ -36,7 +48,11 @@ public class ReviewAdapter extends RecyclerView.Adapter<ReviewAdapter.ViewHolder
 
     @Override
     public int getItemCount() {
-        return items.size();
+        if (items.size() > item_limit) {
+            return item_limit;
+        } else {
+            return items.size();
+        }
     }
 
 
@@ -52,19 +68,19 @@ public class ReviewAdapter extends RecyclerView.Adapter<ReviewAdapter.ViewHolder
     }
 
     public class ViewHolder extends RecyclerView.ViewHolder {
-        TextView creator;
+        TextView info;
         TextView title;
         TextView comments;
-        LinearLayout linearLayout = itemView.findViewById(R.id.list_container);
+        LinearLayout container = itemView.findViewById(R.id.review_item_container);
 
         public ViewHolder(@NonNull View itemView, final OnItemClickListener listener) {
             super(itemView);
 
-            creator = itemView.findViewById(R.id.review_item_creator);
-            title = itemView.findViewById(R.id.title_list);
-            comments = itemView.findViewById(R.id.description_list);
+            info = itemView.findViewById(R.id.review_item_info);
+            title = itemView.findViewById(R.id.review_item_title);
+            comments = itemView.findViewById(R.id.review_item_comments);
 
-            linearLayout.setVisibility(View.VISIBLE);
+            container.setVisibility(View.VISIBLE);
 
             itemView.setOnClickListener(new View.OnClickListener() {
                 @Override
@@ -80,6 +96,11 @@ public class ReviewAdapter extends RecyclerView.Adapter<ReviewAdapter.ViewHolder
         public void setItem(Review item) {
             title.setText(item.getTitle());
             comments.setText(item.getComments());
+            if (type == Constant.MYREVIEWPAGE) {
+                info.setText(item.getItemInfo());
+            } else {
+                info.setText(item.getCreator());
+            }
         }
     }
 

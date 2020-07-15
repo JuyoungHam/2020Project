@@ -21,7 +21,7 @@
         android:visibility="visible">
 
         <TextView
-            android:id="@+id/review_item_creator"
+            android:id="@+id/review_item_info"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:layout_margin="4dp"
@@ -44,7 +44,7 @@
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:layout_margin="4dp"
-            android:singleLine="true"
+            android:singleLine="false"
             android:text="설명"
             android:textAppearance="@style/TextAppearance.AppCompat.Small" />
     </LinearLayout>

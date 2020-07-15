@@ -26,7 +26,8 @@
                 android:id="@+id/review_comments_editText"
                 android:layout_width="match_parent"
                 android:layout_height="match_parent"
-                android:hint="코멘트" />
+                android:hint="코멘트"
+                android:singleLine="false" />
         </LinearLayout>
     </ScrollView>
 
