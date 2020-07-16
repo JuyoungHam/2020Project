@@ -65,7 +65,6 @@ public class ItemFragment extends Fragment implements View.OnClickListener, Main
     private ImageButton make_favorite;
     private FirebaseUser user;
     private TextView favorite_count;
-    private int count;
 
     public ItemFragment(FundamentalItem item) {
         this.title = item.getTitle();
@@ -131,7 +130,8 @@ public class ItemFragment extends Fragment implements View.OnClickListener, Main
                             for (QueryDocumentSnapshot document : task.getResult()) {
                                 Map<String, Object> fieldData = document.getData();
                                 if (fieldData.get("favorite_count") != null) {
-                                    count = Integer.parseInt(fieldData.get("favorite_count").toString());
+                                    int count =
+                                            Integer.parseInt(fieldData.get("favorite_count").toString());
                                     favorite_count.setText(count + "");
                                 } else {
                                     favorite_count.setText("0");
@@ -299,14 +299,22 @@ public class ItemFragment extends Fragment implements View.OnClickListener, Main
     }
 
     public void add_favorite_count(final int i) {
-        Map<String, Object> data = new HashMap<>();
-        data.put("favorite_count", (count + i > 0 ? count + i : 0));
-        db.collection("All").document(title).update(data).addOnSuccessListener(new OnSuccessListener<Void>() {
+        db.collection("All").document(title).get().addOnCompleteListener(new OnCompleteListener<DocumentSnapshot>() {
             @Override
-            public void onSuccess(Void aVoid) {
-                favorite_count.setText(String.valueOf(count + i > 0 ? count + i : 0));
+            public void onComplete(@NonNull Task<DocumentSnapshot> task) {
+                if (task.isSuccessful()) {
+                    DocumentSnapshot document = task.getResult();
+                    final int count = Integer.parseInt(document.get("favorite_count").toString());
+                    Map<String, Object> data = new HashMap<>();
+                    data.put("favorite_count", (count + i > 0 ? count + i : 0));
+                    db.collection("All").document(title).update(data).addOnSuccessListener(new OnSuccessListener<Void>() {
+                        @Override
+                        public void onSuccess(Void aVoid) {
+                            favorite_count.setText(String.valueOf(count + i > 0 ? count + i : 0));
+                        }
+                    });
+                }
             }
         });
-
     }
 }
