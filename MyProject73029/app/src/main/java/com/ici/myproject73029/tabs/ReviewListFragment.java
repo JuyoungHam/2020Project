@@ -8,6 +8,8 @@ import android.view.ViewGroup;
 
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
+import androidx.databinding.DataBindingUtil;
+import androidx.databinding.ViewDataBinding;
 import androidx.fragment.app.Fragment;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
@@ -24,6 +26,7 @@ import com.ici.myproject73029.R;
 import com.ici.myproject73029.adapters.FundamentalAdapter;
 import com.ici.myproject73029.adapters.OnItemClickListener;
 import com.ici.myproject73029.adapters.ReviewAdapter;
+import com.ici.myproject73029.databinding.FragmentReviewListBinding;
 import com.ici.myproject73029.firebase.Firebase;
 import com.ici.myproject73029.items.Exhibition;
 import com.ici.myproject73029.items.Review;
@@ -51,7 +54,11 @@ public class ReviewListFragment extends Fragment {
     @Nullable
     @Override
     public View onCreateView(@NonNull LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
-        ViewGroup rootView = (ViewGroup) inflater.inflate(R.layout.fragment_review_list, container, false);
+//        ViewGroup rootView = (ViewGroup) inflater.inflate(R.layout.fragment_review_list, container, false);
+        FragmentReviewListBinding binding = DataBindingUtil.inflate(inflater, R.layout.fragment_review_list,
+                container,
+                false);
+        ViewGroup rootView = (ViewGroup) binding.getRoot();
 
         recyclerView = rootView.findViewById(R.id.reviewlist_recyclerView);
 

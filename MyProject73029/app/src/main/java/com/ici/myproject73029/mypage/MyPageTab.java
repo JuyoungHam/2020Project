@@ -5,12 +5,15 @@ import android.os.Bundle;
 
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
+import androidx.constraintlayout.widget.ConstraintLayout;
 import androidx.fragment.app.Fragment;
+import androidx.swiperefreshlayout.widget.SwipeRefreshLayout;
 
 import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.view.ViewTreeObserver;
 import android.widget.Button;
 import android.widget.ImageView;
 import android.widget.TextView;
@@ -31,7 +34,7 @@ import com.ici.myproject73029.firebase.FirebaseUIActivity;
 
 import java.util.Map;
 
-public class MyPageTab extends Fragment implements View.OnClickListener {
+public class MyPageTab extends Fragment implements View.OnClickListener, SwipeRefreshLayout.OnRefreshListener {
 
     private MainActivity mainActivity;
     private TextView text_profile;
@@ -39,6 +42,7 @@ public class MyPageTab extends Fragment implements View.OnClickListener {
     private FirebaseUser user;
     private ImageView profile_image;
     private FirebaseAuth auth;
+    private SwipeRefreshLayout refreshLayout;
 
     @Override
     public void onCreate(Bundle savedInstanceState) {
@@ -70,6 +74,19 @@ public class MyPageTab extends Fragment implements View.OnClickListener {
         review_button.setOnClickListener(this);
         text_profile = rootView.findViewById(R.id.text_profile);
         profile_image = rootView.findViewById(R.id.image_profile);
+        final ConstraintLayout constraintLayout = rootView.findViewById(R.id.constraintlayout_mypage);
+        refreshLayout = rootView.findViewById(R.id.swipeRefreshLayout_mypage);
+        refreshLayout.setDistanceToTriggerSync(200);
+        refreshLayout.getViewTreeObserver().addOnScrollChangedListener(new ViewTreeObserver.OnScrollChangedListener() {
+            @Override
+            public void onScrollChanged() {
+                if (constraintLayout.getScrollY() == 0)
+                    refreshLayout.setEnabled(true);
+                else
+                    refreshLayout.setEnabled(false);
+            }
+        });
+        refreshLayout.setOnRefreshListener(this);
 
         user = auth.getCurrentUser();
         updateUI(user);
@@ -117,4 +134,9 @@ public class MyPageTab extends Fragment implements View.OnClickListener {
         }
     }
 
+    @Override
+    public void onRefresh() {
+        updateUI(user);
+        refreshLayout.setRefreshing(false);
+    }
 }

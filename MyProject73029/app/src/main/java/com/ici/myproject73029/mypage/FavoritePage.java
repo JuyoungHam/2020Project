@@ -5,14 +5,17 @@ import android.content.Context;
 import android.os.Bundle;
 
 import androidx.annotation.NonNull;
+import androidx.constraintlayout.widget.ConstraintLayout;
 import androidx.fragment.app.Fragment;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
+import androidx.swiperefreshlayout.widget.SwipeRefreshLayout;
 
 import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.view.ViewTreeObserver;
 import android.widget.ImageButton;
 import android.widget.Toast;
 
@@ -32,7 +35,8 @@ import com.ici.myproject73029.firebase.Firebase;
 import com.ici.myproject73029.items.Exhibition;
 import com.ici.myproject73029.items.FundamentalItem;
 
-public class FavoritePage extends Fragment implements View.OnClickListener, MainActivity.onBackPressedListener {
+public class FavoritePage extends Fragment implements View.OnClickListener,
+        MainActivity.onBackPressedListener, SwipeRefreshLayout.OnRefreshListener {
 
     private RecyclerView recyclerView;
     private Firebase firebase;
@@ -40,6 +44,7 @@ public class FavoritePage extends Fragment implements View.OnClickListener, Main
     private FundamentalAdapter adapter;
     private MainActivity mainActivity;
     private FirebaseUser user;
+    private SwipeRefreshLayout refreshLayout;
 
     @Override
     public void onCreate(Bundle savedInstanceState) {
@@ -56,6 +61,19 @@ public class FavoritePage extends Fragment implements View.OnClickListener, Main
         user = mainActivity.mAuth.getCurrentUser();
 
         recyclerView = rootView.findViewById(R.id.favorite_recyclerView);
+        final ConstraintLayout constraintLayout = rootView.findViewById(R.id.constraintlayout_favorite);
+        refreshLayout = rootView.findViewById(R.id.swipeRefreshLayout_favorite);
+        refreshLayout.setDistanceToTriggerSync(200);
+        refreshLayout.getViewTreeObserver().addOnScrollChangedListener(new ViewTreeObserver.OnScrollChangedListener() {
+            @Override
+            public void onScrollChanged() {
+                if (constraintLayout.getScrollY() == 0)
+                    refreshLayout.setEnabled(true);
+                else
+                    refreshLayout.setEnabled(false);
+            }
+        });
+        refreshLayout.setOnRefreshListener(this);
 
         LinearLayoutManager layoutManager = new LinearLayoutManager(getContext(),
                 LinearLayoutManager.VERTICAL, false);
@@ -68,6 +86,13 @@ public class FavoritePage extends Fragment implements View.OnClickListener, Main
 
         firebase = new Firebase();
         db = firebase.startFirebase();
+
+        updateFavorites();
+
+        return rootView;
+    }
+
+    private void updateFavorites() {
         {
             db.collection("Users").document(user.getUid()).collection("favorite").get()
                     .addOnCompleteListener(new OnCompleteListener<QuerySnapshot>() {
@@ -83,11 +108,10 @@ public class FavoritePage extends Fragment implements View.OnClickListener, Main
                         }
                     });
         }
-
-        return rootView;
     }
 
     private void getFavorite(String id) {
+        adapter = new FundamentalAdapter();
         db.collection("All").whereEqualTo("title", id).get().addOnCompleteListener(new OnCompleteListener<QuerySnapshot>() {
             @Override
             public void onComplete(@NonNull Task<QuerySnapshot> task) {
@@ -133,5 +157,12 @@ public class FavoritePage extends Fragment implements View.OnClickListener, Main
         super.onAttach(context);
         Log.e("Other", "onAttach()");
         ((MainActivity) context).setOnBackPressedListener(this);
+    }
+
+    @Override
+    public void onRefresh() {
+        updateFavorites();
+
+        refreshLayout.setRefreshing(false);
     }
 }

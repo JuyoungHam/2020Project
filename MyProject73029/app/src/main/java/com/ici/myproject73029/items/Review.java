@@ -1,21 +1,22 @@
 package com.ici.myproject73029.items;
 
+import com.ici.myproject73029.BR;
 import com.ici.myproject73029.Constant;
 
 public class Review extends FundamentalItem {
     private String comments;
     private String userId;
     private String itemInfo;
-    private String creator;
+    private String writer;
 
     public Review() {
         super();
         setType(Constant.REVIEW);
     }
 
-    public Review(String creator, String title, String comments) {
+    public Review(String writer, String title, String comments) {
         super(title);
-        this.creator = creator;
+        this.writer = writer;
         this.comments = comments;
         setType(Constant.REVIEW);
     }
@@ -26,6 +27,7 @@ public class Review extends FundamentalItem {
 
     public void setItemInfo(String itemInfo) {
         this.itemInfo = itemInfo;
+        notifyPropertyChanged(BR.review);
     }
 
     public String getUserId() {
@@ -34,16 +36,18 @@ public class Review extends FundamentalItem {
 
     public void setUserId(String userId) {
         this.userId = userId;
+        notifyPropertyChanged(BR.review);
     }
 
     @Override
-    public String getCreator() {
-        return creator;
+    public String getWriter() {
+        return writer;
     }
 
     @Override
-    public void setCreator(String creator) {
-        this.creator = creator;
+    public void setWriter(String writer) {
+        this.writer = writer;
+        notifyPropertyChanged(BR.review);
     }
 
     public String getComments() {
@@ -52,5 +56,6 @@ public class Review extends FundamentalItem {
 
     public void setComments(String comments) {
         this.comments = comments;
+        notifyPropertyChanged(BR.review);
     }
 }

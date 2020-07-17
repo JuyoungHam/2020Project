@@ -14,8 +14,13 @@ import androidx.fragment.app.DialogFragment;
 
 import com.google.android.gms.tasks.OnFailureListener;
 import com.google.android.gms.tasks.OnSuccessListener;
+import com.google.firebase.Timestamp;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.auth.FirebaseUser;
+import com.google.firebase.firestore.DocumentSnapshot;
+import com.google.firebase.firestore.QueryDocumentSnapshot;
+import com.google.firebase.firestore.QuerySnapshot;
+import com.google.firebase.firestore.SetOptions;
 import com.ici.myproject73029.Constant;
 import com.ici.myproject73029.MainActivity;
 import com.ici.myproject73029.R;
@@ -31,6 +36,7 @@ public class CreateReviewFragment extends DialogFragment {
     private MainActivity mainActivity;
     private EditText review_title;
     private EditText review_comments;
+    private FirebaseUser user;
 
     public CreateReviewFragment() {
         super();
@@ -54,24 +60,35 @@ public class CreateReviewFragment extends DialogFragment {
         LayoutInflater inflater = getActivity().getLayoutInflater();
         ViewGroup rootView = (ViewGroup) inflater.inflate(R.layout.fragment_create_review, null);
 
+        user = FirebaseAuth.getInstance().getCurrentUser();
+
         review_title = rootView.findViewById(R.id.review_title_editText);
         review_comments = rootView.findViewById(R.id.review_comments_editText);
+
+        mainActivity.db.collection("All").document(item).collection("comments").document(user.getUid()).get()
+                .addOnSuccessListener(new OnSuccessListener<DocumentSnapshot>() {
+                    @Override
+                    public void onSuccess(DocumentSnapshot documentSnapshot) {
+                        if (documentSnapshot.exists()) {
+                            review_title.setText(documentSnapshot.get("title").toString());
+                            review_comments.setText(documentSnapshot.get("comments").toString());
+                        }
+                    }
+                });
 
         builder.setView(rootView)
                 .setPositiveButton("네", new DialogInterface.OnClickListener() {
                     public void onClick(DialogInterface dialog, int id) {
-                        FirebaseUser user = FirebaseAuth.getInstance().getCurrentUser();
-                        Map<String, String> comment = new HashMap<>();
+                        Map<String, Object> comment = new HashMap<>();
                         comment.put("title", review_title.getText().toString());
                         comment.put("comments", review_comments.getText().toString());
-                        Date currentTime = Calendar.getInstance().getTime();
-                        comment.put("date", currentTime.toString());
+                        comment.put("update_date", Timestamp.now());
                         comment.put("itemInfo", item);
                         if (user != null) {
                             comment.put("userId", user.getUid());
-                            comment.put("creator", user.getDisplayName());
+                            comment.put("writer", user.getDisplayName());
                             mainActivity.db.collection("All").document(item).collection("comments")
-                                    .document(user.getUid()).set(comment)
+                                    .document(user.getUid()).set(comment, SetOptions.merge())
                                     .addOnSuccessListener(new OnSuccessListener<Void>() {
                                         @Override
                                         public void onSuccess(Void aVoid) {

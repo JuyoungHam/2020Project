@@ -99,7 +99,7 @@ public class ReviewAdapter extends RecyclerView.Adapter<ReviewAdapter.ViewHolder
             if (type == Constant.MYREVIEWPAGE) {
                 info.setText(item.getItemInfo());
             } else {
-                info.setText(item.getCreator());
+                info.setText(item.getWriter());
             }
         }
     }

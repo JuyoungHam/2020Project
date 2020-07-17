@@ -8,6 +8,7 @@ import android.util.AttributeSet;
 import android.util.Log;
 import android.view.MenuItem;
 import android.view.View;
+import android.view.ViewTreeObserver;
 import android.widget.Button;
 import android.widget.ImageView;
 import android.widget.TextView;
@@ -17,7 +18,9 @@ import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.appcompat.app.ActionBar;
 import androidx.appcompat.app.AppCompatActivity;
+import androidx.constraintlayout.widget.ConstraintLayout;
 import androidx.fragment.app.DialogFragment;
+import androidx.swiperefreshlayout.widget.SwipeRefreshLayout;
 
 import com.bumptech.glide.Glide;
 import com.facebook.AccessToken;
@@ -80,7 +83,8 @@ import java.util.HashMap;
 import java.util.Map;
 
 
-public class FirebaseUIActivity extends AppCompatActivity implements View.OnClickListener {
+public class FirebaseUIActivity extends AppCompatActivity implements View.OnClickListener,
+        SwipeRefreshLayout.OnRefreshListener {
 
     private static final String TAG = "GoogleActivity";
     private static final int RC_SIGN_IN = 9001;
@@ -107,6 +111,7 @@ public class FirebaseUIActivity extends AppCompatActivity implements View.OnClic
     private String nickname;
     private FirebaseStorage storage;
     private StorageReference storageRef;
+    private SwipeRefreshLayout refreshLayout;
 
     @Override
     public boolean onOptionsItemSelected(@NonNull MenuItem item) {
@@ -123,6 +128,8 @@ public class FirebaseUIActivity extends AppCompatActivity implements View.OnClic
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
 
+        setContentView(R.layout.activity_firebase_ui);
+
         firebase = new Firebase();
         db = firebase.startFirebase();
         storage = FirebaseStorage.getInstance();
@@ -135,11 +142,24 @@ public class FirebaseUIActivity extends AppCompatActivity implements View.OnClic
         FacebookSdk.sdkInitialize(getApplicationContext());
         AppEventsLogger.activateApp(this);
 
-        setContentView(R.layout.activity_firebase_ui);
         logintext = findViewById(R.id.login_text);
         userProfile = findViewById(R.id.userProfile);
         profile_update = findViewById(R.id.update_profile);
         profile_update.setOnClickListener(this);
+
+        refreshLayout = findViewById(R.id.swipeRefreshLayout_id);
+        refreshLayout.setOnRefreshListener(this);
+        refreshLayout.setDistanceToTriggerSync(200);
+        final ConstraintLayout constraintLayout = findViewById(R.id.constraintlayout_id);
+        refreshLayout.getViewTreeObserver().addOnScrollChangedListener(new ViewTreeObserver.OnScrollChangedListener() {
+            @Override
+            public void onScrollChanged() {
+                if (constraintLayout.getScrollY() == 0)
+                    refreshLayout.setEnabled(true);
+                else
+                    refreshLayout.setEnabled(false);
+            }
+        });
 
         // Button listeners
         google_login = findViewById(R.id.google_login_button);
@@ -485,6 +505,12 @@ public class FirebaseUIActivity extends AppCompatActivity implements View.OnClic
                         // ...
                     }
                 });
+    }
+
+    @Override
+    public void onRefresh() {
+        updateUI(currentUser);
+        refreshLayout.setRefreshing(false);
     }
 
 

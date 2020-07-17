@@ -15,15 +15,19 @@ import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.view.ViewTreeObserver;
 import android.widget.ImageButton;
 import android.widget.ImageView;
+import android.widget.ScrollView;
 import android.widget.TextView;
 import android.widget.Toast;
 
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
+import androidx.databinding.DataBindingUtil;
 import androidx.fragment.app.DialogFragment;
 import androidx.fragment.app.Fragment;
+import androidx.swiperefreshlayout.widget.SwipeRefreshLayout;
 
 import com.bumptech.glide.Glide;
 import com.google.android.gms.tasks.OnCompleteListener;
@@ -39,10 +43,9 @@ import com.google.firebase.firestore.QuerySnapshot;
 import com.ici.myproject73029.Constant;
 import com.ici.myproject73029.MainActivity;
 import com.ici.myproject73029.R;
+import com.ici.myproject73029.databinding.FragmentItemBinding;
 import com.ici.myproject73029.firebase.Firebase;
-import com.ici.myproject73029.firebase.UnregisterConfirmFragment;
 import com.ici.myproject73029.items.FundamentalItem;
-import com.ici.myproject73029.items.Review;
 
 import java.io.IOException;
 import java.util.Calendar;
@@ -51,7 +54,8 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
-public class ItemFragment extends Fragment implements View.OnClickListener, MainActivity.onBackPressedListener {
+public class ItemFragment extends Fragment implements View.OnClickListener,
+        MainActivity.onBackPressedListener, SwipeRefreshLayout.OnRefreshListener {
     String title;
     String description;
     public String venue;
@@ -65,8 +69,10 @@ public class ItemFragment extends Fragment implements View.OnClickListener, Main
     private ImageButton make_favorite;
     private FirebaseUser user;
     private TextView favorite_count;
+    private SwipeRefreshLayout refreshLayout;
 
     public ItemFragment(FundamentalItem item) {
+
         this.title = item.getTitle();
         this.description = item.getDescription();
         if (item.getVenue() != null) {
@@ -79,8 +85,11 @@ public class ItemFragment extends Fragment implements View.OnClickListener, Main
     @Nullable
     @Override
     public View onCreateView(@NonNull final LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
-        final ViewGroup rootView = (ViewGroup) inflater.inflate(R.layout.fragment_item, container,
+//        final ViewGroup rootView = (ViewGroup) inflater.inflate(R.layout.fragment_item, container,
+//                false);
+        FragmentItemBinding binding = DataBindingUtil.inflate(inflater, R.layout.fragment_item, container,
                 false);
+        final ViewGroup rootView = (ViewGroup) binding.getRoot();
 
         mainActivity = (MainActivity) getActivity();
         mainActivity.isActionBarVisible(true);
@@ -91,7 +100,7 @@ public class ItemFragment extends Fragment implements View.OnClickListener, Main
         TextView item_title = rootView.findViewById(R.id.item_title);
         TextView item_venue = rootView.findViewById(R.id.item_venue);
         TextView item_period = rootView.findViewById(R.id.item_period);
-        TextView item_description = rootView.findViewById(R.id.item_comments);
+        TextView item_description = rootView.findViewById(R.id.item_description);
         favorite_count = rootView.findViewById(R.id.favorite_count);
         ImageButton img_map = rootView.findViewById(R.id.connect_map);
         img_map.setOnClickListener(this);
@@ -99,6 +108,19 @@ public class ItemFragment extends Fragment implements View.OnClickListener, Main
         make_comment.setOnClickListener(this);
         make_favorite = rootView.findViewById(R.id.make_favorite);
         make_favorite.setOnClickListener(this);
+        final ScrollView scrollView2 = rootView.findViewById(R.id.scrollView2);
+        refreshLayout = rootView.findViewById(R.id.swipeRefreshLayout_item);
+        refreshLayout.setDistanceToTriggerSync(200);
+        refreshLayout.getViewTreeObserver().addOnScrollChangedListener(new ViewTreeObserver.OnScrollChangedListener() {
+            @Override
+            public void onScrollChanged() {
+                if (scrollView2.getScrollY() == 0)
+                    refreshLayout.setEnabled(true);
+                else
+                    refreshLayout.setEnabled(false);
+            }
+        });
+        refreshLayout.setOnRefreshListener(this);
 
         if (FirebaseAuth.getInstance().getCurrentUser() == null) {
             make_favorite.setVisibility(View.GONE);
@@ -115,8 +137,7 @@ public class ItemFragment extends Fragment implements View.OnClickListener, Main
             item_description.setText(Html.fromHtml(description));
         item_venue.setText(venue);
 
-        getChildFragmentManager().beginTransaction().replace(R.id.framelayout_review_list,
-                new ReviewListFragment(title)).commit();
+        updateComments();
 
         Firebase firebase = new Firebase();
         db = firebase.startFirebase();
@@ -129,9 +150,9 @@ public class ItemFragment extends Fragment implements View.OnClickListener, Main
                         if (task.isSuccessful()) {
                             for (QueryDocumentSnapshot document : task.getResult()) {
                                 Map<String, Object> fieldData = document.getData();
-                                if (fieldData.get("favorite_count") != null) {
+                                if (fieldData.get(Constant.FAVORITE_COUNT) != null) {
                                     int count =
-                                            Integer.parseInt(fieldData.get("favorite_count").toString());
+                                            Integer.parseInt(fieldData.get(Constant.FAVORITE_COUNT).toString());
                                     favorite_count.setText(count + "");
                                 } else {
                                     favorite_count.setText("0");
@@ -155,6 +176,11 @@ public class ItemFragment extends Fragment implements View.OnClickListener, Main
         checkIsFavorite();
 
         return rootView;
+    }
+
+    public void updateComments() {
+        getChildFragmentManager().beginTransaction().replace(R.id.framelayout_review_list,
+                new ReviewListFragment(title)).commit();
     }
 
     private void checkIsFavorite() {
@@ -304,9 +330,10 @@ public class ItemFragment extends Fragment implements View.OnClickListener, Main
             public void onComplete(@NonNull Task<DocumentSnapshot> task) {
                 if (task.isSuccessful()) {
                     DocumentSnapshot document = task.getResult();
-                    final int count = Integer.parseInt(document.get("favorite_count").toString());
+                    final int count = (document.get(Constant.FAVORITE_COUNT) == null ? 0 :
+                            Integer.parseInt(document.get(Constant.FAVORITE_COUNT).toString()));
                     Map<String, Object> data = new HashMap<>();
-                    data.put("favorite_count", (count + i > 0 ? count + i : 0));
+                    data.put(Constant.FAVORITE_COUNT, (count + i > 0 ? count + i : 0));
                     db.collection("All").document(title).update(data).addOnSuccessListener(new OnSuccessListener<Void>() {
                         @Override
                         public void onSuccess(Void aVoid) {
@@ -316,5 +343,12 @@ public class ItemFragment extends Fragment implements View.OnClickListener, Main
                 }
             }
         });
+    }
+
+    @Override
+    public void onRefresh() {
+        updateComments();
+        checkIsFavorite();
+        refreshLayout.setRefreshing(false);
     }
 }

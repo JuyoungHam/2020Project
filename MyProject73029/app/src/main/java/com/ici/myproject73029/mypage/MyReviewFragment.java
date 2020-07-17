@@ -7,7 +7,6 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.TextView;
-import android.widget.Toast;
 
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
@@ -47,10 +46,10 @@ public class MyReviewFragment extends Fragment implements MainActivity.onBackPre
         mainActivity = (MainActivity) getActivity();
 
         TextView item_title = itemView.findViewById(R.id.item_title);
-        TextView item_description = itemView.findViewById(R.id.item_comments);
+        TextView item_comments = itemView.findViewById(R.id.item_comments);
 
         item_title.setText(title);
-        item_description.setText(comments);
+        item_comments.setText(comments);
 
         Firebase firebase = new Firebase();
         FirebaseFirestore db = firebase.startFirebase();

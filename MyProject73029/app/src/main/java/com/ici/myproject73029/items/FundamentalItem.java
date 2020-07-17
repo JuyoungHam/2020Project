@@ -1,6 +1,9 @@
 package com.ici.myproject73029.items;
 
-public class FundamentalItem {
+import androidx.databinding.BaseObservable;
+import androidx.databinding.library.baseAdapters.BR;
+
+public class FundamentalItem extends BaseObservable {
     private String poster;
     private String title;
     private String description;
@@ -17,7 +20,7 @@ public class FundamentalItem {
     }
 
     public FundamentalItem(String title) {
-    this.title = title;
+        this.title = title;
     }
 
     public FundamentalItem(String title, String description) {
@@ -37,6 +40,7 @@ public class FundamentalItem {
 
     public void setFavorite_count(int favorite_count) {
         this.favorite_count = favorite_count;
+        notifyPropertyChanged(BR.FundamentalItem);
     }
 
     public int getType() {
@@ -45,14 +49,16 @@ public class FundamentalItem {
 
     public void setType(int type) {
         this.type = type;
+        notifyPropertyChanged(BR.FundamentalItem);
     }
 
-    public String getCreator() {
+    public String getWriter() {
         return creator;
     }
 
-    public void setCreator(String creator) {
-        this.creator = creator;
+    public void setWriter(String writer) {
+        this.creator = writer;
+        notifyPropertyChanged(BR.FundamentalItem);
     }
 
     public String getUrl() {
@@ -61,6 +67,7 @@ public class FundamentalItem {
 
     public void setUrl(String url) {
         this.url = url;
+        notifyPropertyChanged(BR.FundamentalItem);
     }
 
     public int getCategory() {
@@ -69,6 +76,7 @@ public class FundamentalItem {
 
     public void setCategory(int category) {
         this.category = category;
+        notifyPropertyChanged(BR.FundamentalItem);
     }
 
     public String getVenue() {
@@ -77,6 +85,7 @@ public class FundamentalItem {
 
     public void setVenue(String venue) {
         this.venue = venue;
+        notifyPropertyChanged(BR.FundamentalItem);
     }
 
     public String getPhone() {
@@ -85,6 +94,7 @@ public class FundamentalItem {
 
     public void setPhone(String phone) {
         this.phone = phone;
+        notifyPropertyChanged(BR.FundamentalItem);
     }
 
     public String getPeriod() {
@@ -93,6 +103,7 @@ public class FundamentalItem {
 
     public void setPeriod(String period) {
         this.period = period;
+        notifyPropertyChanged(BR.FundamentalItem);
     }
 
     public String getTitle() {
@@ -101,6 +112,7 @@ public class FundamentalItem {
 
     public void setTitle(String title) {
         this.title = title;
+        notifyPropertyChanged(BR.FundamentalItem);
     }
 
     public String getDescription() {
@@ -109,6 +121,7 @@ public class FundamentalItem {
 
     public void setDescription(String description) {
         this.description = description;
+        notifyPropertyChanged(BR.FundamentalItem);
     }
 
     public String getPoster() {
@@ -117,5 +130,6 @@ public class FundamentalItem {
 
     public void setPoster(String poster) {
         this.poster = poster;
+        notifyPropertyChanged(BR.FundamentalItem);
     }
 }

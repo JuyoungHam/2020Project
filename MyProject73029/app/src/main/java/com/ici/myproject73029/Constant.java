@@ -40,6 +40,8 @@ public class Constant {
     public static final String USERID = "USERID";
     public static final String USERNAME = "USERNAME";
 
+    public static final String FAVORITE_COUNT = "favorite_count";
+
 
     //How to get hashcode
     public static String getKeyHash(final Context context) {

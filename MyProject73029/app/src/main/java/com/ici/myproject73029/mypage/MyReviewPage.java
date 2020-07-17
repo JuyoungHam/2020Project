@@ -7,12 +7,15 @@ import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.view.ViewTreeObserver;
 import android.widget.Toast;
 
 import androidx.annotation.NonNull;
+import androidx.constraintlayout.widget.ConstraintLayout;
 import androidx.fragment.app.Fragment;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
+import androidx.swiperefreshlayout.widget.SwipeRefreshLayout;
 
 import com.google.android.gms.tasks.OnCompleteListener;
 import com.google.android.gms.tasks.OnFailureListener;
@@ -33,11 +36,15 @@ import com.ici.myproject73029.items.Review;
 import java.util.ArrayList;
 import java.util.List;
 
-public class MyReviewPage extends Fragment implements MainActivity.onBackPressedListener {
+public class MyReviewPage extends Fragment implements MainActivity.onBackPressedListener,
+        SwipeRefreshLayout.OnRefreshListener {
 
     private RecyclerView recyclerView;
     MainActivity mainActivity;
     FirebaseUser user;
+    private SwipeRefreshLayout refreshLayout;
+    private ReviewAdapter adapter;
+    private FirebaseFirestore db;
 
     @Override
     public void onCreate(Bundle savedInstanceState) {
@@ -54,10 +61,23 @@ public class MyReviewPage extends Fragment implements MainActivity.onBackPressed
 
         recyclerView = rootView.findViewById(R.id.myreview_recyclerView);
 
+        final ConstraintLayout constraintLayout = rootView.findViewById(R.id.constraintlayout_myreview);
+        refreshLayout = rootView.findViewById(R.id.swipeRefreshLayout_myreview);
+        refreshLayout.setDistanceToTriggerSync(200);
+        refreshLayout.getViewTreeObserver().addOnScrollChangedListener(new ViewTreeObserver.OnScrollChangedListener() {
+            @Override
+            public void onScrollChanged() {
+                if (constraintLayout.getScrollY() == 0)
+                    refreshLayout.setEnabled(true);
+                else
+                    refreshLayout.setEnabled(false);
+            }
+        });
+        refreshLayout.setOnRefreshListener(this);
+
         LinearLayoutManager layoutManager = new LinearLayoutManager(getContext(),
                 LinearLayoutManager.VERTICAL, false);
         recyclerView.setLayoutManager(layoutManager);
-        final ReviewAdapter adapter = new ReviewAdapter(Constant.MYREVIEWPAGE);
 
         mainActivity = (MainActivity) getActivity();
         mainActivity.isActionBarVisible(true);
@@ -67,23 +87,31 @@ public class MyReviewPage extends Fragment implements MainActivity.onBackPressed
         user = mainActivity.mAuth.getCurrentUser();
 
         Firebase firebase = new Firebase();
-        FirebaseFirestore db = firebase.startFirebase();
-        {
-            db.collectionGroup("comments").whereEqualTo("userId",
-                    user.getUid()).get()
-                    .addOnCompleteListener(new OnCompleteListener<QuerySnapshot>() {
-                        @Override
-                        public void onComplete(@NonNull Task<QuerySnapshot> task) {
-                            if (task.isSuccessful()) {
-                                for (QueryDocumentSnapshot document : task.getResult()) {
-                                    Review item = document.toObject(Review.class);
-                                    adapter.addItem(item);
-                                }
-                            } else {
-                                Log.d(Constant.TAG, "Error getting documents: ", task.getException());
-                            }
+        db = firebase.startFirebase();
 
-                            recyclerView.setAdapter(adapter);
+        updateReviews();
+
+        return rootView;
+    }
+
+    private void updateReviews() {
+        adapter = new ReviewAdapter(Constant.MYREVIEWPAGE);
+        db.collectionGroup("comments").whereEqualTo("userId",
+                user.getUid()).get()
+                .addOnCompleteListener(new OnCompleteListener<QuerySnapshot>() {
+                    @Override
+                    public void onComplete(@NonNull Task<QuerySnapshot> task) {
+                        if (task.isSuccessful()) {
+                            for (QueryDocumentSnapshot document : task.getResult()) {
+                                Review item = document.toObject(Review.class);
+
+                                adapter.addItem(item);
+                            }
+                        } else {
+                            Log.d(Constant.TAG, "Error getting documents: ", task.getException());
+                        }
+
+                        recyclerView.setAdapter(adapter);
 
 //                            adapter.setOnItemClickListener(new OnItemClickListener() {
 //                                @Override
@@ -93,17 +121,14 @@ public class MyReviewPage extends Fragment implements MainActivity.onBackPressed
 //                                    mainActivity.onItemFragmentChanged(item);
 //                                }
 //                            });
-                        }
-                    })
-                    .addOnFailureListener(new OnFailureListener() {
-                        @Override
-                        public void onFailure(@NonNull Exception e) {
-                            adapter.addItem(null);
-                        }
-                    });
-        }
-
-        return rootView;
+                    }
+                })
+                .addOnFailureListener(new OnFailureListener() {
+                    @Override
+                    public void onFailure(@NonNull Exception e) {
+                        adapter.addItem(null);
+                    }
+                });
     }
 
     @Override
@@ -123,4 +148,9 @@ public class MyReviewPage extends Fragment implements MainActivity.onBackPressed
     }
 
 
+    @Override
+    public void onRefresh() {
+        updateReviews();
+        refreshLayout.setRefreshing(false);
+    }
 }
