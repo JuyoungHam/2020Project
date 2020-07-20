@@ -42,6 +42,8 @@ public class Constant {
 
     public static final String FAVORITE_COUNT = "favorite_count";
 
+    public static final String[] TAGS = {"", "전시", "공연", "어린이"};
+
 
     //How to get hashcode
     public static String getKeyHash(final Context context) {
