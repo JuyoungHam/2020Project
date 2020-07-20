@@ -93,21 +93,20 @@ public class FavoritePage extends Fragment implements View.OnClickListener,
     }
 
     private void updateFavorites() {
-        {
-            db.collection("Users").document(user.getUid()).collection("favorite").get()
-                    .addOnCompleteListener(new OnCompleteListener<QuerySnapshot>() {
-                        @Override
-                        public void onComplete(@NonNull Task<QuerySnapshot> task) {
-                            if (task.isSuccessful()) {
-                                for (QueryDocumentSnapshot document : task.getResult()) {
-                                    getFavorite(document.getId());
-                                }
-                            } else {
-                                Log.d(Constant.TAG, "Error getting documents: ", task.getException());
+        db.collection("Users").document(user.getUid()).collection("favorite").get()
+                .addOnCompleteListener(new OnCompleteListener<QuerySnapshot>() {
+                    @Override
+                    public void onComplete(@NonNull Task<QuerySnapshot> task) {
+                        if (task.isSuccessful()) {
+                            for (QueryDocumentSnapshot document : task.getResult()) {
+                                getFavorite(document.getId());
                             }
+                        } else {
+                            Log.d(Constant.TAG, "Error getting documents: ", task.getException());
                         }
-                    });
-        }
+                    }
+                });
+
     }
 
     private void getFavorite(String id) {
@@ -162,7 +161,6 @@ public class FavoritePage extends Fragment implements View.OnClickListener,
     @Override
     public void onRefresh() {
         updateFavorites();
-
         refreshLayout.setRefreshing(false);
     }
 }

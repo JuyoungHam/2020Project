@@ -35,6 +35,8 @@ public class ReviewListFragment extends Fragment {
     private RecyclerView recyclerView;
     private MainActivity mainActivity;
     String title;
+    private FirebaseFirestore db;
+    private ReviewAdapter adapter;
 
     public ReviewListFragment() {
         super();
@@ -65,25 +67,31 @@ public class ReviewListFragment extends Fragment {
         LinearLayoutManager layoutManager = new LinearLayoutManager(getContext(),
                 LinearLayoutManager.VERTICAL, false);
         recyclerView.setLayoutManager(layoutManager);
-        final ReviewAdapter adapter = new ReviewAdapter();
+        adapter = new ReviewAdapter();
 
         Firebase firebase = new Firebase();
-        FirebaseFirestore db = firebase.startFirebase();
-        {
-            db.collection("All").document(title).collection("comments").get()
-                    .addOnCompleteListener(new OnCompleteListener<QuerySnapshot>() {
-                        @Override
-                        public void onComplete(@NonNull Task<QuerySnapshot> task) {
-                            if (task.isSuccessful()) {
-                                for (QueryDocumentSnapshot document : task.getResult()) {
-                                    Review item = document.toObject(Review.class);
-                                    adapter.addItem(item);
-                                }
-                            } else {
-                                Log.d(Constant.TAG, "Error getting documents: ", task.getException());
-                            }
+        db = firebase.startFirebase();
 
-                            recyclerView.setAdapter(adapter);
+        getCommentsFromDatabase();
+
+        return rootView;
+    }
+
+    public void getCommentsFromDatabase() {
+        db.collection("All").document(title).collection("comments").get()
+                .addOnCompleteListener(new OnCompleteListener<QuerySnapshot>() {
+                    @Override
+                    public void onComplete(@NonNull Task<QuerySnapshot> task) {
+                        if (task.isSuccessful()) {
+                            for (QueryDocumentSnapshot document : task.getResult()) {
+                                Review item = document.toObject(Review.class);
+                                adapter.addItem(item);
+                            }
+                        } else {
+                            Log.d(Constant.TAG, "Error getting documents: ", task.getException());
+                        }
+
+                        recyclerView.setAdapter(adapter);
 
 //                            adapter.setOnItemClickListener(new OnItemClickListener() {
 //                                @Override
@@ -93,11 +101,7 @@ public class ReviewListFragment extends Fragment {
 //                                    mainActivity.onItemFragmentChanged(item);
 //                                }
 //                            });
-                        }
-                    });
-        }
-
-
-        return rootView;
+                    }
+                });
     }
 }

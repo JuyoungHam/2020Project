@@ -36,8 +36,12 @@ import com.google.android.gms.tasks.OnSuccessListener;
 import com.google.android.gms.tasks.Task;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.auth.FirebaseUser;
+import com.google.firebase.firestore.DocumentChange;
 import com.google.firebase.firestore.DocumentSnapshot;
+import com.google.firebase.firestore.EventListener;
 import com.google.firebase.firestore.FirebaseFirestore;
+import com.google.firebase.firestore.FirebaseFirestoreException;
+import com.google.firebase.firestore.MetadataChanges;
 import com.google.firebase.firestore.QueryDocumentSnapshot;
 import com.google.firebase.firestore.QuerySnapshot;
 import com.ici.myproject73029.Constant;
@@ -70,6 +74,9 @@ public class ItemFragment extends Fragment implements View.OnClickListener,
     private FirebaseUser user;
     private TextView favorite_count;
     private SwipeRefreshLayout refreshLayout;
+    private ViewGroup rootView;
+    private ImageView img_poster;
+    private ReviewListFragment listFragment;
 
     public ItemFragment(FundamentalItem item) {
 
@@ -89,14 +96,14 @@ public class ItemFragment extends Fragment implements View.OnClickListener,
 //                false);
         FragmentItemBinding binding = DataBindingUtil.inflate(inflater, R.layout.fragment_item, container,
                 false);
-        final ViewGroup rootView = (ViewGroup) binding.getRoot();
+        rootView = (ViewGroup) binding.getRoot();
 
         mainActivity = (MainActivity) getActivity();
         mainActivity.isActionBarVisible(true);
         mainActivity.setActionBarTitle(title);
         mainActivity.setActionBarOption(ActionBar.DISPLAY_HOME_AS_UP | ActionBar.DISPLAY_SHOW_TITLE);
 
-        final ImageView img_poster = rootView.findViewById(R.id.item_poster);
+        img_poster = rootView.findViewById(R.id.item_poster);
         TextView item_title = rootView.findViewById(R.id.item_title);
         TextView item_venue = rootView.findViewById(R.id.item_venue);
         TextView item_period = rootView.findViewById(R.id.item_period);
@@ -137,10 +144,23 @@ public class ItemFragment extends Fragment implements View.OnClickListener,
             item_description.setText(Html.fromHtml(description));
         item_venue.setText(venue);
 
-        updateComments();
-
         Firebase firebase = new Firebase();
         db = firebase.startFirebase();
+        getItemFromDatabase();
+
+        user = mainActivity.mAuth.getCurrentUser();
+        checkIsFavorite();
+
+        listFragment = new ReviewListFragment(title);
+        getChildFragmentManager().beginTransaction().replace(R.id.framelayout_review_list,
+                listFragment).commit();
+
+//        updateComments();
+
+        return rootView;
+    }
+
+    private void getItemFromDatabase() {
         db.collection("All")
                 .whereEqualTo("title", title)
                 .get()
@@ -170,17 +190,10 @@ public class ItemFragment extends Fragment implements View.OnClickListener,
                         }
                     }
                 });
-
-
-        user = mainActivity.mAuth.getCurrentUser();
-        checkIsFavorite();
-
-        return rootView;
     }
 
     public void updateComments() {
-        getChildFragmentManager().beginTransaction().replace(R.id.framelayout_review_list,
-                new ReviewListFragment(title)).commit();
+        listFragment.getCommentsFromDatabase();
     }
 
     private void checkIsFavorite() {
@@ -347,8 +360,35 @@ public class ItemFragment extends Fragment implements View.OnClickListener,
 
     @Override
     public void onRefresh() {
+        updateItems();
         updateComments();
         checkIsFavorite();
         refreshLayout.setRefreshing(false);
+    }
+
+    private void updateItems() {
+        db.collection("All")
+                .whereEqualTo("title", title)
+                .addSnapshotListener(MetadataChanges.INCLUDE, new EventListener<QuerySnapshot>() {
+                    @Override
+                    public void onEvent(@Nullable QuerySnapshot querySnapshot,
+                                        @Nullable FirebaseFirestoreException e) {
+                        if (e != null) {
+                            Log.w(Constant.TAG, "Listen error", e);
+                            return;
+                        }
+
+                        for (DocumentChange change : querySnapshot.getDocumentChanges()) {
+                            if (change.getType() == DocumentChange.Type.ADDED) {
+                                Log.d(Constant.TAG, "New city:" + change.getDocument().getData());
+                            }
+
+                            String source = querySnapshot.getMetadata().isFromCache() ?
+                                    "local cache" : "server";
+                            Log.d(Constant.TAG, "Data fetched from " + source);
+                        }
+
+                    }
+                });
     }
 }

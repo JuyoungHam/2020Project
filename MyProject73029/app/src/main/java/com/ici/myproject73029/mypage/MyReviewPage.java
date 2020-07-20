@@ -8,9 +8,9 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.view.ViewTreeObserver;
-import android.widget.Toast;
 
 import androidx.annotation.NonNull;
+import androidx.annotation.Nullable;
 import androidx.constraintlayout.widget.ConstraintLayout;
 import androidx.fragment.app.Fragment;
 import androidx.recyclerview.widget.LinearLayoutManager;
@@ -19,22 +19,21 @@ import androidx.swiperefreshlayout.widget.SwipeRefreshLayout;
 
 import com.google.android.gms.tasks.OnCompleteListener;
 import com.google.android.gms.tasks.OnFailureListener;
-import com.google.android.gms.tasks.OnSuccessListener;
 import com.google.android.gms.tasks.Task;
 import com.google.firebase.auth.FirebaseUser;
+import com.google.firebase.firestore.DocumentChange;
+import com.google.firebase.firestore.EventListener;
 import com.google.firebase.firestore.FirebaseFirestore;
+import com.google.firebase.firestore.FirebaseFirestoreException;
+import com.google.firebase.firestore.MetadataChanges;
 import com.google.firebase.firestore.QueryDocumentSnapshot;
 import com.google.firebase.firestore.QuerySnapshot;
 import com.ici.myproject73029.Constant;
 import com.ici.myproject73029.MainActivity;
 import com.ici.myproject73029.R;
-import com.ici.myproject73029.adapters.OnItemClickListener;
 import com.ici.myproject73029.adapters.ReviewAdapter;
 import com.ici.myproject73029.firebase.Firebase;
 import com.ici.myproject73029.items.Review;
-
-import java.util.ArrayList;
-import java.util.List;
 
 public class MyReviewPage extends Fragment implements MainActivity.onBackPressedListener,
         SwipeRefreshLayout.OnRefreshListener {
@@ -147,10 +146,36 @@ public class MyReviewPage extends Fragment implements MainActivity.onBackPressed
         ((MainActivity) context).setOnBackPressedListener(this);
     }
 
+    private void updateCache() {
+        db.collectionGroup("comments").whereEqualTo("userId",
+                user.getUid())
+                .addSnapshotListener(MetadataChanges.INCLUDE, new EventListener<QuerySnapshot>() {
+                    @Override
+                    public void onEvent(@Nullable QuerySnapshot querySnapshot,
+                                        @Nullable FirebaseFirestoreException e) {
+                        if (e != null) {
+                            Log.w(Constant.TAG, "Listen error", e);
+                            return;
+                        }
+
+                        for (DocumentChange change : querySnapshot.getDocumentChanges()) {
+                            if (change.getType() == DocumentChange.Type.ADDED) {
+                                Log.d(Constant.TAG, "New city:" + change.getDocument().getData());
+                            }
+
+                            String source = querySnapshot.getMetadata().isFromCache() ?
+                                    "local cache" : "server";
+                            Log.d(Constant.TAG, "Data fetched from " + source);
+                        }
+
+                    }
+                });
+    }
 
     @Override
     public void onRefresh() {
         updateReviews();
+        updateCache();
         refreshLayout.setRefreshing(false);
     }
 }
