@@ -31,12 +31,15 @@ import com.ici.myproject73029.adapters.FundamentalAdapter;
 import com.ici.myproject73029.firebase.Firebase;
 import com.ici.myproject73029.items.Exhibition;
 
+import java.util.ArrayList;
+
 public class ExhibitionTab extends Fragment implements SwipeRefreshLayout.OnRefreshListener {
     private RecyclerView recyclerView;
     private MainActivity mainActivity;
     private SwipeRefreshLayout refreshLayout;
     private FundamentalAdapter adapter;
     private FirebaseFirestore db;
+    private ArrayList<String> list;
 
     @Override
     public void onCreate(@Nullable Bundle savedInstanceState) {
@@ -81,15 +84,14 @@ public class ExhibitionTab extends Fragment implements SwipeRefreshLayout.OnRefr
 
         recyclerView.setLayoutManager(layoutManager);
 
-
         mainActivity = (MainActivity) getActivity();
         mainActivity.isActionBarVisible(false);
 
         Firebase firebase = new Firebase();
         db = firebase.startFirebase();
 
+        list = new ArrayList<>();
         updateItemList();
-
 
         return rootView;
     }
@@ -103,9 +105,13 @@ public class ExhibitionTab extends Fragment implements SwipeRefreshLayout.OnRefr
                         if (task.isSuccessful()) {
                             for (QueryDocumentSnapshot document : task.getResult()) {
                                 Exhibition item = document.toObject(Exhibition.class);
+                                if (document.get("subjectCategory") != null)
+                                    list.add(document.get("subjectCategory").toString());
                                 adapter.addItem(item);
                                 adapter.setIsGrid(true);
                             }
+                            for (String str : list)
+                                Log.d("list", str);
                         } else {
                             Log.d(Constant.TAG, "Error getting documents: ", task.getException());
                         }
