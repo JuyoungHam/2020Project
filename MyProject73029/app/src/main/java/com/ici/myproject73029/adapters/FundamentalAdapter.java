@@ -9,6 +9,7 @@ import android.widget.LinearLayout;
 import android.widget.TextView;
 
 import androidx.annotation.NonNull;
+import androidx.lifecycle.ViewModel;
 import androidx.recyclerview.widget.RecyclerView;
 
 import com.bumptech.glide.Glide;
@@ -127,6 +128,10 @@ public class FundamentalAdapter extends RecyclerView.Adapter<FundamentalAdapter.
 
     public void setItem(int position, FundamentalItem item) {
         items.set(position, item);
+    }
+
+    public void clearItems() {
+        items.clear();
     }
 }
 
