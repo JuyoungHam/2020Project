@@ -63,13 +63,13 @@ public class ExhibitionTab extends Fragment implements SwipeRefreshLayout.OnRefr
 
         recyclerView = rootView.findViewById(R.id.grid_recyclerView);
 
-        final ConstraintLayout frameLayout = rootView.findViewById(R.id.constraintLayout_gridtab);
+        final ConstraintLayout constraintLayout = rootView.findViewById(R.id.constraintLayout_gridtab);
         refreshLayout = rootView.findViewById(R.id.swipeRefreshLayout_grid);
         refreshLayout.setDistanceToTriggerSync(200);
         refreshLayout.getViewTreeObserver().addOnScrollChangedListener(new ViewTreeObserver.OnScrollChangedListener() {
             @Override
             public void onScrollChanged() {
-                if (frameLayout.getScrollY() == 0)
+                if (constraintLayout.getScrollY() == 0)
                     refreshLayout.setEnabled(true);
                 else
                     refreshLayout.setEnabled(false);
@@ -92,7 +92,8 @@ public class ExhibitionTab extends Fragment implements SwipeRefreshLayout.OnRefr
         db = firebase.startFirebase();
 
         spinner = rootView.findViewById(R.id.spinner);
-        spinner_adapter = new ArrayAdapter<>(getContext(), android.R.layout.simple_spinner_item, Constant.TAGS);
+        spinner_adapter = new ArrayAdapter<>(getContext(), android.R.layout.simple_spinner_item,
+                Constant.EXHIBITION_TAGS);
         spinner_adapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
         spinner.setAdapter(spinner_adapter);
         spinner.setOnItemSelectedListener(this);
@@ -108,7 +109,7 @@ public class ExhibitionTab extends Fragment implements SwipeRefreshLayout.OnRefr
         adapter.notifyDataSetChanged();
         Query query = db.collection("All").whereEqualTo("category", 101);
 
-        if (tag != null && !tag.equals(Constant.TAGS[0])) {
+        if (tag != null && !tag.equals(Constant.EXHIBITION_TAGS[0])) {
             query = query.whereArrayContains("tag", tag);
         }
 
@@ -151,11 +152,11 @@ public class ExhibitionTab extends Fragment implements SwipeRefreshLayout.OnRefr
 
     @Override
     public void onItemSelected(AdapterView<?> parent, View view, int position, long id) {
-        updateItemList(Constant.TAGS[position]);
+        updateItemList(Constant.EXHIBITION_TAGS[position]);
     }
 
     @Override
     public void onNothingSelected(AdapterView<?> parent) {
-
+        updateItemList(null);
     }
 }

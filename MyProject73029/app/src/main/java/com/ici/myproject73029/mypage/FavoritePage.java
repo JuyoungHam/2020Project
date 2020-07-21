@@ -110,14 +110,17 @@ public class FavoritePage extends Fragment implements View.OnClickListener,
     }
 
     private void getFavorite(String id) {
-        adapter = new FundamentalAdapter();
+        adapter.clearItems();
+        adapter.notifyDataSetChanged();
         db.collection("All").whereEqualTo("title", id).get().addOnCompleteListener(new OnCompleteListener<QuerySnapshot>() {
             @Override
             public void onComplete(@NonNull Task<QuerySnapshot> task) {
                 if (task.isSuccessful()) {
+                    int i = 0;
                     for (QueryDocumentSnapshot document : task.getResult()) {
                         Exhibition item = document.toObject(Exhibition.class);
                         adapter.addItem(item);
+                        adapter.notifyItemInserted(i++);
                     }
                 } else {
                     Log.d(Constant.TAG, "Error getting documents: ", task.getException());

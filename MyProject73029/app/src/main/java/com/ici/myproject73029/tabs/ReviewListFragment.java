@@ -78,14 +78,18 @@ public class ReviewListFragment extends Fragment {
     }
 
     public void getCommentsFromDatabase() {
+        adapter.clearItems();
+        adapter.notifyDataSetChanged();
         db.collection("All").document(title).collection("comments").get()
                 .addOnCompleteListener(new OnCompleteListener<QuerySnapshot>() {
                     @Override
                     public void onComplete(@NonNull Task<QuerySnapshot> task) {
                         if (task.isSuccessful()) {
+                            int i = 0;
                             for (QueryDocumentSnapshot document : task.getResult()) {
                                 Review item = document.toObject(Review.class);
                                 adapter.addItem(item);
+                                adapter.notifyItemInserted(i++);
                             }
                         } else {
                             Log.d(Constant.TAG, "Error getting documents: ", task.getException());

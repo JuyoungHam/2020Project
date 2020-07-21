@@ -77,6 +77,7 @@ public class MyReviewPage extends Fragment implements MainActivity.onBackPressed
         LinearLayoutManager layoutManager = new LinearLayoutManager(getContext(),
                 LinearLayoutManager.VERTICAL, false);
         recyclerView.setLayoutManager(layoutManager);
+        adapter = new ReviewAdapter(Constant.MYREVIEWPAGE);
 
         mainActivity = (MainActivity) getActivity();
         mainActivity.isActionBarVisible(true);
@@ -94,17 +95,20 @@ public class MyReviewPage extends Fragment implements MainActivity.onBackPressed
     }
 
     private void updateReviews() {
-        adapter = new ReviewAdapter(Constant.MYREVIEWPAGE);
+        adapter.clearItems();
+        adapter.notifyDataSetChanged();
+
         db.collectionGroup("comments").whereEqualTo("userId",
                 user.getUid()).get()
                 .addOnCompleteListener(new OnCompleteListener<QuerySnapshot>() {
                     @Override
                     public void onComplete(@NonNull Task<QuerySnapshot> task) {
                         if (task.isSuccessful()) {
+                            int i = 0;
                             for (QueryDocumentSnapshot document : task.getResult()) {
                                 Review item = document.toObject(Review.class);
-
                                 adapter.addItem(item);
+                                adapter.notifyItemInserted(i++);
                             }
                         } else {
                             Log.d(Constant.TAG, "Error getting documents: ", task.getException());

@@ -119,5 +119,9 @@ public class ReviewAdapter extends RecyclerView.Adapter<ReviewAdapter.ViewHolder
     public void setItem(int position, Review item) {
         items.set(position, item);
     }
+
+    public void clearItems() {
+        items.clear();
+    }
 }
 

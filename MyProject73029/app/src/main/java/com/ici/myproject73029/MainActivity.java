@@ -15,12 +15,16 @@ import androidx.appcompat.app.ActionBar;
 import androidx.appcompat.app.AppCompatActivity;
 
 import com.bumptech.glide.Glide;
+import com.google.android.gms.tasks.OnCompleteListener;
 import com.google.android.gms.tasks.OnFailureListener;
 import com.google.android.gms.tasks.OnSuccessListener;
+import com.google.android.gms.tasks.Task;
 import com.google.android.material.bottomnavigation.BottomNavigationView;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.auth.FirebaseUser;
 import com.google.firebase.firestore.FirebaseFirestore;
+import com.google.firebase.iid.FirebaseInstanceId;
+import com.google.firebase.iid.InstanceIdResult;
 import com.google.firebase.storage.FirebaseStorage;
 import com.google.firebase.storage.StorageReference;
 import com.ici.myproject73029.firebase.Firebase;
@@ -31,10 +35,8 @@ import com.ici.myproject73029.mypage.MyPageTab;
 import com.ici.myproject73029.mypage.MyReviewPage;
 import com.ici.myproject73029.mypage.MyReviewFragment;
 import com.ici.myproject73029.tabs.ExhibitionTab;
-import com.ici.myproject73029.tabs.GridTab;
 import com.ici.myproject73029.tabs.HomeTab;
 import com.ici.myproject73029.tabs.ItemFragment;
-import com.ici.myproject73029.tabs.ReviewListFragment;
 import com.ici.myproject73029.tabs.ShowTab;
 
 public class MainActivity extends AppCompatActivity {
@@ -48,7 +50,6 @@ public class MainActivity extends AppCompatActivity {
     public MyReviewPage myReviewPage;
     ItemFragment item_Show;
     ItemFragment item_Exhibition;
-    GridTab gridTab;
     private BottomNavigationView bottomNavigation;
     private ActionBar actionBar;
     private long pressedTime = 0;
@@ -80,7 +81,6 @@ public class MainActivity extends AppCompatActivity {
                 (HomeTab) getSupportFragmentManager().findFragmentById(R.id.main_fragment);
         exhibitionTab = new ExhibitionTab();
         showTab = new ShowTab();
-        gridTab = new GridTab();
         myPageTab = new MyPageTab();
 
         favoritePage = new FavoritePage();
@@ -103,7 +103,7 @@ public class MainActivity extends AppCompatActivity {
                         return true;
                     case R.id.tab_show:
                         getSupportFragmentManager().beginTransaction().replace(R.id.main_fragment
-                                , gridTab).commit();
+                                , showTab).commit();
                         return true;
                     case R.id.tab_mypage:
                         getSupportFragmentManager().beginTransaction().replace(R.id.main_fragment,
@@ -116,9 +116,8 @@ public class MainActivity extends AppCompatActivity {
 
         actionBar = getSupportActionBar();
         isActionBarVisible(false);
-
+        firebaseCloudMessagingToken();
     }
-
 
     @Override
     protected void onStart() {
@@ -252,5 +251,22 @@ public class MainActivity extends AppCompatActivity {
         } else {
             imageView.setImageBitmap(null);
         }
+    }
+
+    private void firebaseCloudMessagingToken() {
+        FirebaseInstanceId.getInstance().getInstanceId()
+                .addOnCompleteListener(new OnCompleteListener<InstanceIdResult>() {
+                    @Override
+                    public void onComplete(@NonNull Task<InstanceIdResult> task) {
+                        if (!task.isSuccessful()) {
+                            Log.w("firebaseCloudMessaging", "getInstanceId failed", task.getException());
+                            return;
+                        }
+//                        String token = task.getResult().getToken();
+//                        String msg = getString(R.string.msg_token_fmt, token);
+//                        Log.d("firebaseCloudMessaging", msg);
+//                        Toast.makeText(MainActivity.this, msg, Toast.LENGTH_SHORT).show();
+                    }
+                });
     }
 }
