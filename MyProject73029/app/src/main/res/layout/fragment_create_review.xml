@@ -5,7 +5,13 @@
     android:layout_width="match_parent"
     android:layout_height="wrap_content"
     android:orientation="vertical"
-    android:padding="24dp">
+    android:padding="16dp">
+
+    <TextView
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:text="댓글 작성"
+        android:textAppearance="@style/TextAppearance.AppCompat.Medium" />
 
     <EditText
         android:id="@+id/review_title_editText"
@@ -26,7 +32,10 @@
                 android:id="@+id/review_comments_editText"
                 android:layout_width="match_parent"
                 android:layout_height="match_parent"
+                android:gravity="top"
                 android:hint="코멘트"
+                android:lineSpacingExtra="8sp"
+                android:lines="5"
                 android:singleLine="false" />
         </LinearLayout>
     </ScrollView>

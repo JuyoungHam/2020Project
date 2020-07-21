@@ -31,9 +31,9 @@ public class HomeTab extends Fragment {
     private MainActivity mainActivity;
 
     @Override
-    public void onCreate(@Nullable Bundle savedInstanceState) {
-        super.onCreate(savedInstanceState);
-
+    public void onResume() {
+        super.onResume();
+        mainActivity.isActionBarVisible(false);
     }
 
     @Nullable
@@ -47,6 +47,8 @@ public class HomeTab extends Fragment {
                 LinearLayoutManager.VERTICAL, false);
         recyclerView.setLayoutManager(layoutManager);
         final FundamentalAdapter adapter = new FundamentalAdapter();
+
+        mainActivity = (MainActivity) getActivity();
 
         Firebase firebase = new Firebase();
         FirebaseFirestore db = firebase.startFirebase();

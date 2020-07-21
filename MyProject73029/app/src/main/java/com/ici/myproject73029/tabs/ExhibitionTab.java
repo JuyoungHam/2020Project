@@ -20,6 +20,7 @@ import androidx.swiperefreshlayout.widget.SwipeRefreshLayout;
 
 import com.google.android.gms.tasks.OnCompleteListener;
 import com.google.android.gms.tasks.Task;
+import com.google.android.material.floatingactionbutton.FloatingActionButton;
 import com.google.firebase.firestore.FirebaseFirestore;
 import com.google.firebase.firestore.Query;
 import com.google.firebase.firestore.QueryDocumentSnapshot;
@@ -31,6 +32,10 @@ import com.ici.myproject73029.adapters.FundamentalAdapter;
 import com.ici.myproject73029.adapters.OnItemClickListener;
 import com.ici.myproject73029.firebase.Firebase;
 import com.ici.myproject73029.items.Exhibition;
+
+import java.lang.reflect.Array;
+import java.util.ArrayList;
+import java.util.Arrays;
 
 public class ExhibitionTab extends Fragment implements SwipeRefreshLayout.OnRefreshListener, AdapterView.OnItemSelectedListener {
     private RecyclerView recyclerView;
@@ -98,8 +103,15 @@ public class ExhibitionTab extends Fragment implements SwipeRefreshLayout.OnRefr
         spinner.setAdapter(spinner_adapter);
         spinner.setOnItemSelectedListener(this);
 
-        updateItemList(null);
+        FloatingActionButton fab = rootView.findViewById(R.id.upButton);
+        fab.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                recyclerView.getLayoutManager().scrollToPosition(0);
+            }
+        });
 
+        updateItemList(null);
 
         return rootView;
     }

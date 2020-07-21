@@ -34,6 +34,8 @@ import com.google.android.gms.tasks.OnCompleteListener;
 import com.google.android.gms.tasks.OnFailureListener;
 import com.google.android.gms.tasks.OnSuccessListener;
 import com.google.android.gms.tasks.Task;
+import com.google.android.material.chip.Chip;
+import com.google.android.material.chip.ChipGroup;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.auth.FirebaseUser;
 import com.google.firebase.firestore.DocumentChange;
@@ -52,6 +54,7 @@ import com.ici.myproject73029.firebase.Firebase;
 import com.ici.myproject73029.items.FundamentalItem;
 
 import java.io.IOException;
+import java.util.ArrayList;
 import java.util.Calendar;
 import java.util.Date;
 import java.util.HashMap;
@@ -77,6 +80,7 @@ public class ItemFragment extends Fragment implements View.OnClickListener,
     private ViewGroup rootView;
     private ImageView img_poster;
     private ReviewListFragment listFragment;
+    private ChipGroup chipGroup;
 
     public ItemFragment(FundamentalItem item) {
 
@@ -128,6 +132,7 @@ public class ItemFragment extends Fragment implements View.OnClickListener,
             }
         });
         refreshLayout.setOnRefreshListener(this);
+        chipGroup = rootView.findViewById(R.id.chip_group);
 
         if (FirebaseAuth.getInstance().getCurrentUser() == null) {
             make_favorite.setVisibility(View.GONE);
@@ -183,6 +188,14 @@ public class ItemFragment extends Fragment implements View.OnClickListener,
                                 } else {
                                     img_poster.setVisibility(View.GONE);
                                 }
+
+                                ArrayList<String> tags = (ArrayList<String>) document.get("tag");
+                                for (String tag : tags) {
+                                    Chip chip = new Chip(getContext());
+                                    chip.setText(tag);
+                                    chipGroup.addView(chip);
+                                }
+
                             }
                         } else {
                             Log.d(Constant.TAG, "Error getting documents: ", task.getException());

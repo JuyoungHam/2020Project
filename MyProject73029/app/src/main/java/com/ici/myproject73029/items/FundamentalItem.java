@@ -3,6 +3,8 @@ package com.ici.myproject73029.items;
 import androidx.databinding.BaseObservable;
 import androidx.databinding.library.baseAdapters.BR;
 
+import java.util.ArrayList;
+
 public class FundamentalItem extends BaseObservable {
     private String poster;
     private String title;
@@ -15,6 +17,7 @@ public class FundamentalItem extends BaseObservable {
     private String period;
     private int type;
     private int favorite_count;
+    private ArrayList<String> tag;
 
     public FundamentalItem() {
     }
@@ -32,6 +35,14 @@ public class FundamentalItem extends BaseObservable {
         this.title = title;
         this.description = description;
         this.poster = poster;
+    }
+
+    public ArrayList<String> getTag() {
+        return tag;
+    }
+
+    public void setTag(ArrayList<String> tag) {
+        this.tag = tag;
     }
 
     public int getFavorite_count() {

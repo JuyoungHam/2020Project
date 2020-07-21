@@ -5,7 +5,7 @@
     <item
         android:id="@+id/tab_exhibition"
         android:enabled="true"
-        android:icon="@drawable/ic_baseline_portrait_24"
+        android:icon="@drawable/ic_baseline_photo"
         android:title="전시"
         app:showAsAction="ifRoom" />
     <item
@@ -16,7 +16,7 @@
     <item
         android:id="@+id/tab_show"
         android:enabled="true"
-        android:icon="@drawable/ic_baseline_favorite_24"
+        android:icon="@drawable/ic_baseline_slideshow_24"
         android:title="공연"
         app:showAsAction="ifRoom" />
     <item

@@ -17,11 +17,13 @@ import com.ici.myproject73029.R;
 import com.ici.myproject73029.items.FundamentalItem;
 
 import java.util.ArrayList;
+import java.util.List;
 
 public class FundamentalAdapter extends RecyclerView.Adapter<FundamentalAdapter.ViewHolder>
         implements OnItemClickListener {
     ArrayList<FundamentalItem> items = new ArrayList<>();
     OnItemClickListener onItemClickListener;
+    ArrayList<String> tags = new ArrayList<>();
 
     private boolean isGrid;
 
@@ -59,6 +61,9 @@ public class FundamentalAdapter extends RecyclerView.Adapter<FundamentalAdapter.
         if (onItemClickListener != null) {
             onItemClickListener.onItemClick(view, position);
         }
+    }
+
+    public void setTags(List<Object> tag) {
     }
 
     public class ViewHolder extends RecyclerView.ViewHolder {
@@ -104,8 +109,12 @@ public class FundamentalAdapter extends RecyclerView.Adapter<FundamentalAdapter.
                     Html.fromHtml(item.getDescription()) : ""));
             if (isGrid) {
                 gridTitle.setText(item.getTitle());
-                gridDescription.setText((item.getDescription() != null ?
-                        Html.fromHtml(item.getDescription()) : ""));
+//                gridDescription.setText((item.getDescription() != null ?
+//                        Html.fromHtml(item.getDescription()) : ""));
+                gridDescription.setText("");
+                for (String str : item.getTag()) {
+                    gridDescription.append("#" + str + " ");
+                }
                 if (item.getPoster() != null) {
                     Glide.with(itemView).load(item.getPoster()).into(imageView);
                     imageView.setVisibility(View.VISIBLE);
