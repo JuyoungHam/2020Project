@@ -6,6 +6,8 @@ import android.content.Intent;
 import android.content.pm.PackageManager;
 import android.content.pm.ResolveInfo;
 import android.graphics.Color;
+import android.graphics.drawable.Drawable;
+import android.graphics.drawable.DrawableWrapper;
 import android.location.Address;
 import android.location.Geocoder;
 import android.net.Uri;
@@ -24,6 +26,8 @@ import android.widget.Toast;
 
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
+import androidx.appcompat.widget.DrawableUtils;
+import androidx.constraintlayout.widget.ConstraintLayout;
 import androidx.databinding.DataBindingUtil;
 import androidx.fragment.app.DialogFragment;
 import androidx.fragment.app.Fragment;
@@ -39,6 +43,7 @@ import com.google.android.material.chip.ChipGroup;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.auth.FirebaseUser;
 import com.google.firebase.firestore.DocumentChange;
+import com.google.firebase.firestore.DocumentReference;
 import com.google.firebase.firestore.DocumentSnapshot;
 import com.google.firebase.firestore.EventListener;
 import com.google.firebase.firestore.FirebaseFirestore;
@@ -81,6 +86,7 @@ public class ItemFragment extends Fragment implements View.OnClickListener,
     private ImageView img_poster;
     private ReviewListFragment listFragment;
     private ChipGroup chipGroup;
+    private TextView rating_score;
 
     public ItemFragment(FundamentalItem item) {
 
@@ -132,7 +138,9 @@ public class ItemFragment extends Fragment implements View.OnClickListener,
             }
         });
         refreshLayout.setOnRefreshListener(this);
-        chipGroup = rootView.findViewById(R.id.chip_group);
+        chipGroup = rootView.findViewById(R.id.item_chip_group);
+        rating_score = rootView.findViewById(R.id.rating_score);
+
 
         if (FirebaseAuth.getInstance().getCurrentUser() == null) {
             make_favorite.setVisibility(View.GONE);
@@ -193,9 +201,14 @@ public class ItemFragment extends Fragment implements View.OnClickListener,
                                 for (String tag : tags) {
                                     Chip chip = new Chip(getContext());
                                     chip.setText(tag);
+                                    chip.setChipIcon(mainActivity.resources.getDrawable(R.drawable.ic_iconfinder_icon_hashtag));
+                                    chip.setChipIconSize(50);
+                                    chip.setChipBackgroundColorResource(R.color.colorPrimaryDark);
+                                    chip.setTextColor(Color.WHITE);
                                     chipGroup.addView(chip);
                                 }
 
+                                getAverageRates(document.getReference());
                             }
                         } else {
                             Log.d(Constant.TAG, "Error getting documents: ", task.getException());
@@ -203,6 +216,25 @@ public class ItemFragment extends Fragment implements View.OnClickListener,
                         }
                     }
                 });
+    }
+
+    private void getAverageRates(DocumentReference reference) {
+        reference.collection("comments").get().addOnCompleteListener(new OnCompleteListener<QuerySnapshot>() {
+            @Override
+            public void onComplete(@NonNull Task<QuerySnapshot> task) {
+                double rates = 0;
+                int count = 0;
+                for (DocumentSnapshot document : task.getResult()) {
+                    if (document.get("rating") != null && (double) document.get("rating") > 0) {
+                        rates += (double) document.get("rating");
+                        count += 1;
+                    }
+                }
+                double avg = rates / count;
+                if (count > 0) rating_score.setText(String.format("%.1f", avg));
+                else rating_score.setText(null);
+            }
+        });
     }
 
     public void updateComments() {
@@ -219,7 +251,7 @@ public class ItemFragment extends Fragment implements View.OnClickListener,
                                 DocumentSnapshot document = task.getResult();
                                 if (document.exists()) {
                                     isFavorite = true;
-                                    make_favorite.setColorFilter(Color.RED);
+                                    make_favorite.setColorFilter(mainActivity.resources.getColor(R.color.colorAccent));
                                 } else {
                                     isFavorite = false;
                                     make_favorite.clearColorFilter();
@@ -272,7 +304,7 @@ public class ItemFragment extends Fragment implements View.OnClickListener,
                         @Override
                         public void onSuccess(Void aVoid) {
                             isFavorite = true;
-                            make_favorite.setColorFilter(Color.RED);
+                            make_favorite.setColorFilter(mainActivity.resources.getColor(R.color.colorAccent));
                             add_favorite_count(1);
                             Toast.makeText(mainActivity, "좋아요 설정", Toast.LENGTH_SHORT).show();
                             Log.d(Constant.TAG, "DocumentSnapshot successfully written!");
@@ -339,6 +371,9 @@ public class ItemFragment extends Fragment implements View.OnClickListener,
         } else if (type == Constant.FAVORITE) {
             mainActivity.getSupportFragmentManager().beginTransaction()
                     .replace(R.id.main_fragment, mainActivity.favoritePage).commit();
+        } else if (type == Constant.MYREVIEWPAGE) {
+            mainActivity.getSupportFragmentManager().beginTransaction()
+                    .replace(R.id.main_fragment, mainActivity.myReviewPage).commit();
         }
     }
 
@@ -376,6 +411,9 @@ public class ItemFragment extends Fragment implements View.OnClickListener,
         updateItems();
         updateComments();
         checkIsFavorite();
+        DocumentReference reference =
+                db.collection("All").document(title);
+        getAverageRates(reference);
         refreshLayout.setRefreshing(false);
     }
 

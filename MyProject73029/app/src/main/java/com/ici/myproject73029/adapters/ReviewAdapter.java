@@ -1,19 +1,31 @@
 package com.ici.myproject73029.adapters;
 
+import android.net.Uri;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.ImageView;
 import android.widget.LinearLayout;
+import android.widget.RatingBar;
 import android.widget.TextView;
 
 import androidx.annotation.NonNull;
 import androidx.recyclerview.widget.RecyclerView;
 
+import com.bumptech.glide.Glide;
+import com.google.android.gms.tasks.OnFailureListener;
+import com.google.android.gms.tasks.OnSuccessListener;
+import com.google.firebase.storage.FirebaseStorage;
+import com.google.firebase.storage.StorageReference;
 import com.ici.myproject73029.Constant;
+import com.ici.myproject73029.MainActivity;
 import com.ici.myproject73029.R;
 import com.ici.myproject73029.items.Review;
+import com.ici.myproject73029.tabs.ReviewListFragment;
 
 import java.util.ArrayList;
+
+import static com.firebase.ui.auth.AuthUI.getApplicationContext;
 
 public class ReviewAdapter extends RecyclerView.Adapter<ReviewAdapter.ViewHolder>
         implements OnItemClickListener {
@@ -21,6 +33,8 @@ public class ReviewAdapter extends RecyclerView.Adapter<ReviewAdapter.ViewHolder
     OnItemClickListener onItemClickListener;
     int type;
     int item_limit = 10;
+    private FirebaseStorage storage;
+    private View itemView;
 
     public ReviewAdapter() {
         super();
@@ -35,7 +49,8 @@ public class ReviewAdapter extends RecyclerView.Adapter<ReviewAdapter.ViewHolder
     @Override
     public ViewHolder onCreateViewHolder(@NonNull ViewGroup parent, int viewType) {
         LayoutInflater inflater = LayoutInflater.from(parent.getContext());
-        View itemView = inflater.inflate(R.layout.review, parent, false);
+        itemView = inflater.inflate(R.layout.review, parent, false);
+        storage = FirebaseStorage.getInstance();
 
         return new ViewHolder(itemView, this);
     }
@@ -72,6 +87,8 @@ public class ReviewAdapter extends RecyclerView.Adapter<ReviewAdapter.ViewHolder
         TextView title;
         TextView comments;
         LinearLayout container = itemView.findViewById(R.id.review_item_container);
+        ImageView profile;
+        private final RatingBar ratingBar;
 
         public ViewHolder(@NonNull View itemView, final OnItemClickListener listener) {
             super(itemView);
@@ -79,6 +96,8 @@ public class ReviewAdapter extends RecyclerView.Adapter<ReviewAdapter.ViewHolder
             info = itemView.findViewById(R.id.review_item_info);
             title = itemView.findViewById(R.id.review_item_title);
             comments = itemView.findViewById(R.id.review_item_comments);
+            profile = itemView.findViewById(R.id.review_item_profile);
+            ratingBar = itemView.findViewById(R.id.review_rating_bar);
 
             container.setVisibility(View.VISIBLE);
 
@@ -98,9 +117,25 @@ public class ReviewAdapter extends RecyclerView.Adapter<ReviewAdapter.ViewHolder
             comments.setText(item.getComments());
             if (type == Constant.MYREVIEWPAGE) {
                 info.setText(item.getItemInfo());
+                profile.setVisibility(View.GONE);
             } else {
                 info.setText(item.getWriter());
             }
+            if (item.getRating() != 0) {
+                ratingBar.setRating(item.getRating());
+            }
+            StorageReference storageRef = storage.getReference().child("profile_images");
+            storageRef.child(item.getUserId()).getDownloadUrl().addOnSuccessListener(new OnSuccessListener<Uri>() {
+                @Override
+                public void onSuccess(Uri uri) {
+                    Glide.with(itemView).load(uri).circleCrop().into(profile);
+                }
+            }).addOnFailureListener(new OnFailureListener() {
+                @Override
+                public void onFailure(@NonNull Exception exception) {
+                    // Handle any errors
+                }
+            });
         }
     }
 

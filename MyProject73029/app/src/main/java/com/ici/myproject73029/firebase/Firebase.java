@@ -8,10 +8,12 @@ import com.google.android.gms.tasks.OnCompleteListener;
 import com.google.android.gms.tasks.OnFailureListener;
 import com.google.android.gms.tasks.OnSuccessListener;
 import com.google.android.gms.tasks.Task;
+import com.google.firebase.Timestamp;
 import com.google.firebase.firestore.FirebaseFirestore;
 import com.google.firebase.firestore.FirebaseFirestoreSettings;
 import com.google.firebase.firestore.QueryDocumentSnapshot;
 import com.google.firebase.firestore.QuerySnapshot;
+import com.google.firebase.firestore.SetOptions;
 import com.ici.myproject73029.Constant;
 
 import java.util.Arrays;
@@ -31,15 +33,16 @@ public class Firebase {
     }
 
     public void updateItems(final FirebaseFirestore db) {
-        db.collection("All").whereEqualTo("category", 102).get().addOnCompleteListener(new OnCompleteListener<QuerySnapshot>() {
+        db.collectionGroup("comments").get().addOnCompleteListener(new OnCompleteListener<QuerySnapshot>() {
             @Override
             public void onComplete(@NonNull Task<QuerySnapshot> task) {
                 if (task.isSuccessful()) {
                     for (QueryDocumentSnapshot document : task.getResult()) {
                         Map<String, Object> map = new HashMap<>();
-                        map.put("tag", Arrays.asList("공연"));
-                        db.collection("All").document(document.getId()).update(map);
-//                                .set(map, SetOptions.merge());
+                        if (document.get("create_date") == null) {
+                            map.put("create_date", Timestamp.now());
+                        }
+                        document.getReference().set(map, SetOptions.merge());
                     }
                 }
             }

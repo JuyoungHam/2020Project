@@ -3,6 +3,8 @@ package com.ici.myproject73029;
 import android.annotation.SuppressLint;
 import android.content.ClipData;
 import android.content.Intent;
+import android.content.res.Resources;
+import android.graphics.Bitmap;
 import android.net.Uri;
 import android.os.Bundle;
 import android.util.Log;
@@ -15,8 +17,11 @@ import android.widget.Toast;
 import androidx.annotation.NonNull;
 import androidx.appcompat.app.ActionBar;
 import androidx.appcompat.app.AppCompatActivity;
+import androidx.core.graphics.drawable.RoundedBitmapDrawable;
+import androidx.core.graphics.drawable.RoundedBitmapDrawableFactory;
 
 import com.bumptech.glide.Glide;
+import com.bumptech.glide.request.target.BitmapImageViewTarget;
 import com.google.android.gms.tasks.OnCompleteListener;
 import com.google.android.gms.tasks.OnFailureListener;
 import com.google.android.gms.tasks.OnSuccessListener;
@@ -30,6 +35,7 @@ import com.google.firebase.iid.FirebaseInstanceId;
 import com.google.firebase.iid.InstanceIdResult;
 import com.google.firebase.storage.FirebaseStorage;
 import com.google.firebase.storage.StorageReference;
+import com.ici.myproject73029.adapters.FundamentalAdapter;
 import com.ici.myproject73029.firebase.Firebase;
 import com.ici.myproject73029.items.FundamentalItem;
 import com.ici.myproject73029.items.Review;
@@ -63,6 +69,7 @@ public class MainActivity extends AppCompatActivity {
     private FirebaseStorage storage;
     private StorageReference storageRef;
     private Uri user_image_uri;
+    public Resources resources;
 
     @SuppressLint("RestrictedApi")
     @Override
@@ -70,13 +77,15 @@ public class MainActivity extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
 
+        resources = getResources();
+
         Firebase firebase = new Firebase();
         db = firebase.startFirebase();
 
         mAuth = FirebaseAuth.getInstance();
+        storage = FirebaseStorage.getInstance();
         if (mAuth.getCurrentUser() != null) {
             user = mAuth.getCurrentUser();
-            storage = FirebaseStorage.getInstance();
             storageRef = storage.getReference().child("profile_images");
         }
 
@@ -182,6 +191,8 @@ public class MainActivity extends AppCompatActivity {
         } else if (item.getType() == Constant.FAVORITE) {
             item_Exhibition = new ItemFragment(item);
             getSupportFragmentManager().beginTransaction().replace(R.id.main_fragment, item_Exhibition).commit();
+        } else if (item.getType() == Constant.MYREVIEWPAGE) {
+            getSupportFragmentManager().beginTransaction().replace(R.id.main_fragment, new ItemFragment(item)).commit();
         }
 
     }
@@ -242,8 +253,7 @@ public class MainActivity extends AppCompatActivity {
                 @Override
                 public void onSuccess(Uri uri) {
                     Glide.with(getApplicationContext())
-                            .load(uri)
-                            .into(imageView);
+                            .load(uri).circleCrop().into(imageView);
                 }
             }).addOnFailureListener(new OnFailureListener() {
                 @Override

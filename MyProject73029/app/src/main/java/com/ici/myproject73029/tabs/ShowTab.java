@@ -32,6 +32,7 @@ import com.ici.myproject73029.adapters.FundamentalAdapter;
 import com.ici.myproject73029.adapters.OnItemClickListener;
 import com.ici.myproject73029.firebase.Firebase;
 import com.ici.myproject73029.items.Exhibition;
+import com.ici.myproject73029.items.Show;
 
 public class ShowTab extends Fragment implements SwipeRefreshLayout.OnRefreshListener,
         AdapterView.OnItemSelectedListener {
@@ -85,7 +86,6 @@ public class ShowTab extends Fragment implements SwipeRefreshLayout.OnRefreshLis
 //        GridLayoutManager layoutManager = new GridLayoutManager(getContext(), 2);
 
         recyclerView.setLayoutManager(layoutManager);
-        adapter = new FundamentalAdapter();
 
         mainActivity = (MainActivity) getActivity();
         mainActivity.isActionBarVisible(false);
@@ -107,6 +107,8 @@ public class ShowTab extends Fragment implements SwipeRefreshLayout.OnRefreshLis
             }
         });
 
+        adapter = new FundamentalAdapter();
+
         updateItemList(null);
 
         return rootView;
@@ -127,7 +129,7 @@ public class ShowTab extends Fragment implements SwipeRefreshLayout.OnRefreshLis
                 if (task.isSuccessful()) {
                     int i = 0;
                     for (QueryDocumentSnapshot document : task.getResult()) {
-                        Exhibition item = document.toObject(Exhibition.class);
+                        Show item = document.toObject(Show.class);
                         adapter.addItem(item);
                         adapter.notifyItemInserted(i++);
                     }
@@ -141,7 +143,7 @@ public class ShowTab extends Fragment implements SwipeRefreshLayout.OnRefreshLis
                 adapter.setOnItemClickListener(new OnItemClickListener() {
                     @Override
                     public void onItemClick(View view, int position) {
-                        Exhibition item = (Exhibition) adapter.getItem(position);
+                        Show item = (Show) adapter.getItem(position);
                         MainActivity mainActivity = (MainActivity) getActivity();
                         mainActivity.onItemFragmentChanged(item);
                     }

@@ -13,8 +13,13 @@ import androidx.lifecycle.ViewModel;
 import androidx.recyclerview.widget.RecyclerView;
 
 import com.bumptech.glide.Glide;
+import com.google.android.material.chip.Chip;
+import com.google.android.material.chip.ChipGroup;
+import com.ici.myproject73029.MainActivity;
 import com.ici.myproject73029.R;
+import com.ici.myproject73029.items.Exhibition;
 import com.ici.myproject73029.items.FundamentalItem;
+import com.ici.myproject73029.tabs.ExhibitionTab;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -23,9 +28,9 @@ public class FundamentalAdapter extends RecyclerView.Adapter<FundamentalAdapter.
         implements OnItemClickListener {
     ArrayList<FundamentalItem> items = new ArrayList<>();
     OnItemClickListener onItemClickListener;
-    ArrayList<String> tags = new ArrayList<>();
 
     private boolean isGrid;
+    public ChipGroup chipGroup;
 
     public void setIsGrid(boolean grid) {
         isGrid = grid;
@@ -76,6 +81,7 @@ public class FundamentalAdapter extends RecyclerView.Adapter<FundamentalAdapter.
         LinearLayout grid = itemView.findViewById(R.id.grid_container);
         LinearLayout list = itemView.findViewById(R.id.list_container);
 
+
         public ViewHolder(@NonNull View itemView, final OnItemClickListener listener) {
             super(itemView);
 
@@ -83,6 +89,7 @@ public class FundamentalAdapter extends RecyclerView.Adapter<FundamentalAdapter.
             listDescription = itemView.findViewById(R.id.description_list);
             list.setVisibility(View.VISIBLE);
             grid.setVisibility(View.GONE);
+            chipGroup = itemView.findViewById(R.id.grid_list_chip_group);
 
             if (isGrid) {
                 imageView = itemView.findViewById(R.id.image_gird);
@@ -111,10 +118,6 @@ public class FundamentalAdapter extends RecyclerView.Adapter<FundamentalAdapter.
                 gridTitle.setText(item.getTitle());
 //                gridDescription.setText((item.getDescription() != null ?
 //                        Html.fromHtml(item.getDescription()) : ""));
-                gridDescription.setText("");
-                for (String str : item.getTag()) {
-                    gridDescription.append("#" + str + " ");
-                }
                 if (item.getPoster() != null) {
                     Glide.with(itemView).load(item.getPoster()).into(imageView);
                     imageView.setVisibility(View.VISIBLE);
@@ -142,5 +145,6 @@ public class FundamentalAdapter extends RecyclerView.Adapter<FundamentalAdapter.
     public void clearItems() {
         items.clear();
     }
+
 }
 

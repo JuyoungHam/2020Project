@@ -46,9 +46,10 @@ public class HomeTab extends Fragment {
         LinearLayoutManager layoutManager = new LinearLayoutManager(getContext(),
                 LinearLayoutManager.VERTICAL, false);
         recyclerView.setLayoutManager(layoutManager);
-        final FundamentalAdapter adapter = new FundamentalAdapter();
 
         mainActivity = (MainActivity) getActivity();
+
+        final FundamentalAdapter adapter = new FundamentalAdapter();
 
         Firebase firebase = new Firebase();
         FirebaseFirestore db = firebase.startFirebase();

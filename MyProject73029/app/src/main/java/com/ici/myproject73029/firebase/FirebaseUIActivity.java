@@ -406,7 +406,7 @@ public class FirebaseUIActivity extends AppCompatActivity implements View.OnClic
                 @Override
                 public void onSuccess(Uri uri) {
                     Glide.with(getApplicationContext())
-                            .load(uri)
+                            .load(uri).circleCrop()
                             .into(userProfile);
                 }
             }).addOnFailureListener(new OnFailureListener() {

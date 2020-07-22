@@ -20,6 +20,8 @@ import androidx.swiperefreshlayout.widget.SwipeRefreshLayout;
 
 import com.google.android.gms.tasks.OnCompleteListener;
 import com.google.android.gms.tasks.Task;
+import com.google.android.material.chip.Chip;
+import com.google.android.material.chip.ChipGroup;
 import com.google.android.material.floatingactionbutton.FloatingActionButton;
 import com.google.firebase.firestore.FirebaseFirestore;
 import com.google.firebase.firestore.Query;
@@ -88,7 +90,6 @@ public class ExhibitionTab extends Fragment implements SwipeRefreshLayout.OnRefr
 //        GridLayoutManager layoutManager = new GridLayoutManager(getContext(), 2);
 
         recyclerView.setLayoutManager(layoutManager);
-        adapter = new FundamentalAdapter();
 
         mainActivity = (MainActivity) getActivity();
         mainActivity.isActionBarVisible(false);
@@ -110,6 +111,8 @@ public class ExhibitionTab extends Fragment implements SwipeRefreshLayout.OnRefr
                 recyclerView.getLayoutManager().scrollToPosition(0);
             }
         });
+
+        adapter = new FundamentalAdapter();
 
         updateItemList(null);
 

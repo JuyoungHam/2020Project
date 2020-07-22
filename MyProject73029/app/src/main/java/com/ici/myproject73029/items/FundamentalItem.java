@@ -15,7 +15,7 @@ public class FundamentalItem extends BaseObservable {
     private String venue;
     private String phone;
     private String period;
-    private int type;
+    private int type = -1;
     private int favorite_count;
     private ArrayList<String> tag;
 

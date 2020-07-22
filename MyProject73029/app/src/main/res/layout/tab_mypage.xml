@@ -36,26 +36,31 @@
                 <TextView
                     android:id="@+id/text_profile"
                     android:layout_width="match_parent"
-                    android:layout_height="match_parent" />
+                    android:layout_height="match_parent"
+                    android:layout_margin="8dp"
+                    android:textAppearance="@style/TextAppearance.AppCompat.Medium" />
             </LinearLayout>
 
             <Button
                 android:id="@+id/button_myreview"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:text="myreview" />
+                android:text="myreview"
+                android:textColor="#000000" />
 
             <Button
                 android:id="@+id/button_favorite"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:text="favorite" />
+                android:text="favorite"
+                android:textColor="#000000" />
 
             <Button
                 android:id="@+id/button_login_control"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:text="계정 관리" />
+                android:text="계정 관리"
+                android:textColor="#000000" />
 
         </LinearLayout>
     </androidx.constraintlayout.widget.ConstraintLayout>

@@ -80,7 +80,8 @@ public class ReviewListFragment extends Fragment {
     public void getCommentsFromDatabase() {
         adapter.clearItems();
         adapter.notifyDataSetChanged();
-        db.collection("All").document(title).collection("comments").get()
+        db.collection("All").document(title).collection("comments").orderBy("create_date",
+                Query.Direction.DESCENDING).get()
                 .addOnCompleteListener(new OnCompleteListener<QuerySnapshot>() {
                     @Override
                     public void onComplete(@NonNull Task<QuerySnapshot> task) {

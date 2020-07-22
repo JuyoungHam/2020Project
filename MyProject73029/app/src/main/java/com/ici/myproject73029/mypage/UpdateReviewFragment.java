@@ -1,4 +1,4 @@
-package com.ici.myproject73029.tabs;
+package com.ici.myproject73029.mypage;
 
 import android.app.Dialog;
 import android.content.DialogInterface;
@@ -13,25 +13,24 @@ import androidx.annotation.NonNull;
 import androidx.appcompat.app.AlertDialog;
 import androidx.fragment.app.DialogFragment;
 
+import com.google.android.gms.tasks.OnCompleteListener;
 import com.google.android.gms.tasks.OnFailureListener;
 import com.google.android.gms.tasks.OnSuccessListener;
+import com.google.android.gms.tasks.Task;
 import com.google.firebase.Timestamp;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.auth.FirebaseUser;
 import com.google.firebase.firestore.DocumentSnapshot;
-import com.google.firebase.firestore.QueryDocumentSnapshot;
-import com.google.firebase.firestore.QuerySnapshot;
 import com.google.firebase.firestore.SetOptions;
 import com.ici.myproject73029.Constant;
 import com.ici.myproject73029.MainActivity;
 import com.ici.myproject73029.R;
+import com.ici.myproject73029.items.Review;
 
-import java.util.Calendar;
-import java.util.Date;
 import java.util.HashMap;
 import java.util.Map;
 
-public class CreateReviewFragment extends DialogFragment {
+public class UpdateReviewFragment extends DialogFragment {
 
     private String item;
     private MainActivity mainActivity;
@@ -42,11 +41,11 @@ public class CreateReviewFragment extends DialogFragment {
     private Map<String, Object> comment = new HashMap<>();
     private boolean isFirst = false;
 
-    public CreateReviewFragment() {
+    public UpdateReviewFragment() {
         super();
     }
 
-    public CreateReviewFragment(String item) {
+    public UpdateReviewFragment(String item) {
         super();
         this.item = item;
     }
@@ -81,8 +80,6 @@ public class CreateReviewFragment extends DialogFragment {
                                 double rating = (double) result.get("rating");
                                 ratingBar.setRating((float) rating);
                             }
-                            if (result.get("create_date") == null)
-                                isFirst = true;
                         }
                     }
                 });
@@ -97,9 +94,6 @@ public class CreateReviewFragment extends DialogFragment {
                         if (ratingBar.getRating() != 0) {
                             comment.put("rating", ratingBar.getRating());
                         }
-                        if (isFirst) {
-                            comment.put("create_date", Timestamp.now());
-                        }
                         if (user != null) {
                             comment.put("userId", user.getUid());
                             comment.put("writer", user.getDisplayName());
@@ -109,6 +103,14 @@ public class CreateReviewFragment extends DialogFragment {
                                         @Override
                                         public void onSuccess(Void aVoid) {
                                             Log.d(Constant.TAG, "DocumentSnapshot successfully written!");
+                                            mainActivity.db.collection("All").document(item).collection("comments")
+                                                    .document(user.getUid()).get().addOnCompleteListener(new OnCompleteListener<DocumentSnapshot>() {
+                                                @Override
+                                                public void onComplete(@NonNull Task<DocumentSnapshot> task) {
+                                                    Review review = task.getResult().toObject(Review.class);
+                                                    mainActivity.onItemFragmentChanged(review);
+                                                }
+                                            });
                                         }
                                     })
                                     .addOnFailureListener(new OnFailureListener() {

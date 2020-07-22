@@ -31,6 +31,7 @@ import com.google.firebase.firestore.QuerySnapshot;
 import com.ici.myproject73029.Constant;
 import com.ici.myproject73029.MainActivity;
 import com.ici.myproject73029.R;
+import com.ici.myproject73029.adapters.OnItemClickListener;
 import com.ici.myproject73029.adapters.ReviewAdapter;
 import com.ici.myproject73029.firebase.Firebase;
 import com.ici.myproject73029.items.Review;
@@ -116,14 +117,14 @@ public class MyReviewPage extends Fragment implements MainActivity.onBackPressed
 
                         recyclerView.setAdapter(adapter);
 
-//                            adapter.setOnItemClickListener(new OnItemClickListener() {
-//                                @Override
-//                                public void onItemClick(View view, int position) {
-//                                    Review item = (Review) adapter.getItem(position);
-//                                    MainActivity mainActivity = (MainActivity) getActivity();
-//                                    mainActivity.onItemFragmentChanged(item);
-//                                }
-//                            });
+                        adapter.setOnItemClickListener(new OnItemClickListener() {
+                            @Override
+                            public void onItemClick(View view, int position) {
+                                Review item = (Review) adapter.getItem(position);
+                                MainActivity mainActivity = (MainActivity) getActivity();
+                                mainActivity.onItemFragmentChanged(item);
+                            }
+                        });
                     }
                 })
                 .addOnFailureListener(new OnFailureListener() {
