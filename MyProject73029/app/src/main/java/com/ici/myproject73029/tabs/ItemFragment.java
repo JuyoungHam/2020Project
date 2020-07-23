@@ -148,8 +148,9 @@ public class ItemFragment extends Fragment implements View.OnClickListener,
         ImageButton go_to_url = rootView.findViewById(R.id.go_to_url);
 
         if (FirebaseAuth.getInstance().getCurrentUser() == null) {
-            make_favorite.setVisibility(View.GONE);
-            make_comment.setVisibility(View.GONE);
+            make_favorite.setEnabled(false);
+            make_favorite.setImageResource(R.drawable.favorited);
+            rootView.findViewById(R.id.set_comment).setVisibility(View.GONE);
         }
 
         geocoder = new Geocoder(getContext());

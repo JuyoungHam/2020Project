@@ -130,6 +130,7 @@ public class FirebaseUIActivity extends AppCompatActivity implements View.OnClic
 
         setContentView(R.layout.activity_firebase_ui);
 
+        mAuth = FirebaseAuth.getInstance();
         firebase = new Firebase();
         db = firebase.startFirebase();
         storage = FirebaseStorage.getInstance();
@@ -226,12 +227,6 @@ public class FirebaseUIActivity extends AppCompatActivity implements View.OnClic
         kakaoSessionCallback = new KakaoSessionCallback();
         Session.getCurrentSession().addCallback(kakaoSessionCallback);
         Session.getCurrentSession().checkAndImplicitOpen();
-
-
-        // [START initialize_auth]
-        // Initialize Firebase Auth
-        mAuth = FirebaseAuth.getInstance();
-        // [END initialize_auth]
     }
 
     // [START on_start_check_user]
@@ -354,7 +349,7 @@ public class FirebaseUIActivity extends AppCompatActivity implements View.OnClic
             }
         });
 
-        userProfile.setImageBitmap(null);
+        userProfile.setImageResource(R.drawable.ic_baseline_portrait_24);
     }
 
     private void google_revokeAccess() {
@@ -387,7 +382,6 @@ public class FirebaseUIActivity extends AppCompatActivity implements View.OnClic
 
         } else {
             logintext.setText("로그인이 필요합니다");
-//            userProfile.setImageBitmap(Bitmap.);
             google_login.setVisibility(View.VISIBLE);
             twitter_login.setVisibility(View.VISIBLE);
             facebook_login.setVisibility(View.VISIBLE);
@@ -396,7 +390,7 @@ public class FirebaseUIActivity extends AppCompatActivity implements View.OnClic
             logout.setEnabled(true);
             unregister.setVisibility(View.GONE);
             profile_update.setVisibility(View.GONE);
-            getUserProfileImage(userProfile);
+            userProfile.setImageResource(R.drawable.ic_baseline_portrait_24);
         }
     }
 
@@ -415,6 +409,8 @@ public class FirebaseUIActivity extends AppCompatActivity implements View.OnClic
                     // Handle any errors
                 }
             });
+        } else {
+            userProfile.setImageResource(R.drawable.ic_baseline_portrait_24);
         }
     }
 

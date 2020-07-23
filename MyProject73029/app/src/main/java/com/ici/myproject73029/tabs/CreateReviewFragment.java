@@ -5,12 +5,10 @@ import android.content.DialogInterface;
 import android.os.Bundle;
 import android.text.Html;
 import android.util.Log;
-import android.view.KeyEvent;
 import android.view.LayoutInflater;
 import android.view.ViewGroup;
 import android.widget.EditText;
 import android.widget.RatingBar;
-import android.widget.TextView;
 import android.widget.Toast;
 
 import androidx.annotation.NonNull;
@@ -25,8 +23,6 @@ import com.google.firebase.Timestamp;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.auth.FirebaseUser;
 import com.google.firebase.firestore.DocumentSnapshot;
-import com.google.firebase.firestore.QueryDocumentSnapshot;
-import com.google.firebase.firestore.QuerySnapshot;
 import com.google.firebase.firestore.SetOptions;
 import com.ici.myproject73029.Constant;
 import com.ici.myproject73029.MainActivity;
@@ -34,8 +30,6 @@ import com.ici.myproject73029.R;
 import com.ici.myproject73029.items.Exhibition;
 import com.ici.myproject73029.items.Show;
 
-import java.util.Calendar;
-import java.util.Date;
 import java.util.HashMap;
 import java.util.Map;
 
@@ -106,6 +100,7 @@ public class CreateReviewFragment extends DialogFragment {
                         comment.put("comments", review_comments.getText().toString());
                         comment.put("update_date", Timestamp.now());
                         comment.put("itemInfo", item);
+                        comment.put("like_count", 0);
                         if (ratingBar.getRating() != 0) {
                             comment.put("rating", ratingBar.getRating());
                         }

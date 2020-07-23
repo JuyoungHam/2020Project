@@ -131,6 +131,7 @@ public class MyPageTab extends Fragment implements View.OnClickListener, SwipeRe
             });
         } else {
             text_profile.setText(null);
+            profile_image.setImageResource(R.drawable.ic_baseline_portrait_24);
         }
     }
 
