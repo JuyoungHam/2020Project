@@ -42,8 +42,8 @@ public class Constant {
 
     public static final String FAVORITE_COUNT = "favorite_count";
 
-    public static final String[] EXHIBITION_TAGS = {"장르", "어린이"};
-    public static final String[] SHOW_TAGS = {"장르", "어린이"};
+    public static final String[] EXHIBITION_TAGS = {"모든 장르", "어린이"};
+    public static final String[] SHOW_TAGS = {"모든 장르", "어린이"};
 
 
     //How to get hashcode

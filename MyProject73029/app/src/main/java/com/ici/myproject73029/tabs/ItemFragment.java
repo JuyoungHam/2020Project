@@ -73,6 +73,7 @@ public class ItemFragment extends Fragment implements View.OnClickListener,
     public String venue;
     int type;
     boolean isFavorite;
+    String url;
     private List<Address> list = null;
 
     private MainActivity mainActivity;
@@ -96,6 +97,7 @@ public class ItemFragment extends Fragment implements View.OnClickListener,
             this.venue = item.getVenue();
         }
         this.type = item.getType();
+        this.url = item.getUrl();
     }
 
 
@@ -140,7 +142,11 @@ public class ItemFragment extends Fragment implements View.OnClickListener,
         refreshLayout.setOnRefreshListener(this);
         chipGroup = rootView.findViewById(R.id.item_chip_group);
         rating_score = rootView.findViewById(R.id.rating_score);
-
+        item_description.setVisibility(View.GONE);
+        item_venue.setVisibility(View.GONE);
+        item_period.setVisibility(View.GONE);
+        ImageButton go_to_url = rootView.findViewById(R.id.go_to_url);
+        go_to_url.setVisibility(View.GONE);
 
         if (FirebaseAuth.getInstance().getCurrentUser() == null) {
             make_favorite.setVisibility(View.GONE);
@@ -153,9 +159,18 @@ public class ItemFragment extends Fragment implements View.OnClickListener,
         share_button.setOnClickListener(this);
 
         item_title.setText(title);
-        if (description != null)
+        if (description != null) {
             item_description.setText(Html.fromHtml(description));
-        item_venue.setText(venue);
+            item_description.setVisibility(View.VISIBLE);
+        }
+        if (venue != null) {
+            item_venue.setText(venue);
+            item_venue.setVisibility(View.VISIBLE);
+        }
+        if (url != null) {
+            go_to_url.setOnClickListener(this);
+            go_to_url.setVisibility(View.VISIBLE);
+        }
 
         Firebase firebase = new Firebase();
         db = firebase.startFirebase();
@@ -273,6 +288,10 @@ public class ItemFragment extends Fragment implements View.OnClickListener,
             make_comment();
         } else if (i == R.id.make_favorite) {
             make_favorite();
+        } else if (i == R.id.go_to_url) {
+            Intent intent = new Intent(Intent.ACTION_VIEW);
+            intent.setData(Uri.parse(url));
+            startActivity(intent);
         }
     }
 
@@ -304,7 +323,7 @@ public class ItemFragment extends Fragment implements View.OnClickListener,
                         @Override
                         public void onSuccess(Void aVoid) {
                             isFavorite = true;
-                            make_favorite.setColorFilter(mainActivity.resources.getColor(R.color.colorAccent));
+                            make_favorite.setColorFilter(R.color.colorAccent);
                             add_favorite_count(1);
                             Toast.makeText(mainActivity, "좋아요 설정", Toast.LENGTH_SHORT).show();
                             Log.d(Constant.TAG, "DocumentSnapshot successfully written!");
@@ -320,7 +339,7 @@ public class ItemFragment extends Fragment implements View.OnClickListener,
     }
 
     private void make_comment() {
-        DialogFragment make_comment = new CreateReviewFragment(title);
+        DialogFragment make_comment = new CreateReviewFragment(title, type);
         make_comment.show(getChildFragmentManager(), "comment");
     }
 

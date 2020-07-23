@@ -37,6 +37,7 @@
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:text="update profile"
+            android:textColor="@android:color/black"
             app:layout_constraintBottom_toBottomOf="parent"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintHorizontal_bias="0.498"
@@ -100,7 +101,8 @@
                 android:id="@+id/logout"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:text="logout" />
+                android:text="logout"
+                android:textColor="@android:color/black" />
 
             <Space
                 android:layout_width="wrap_content"
@@ -111,7 +113,9 @@
                 android:id="@+id/unregister"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:text="unregister" />
+                android:text="unregister"
+                android:textColor="@android:color/black" />
+
         </LinearLayout>
 
     </androidx.constraintlayout.widget.ConstraintLayout>

@@ -13,8 +13,10 @@ import androidx.annotation.NonNull;
 import androidx.appcompat.app.AlertDialog;
 import androidx.fragment.app.DialogFragment;
 
+import com.google.android.gms.tasks.OnCompleteListener;
 import com.google.android.gms.tasks.OnFailureListener;
 import com.google.android.gms.tasks.OnSuccessListener;
+import com.google.android.gms.tasks.Task;
 import com.google.firebase.Timestamp;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.auth.FirebaseUser;
@@ -25,6 +27,8 @@ import com.google.firebase.firestore.SetOptions;
 import com.ici.myproject73029.Constant;
 import com.ici.myproject73029.MainActivity;
 import com.ici.myproject73029.R;
+import com.ici.myproject73029.items.Exhibition;
+import com.ici.myproject73029.items.Show;
 
 import java.util.Calendar;
 import java.util.Date;
@@ -40,15 +44,17 @@ public class CreateReviewFragment extends DialogFragment {
     private FirebaseUser user;
     private RatingBar ratingBar;
     private Map<String, Object> comment = new HashMap<>();
-    private boolean isFirst = false;
+    private boolean isFirst = true;
+    int type;
 
     public CreateReviewFragment() {
         super();
     }
 
-    public CreateReviewFragment(String item) {
+    public CreateReviewFragment(String item, int type) {
         super();
         this.item = item;
+        this.type = type;
     }
 
     @Override
@@ -81,8 +87,8 @@ public class CreateReviewFragment extends DialogFragment {
                                 double rating = (double) result.get("rating");
                                 ratingBar.setRating((float) rating);
                             }
-                            if (result.get("create_date") == null)
-                                isFirst = true;
+                            if (result.get("create_date") != null)
+                                isFirst = false;
                         }
                     }
                 });
@@ -109,6 +115,18 @@ public class CreateReviewFragment extends DialogFragment {
                                         @Override
                                         public void onSuccess(Void aVoid) {
                                             Log.d(Constant.TAG, "DocumentSnapshot successfully written!");
+                                            mainActivity.db.collection("All").document(item).get().addOnCompleteListener(new OnCompleteListener<DocumentSnapshot>() {
+                                                @Override
+                                                public void onComplete(@NonNull Task<DocumentSnapshot> task) {
+                                                    if (type == Constant.EXHIBITION) {
+                                                        Exhibition item = task.getResult().toObject(Exhibition.class);
+                                                        mainActivity.onItemFragmentChanged(item);
+                                                    } else if (type == Constant.SHOW) {
+                                                        Show item = task.getResult().toObject(Show.class);
+                                                        mainActivity.onItemFragmentChanged(item);
+                                                    }
+                                                }
+                                            });
                                         }
                                     })
                                     .addOnFailureListener(new OnFailureListener() {

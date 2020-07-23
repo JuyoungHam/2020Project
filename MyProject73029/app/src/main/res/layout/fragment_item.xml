@@ -74,13 +74,21 @@
                             app:srcCompat="@drawable/ic_baseline_star_24" />
 
                         <ImageButton
+                            android:id="@+id/go_to_url"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:background="#00FFFFFF"
+                            app:srcCompat="@drawable/ic_baseline_near_me_24"
+                            tools:visibility="gone" />
+
+                        <ImageButton
                             android:id="@+id/connect_map"
                             android:layout_width="50dp"
                             android:layout_height="50dp"
                             android:layout_gravity="center"
                             android:background="@android:color/white"
                             android:visibility="visible"
-                            app:srcCompat="@drawable/ic_baseline_map_24" />
+                            app:srcCompat="@drawable/ic_baseline_place_24" />
 
                         <ImageButton
                             android:id="@+id/share_button"
@@ -119,8 +127,8 @@
                         android:layout_height="wrap_content"
                         android:layout_gravity="center_horizontal"
                         android:layout_margin="4dp"
-                        android:hint="장소 정보 없음"
-                        android:textAppearance="@style/TextAppearance.AppCompat.Medium" />
+                        android:textAppearance="@style/TextAppearance.AppCompat.Medium"
+                        tools:visibility="gone" />
 
                     <TextView
                         android:id="@+id/item_period"
@@ -128,20 +136,22 @@
                         android:layout_height="wrap_content"
                         android:layout_gravity="center_horizontal"
                         android:layout_margin="4dp"
-                        android:hint="기간 정보 없음"
-                        android:textAppearance="@style/TextAppearance.AppCompat.Medium" />
+                        android:textAppearance="@style/TextAppearance.AppCompat.Medium"
+                        tools:visibility="gone" />
 
                     <TextView
                         android:id="@+id/item_description"
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
                         android:layout_gravity="center_horizontal"
-                        android:layout_margin="4dp" />
+                        android:layout_margin="4dp"
+                        tools:visibility="gone" />
 
                     <FrameLayout
                         android:id="@+id/framelayout_review_list"
                         android:layout_width="match_parent"
-                        android:layout_height="match_parent"></FrameLayout>
+                        android:layout_height="match_parent"
+                        android:layout_marginTop="16dp"></FrameLayout>
 
                 </LinearLayout>
             </ScrollView>
