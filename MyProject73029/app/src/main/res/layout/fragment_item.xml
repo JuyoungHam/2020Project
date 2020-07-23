@@ -249,8 +249,7 @@
                                     android:layout_width="25dp"
                                     android:layout_height="50dp"
                                     android:background="#00FFFFFF"
-                                    android:src="@drawable/ic_baseline_favorite_24"
-                                    android:tint="@color/colorAccent" />
+                                    android:src="@drawable/unfavorited" />
                             </LinearLayout>
 
                             <TextView

@@ -1,6 +1,7 @@
 package com.ici.myproject73029.adapters;
 
 import android.graphics.PorterDuff;
+import android.graphics.drawable.Drawable;
 import android.net.Uri;
 import android.os.Build;
 import android.os.Handler;
@@ -35,10 +36,12 @@ import com.google.firebase.firestore.SetOptions;
 import com.google.firebase.storage.FirebaseStorage;
 import com.google.firebase.storage.StorageReference;
 import com.ici.myproject73029.Constant;
+import com.ici.myproject73029.MainActivity;
 import com.ici.myproject73029.R;
 import com.ici.myproject73029.firebase.Firebase;
 import com.ici.myproject73029.items.Review;
 
+import java.net.URL;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.HashMap;
@@ -124,7 +127,6 @@ public class ReviewAdapter extends RecyclerView.Adapter<ReviewAdapter.ViewHolder
             date = itemView.findViewById(R.id.review_item_date);
             like = itemView.findViewById(R.id.review_item_like);
             like.setOnClickListener(this);
-            like.setColorFilter(R.color.colorAccent);
             review_item_like_count = itemView.findViewById(R.id.review_item_like_count);
 
             container.setVisibility(View.VISIBLE);
@@ -170,6 +172,29 @@ public class ReviewAdapter extends RecyclerView.Adapter<ReviewAdapter.ViewHolder
             CharSequence format = DateFormat.format("yyyy-MM-dd hh:mm", item.getCreate_date());
             date.setText(format + " 작성");
             review_item_like_count.setText(item.get_number_who_liked() + "");
+            isLiked();
+        }
+
+        private void isLiked() {
+            db.collectionGroup("comments").whereEqualTo("title", title.getText()).whereEqualTo(
+                    "comments", comments.getText()).get()
+                    .addOnCompleteListener(new OnCompleteListener<QuerySnapshot>() {
+                        @Override
+                        public void onComplete(@NonNull Task<QuerySnapshot> task) {
+                            if (task.isSuccessful()) {
+                                for (DocumentSnapshot document : task.getResult()) {
+                                    ArrayList<String> list = (ArrayList<String>) document.get("who_liked");
+                                    if (list != null) {
+                                        if (!list.contains(FirebaseAuth.getInstance().getUid())) {
+                                            like.setImageResource(R.drawable.favorited);
+                                        } else {
+                                            like.setImageResource(R.drawable.unfavorited);
+                                        }
+                                    }
+                                }
+                            }
+                        }
+                    });
         }
 
         @Override
@@ -200,8 +225,7 @@ public class ReviewAdapter extends RecyclerView.Adapter<ReviewAdapter.ViewHolder
                                     if (list != null) {
                                         final int count = list.size();
                                         if (!list.contains(user.getUid())) {
-//                                            like.setColorFilter(R.color.colorAccent, PorterDuff.Mode.SRC_ATOP);
-                                            like.clearColorFilter();
+                                            like.setImageResource(R.drawable.favorited);
                                             Map<String, Object> data = new HashMap<>();
                                             data.put("who_liked", FieldValue.arrayUnion(user.getUid()));
                                             document.getReference().set(data, SetOptions.merge()).addOnSuccessListener(new OnSuccessListener<Void>() {
@@ -211,8 +235,7 @@ public class ReviewAdapter extends RecyclerView.Adapter<ReviewAdapter.ViewHolder
                                                 }
                                             });
                                         } else {
-                                            like.setColorFilter(R.color.colorAccent, PorterDuff.Mode.SRC_ATOP);
-//                                            like.clearColorFilter();
+                                            like.setImageResource(R.drawable.unfavorited);
                                             Map<String, Object> data = new HashMap<>();
                                             data.put("who_liked", FieldValue.arrayRemove(user.getUid()));
                                             document.getReference().set(data, SetOptions.merge()).addOnSuccessListener(new OnSuccessListener<Void>() {
@@ -223,8 +246,7 @@ public class ReviewAdapter extends RecyclerView.Adapter<ReviewAdapter.ViewHolder
                                             });
                                         }
                                     } else {
-//                                        like.setColorFilter(R.color.colorAccent, PorterDuff.Mode.SRC_ATOP);
-                                        like.clearColorFilter();
+                                        like.setImageResource(R.drawable.favorited);
                                         Map<String, Object> data = new HashMap<>();
                                         data.put("who_liked", Arrays.asList(user.getUid()));
                                         document.getReference().set(data, SetOptions.merge()).addOnSuccessListener(new OnSuccessListener<Void>() {

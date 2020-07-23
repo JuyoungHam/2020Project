@@ -280,8 +280,10 @@ public class ItemFragment extends Fragment implements View.OnClickListener,
                                 DocumentSnapshot document = task.getResult();
                                 if (document.exists()) {
                                     isFavorite = true;
+                                    make_favorite.setImageDrawable(getResources().getDrawable(R.drawable.favorited));
                                 } else {
                                     isFavorite = false;
+                                    make_favorite.setImageDrawable(getResources().getDrawable(R.drawable.unfavorited));
                                 }
                             }
                         }
@@ -315,6 +317,7 @@ public class ItemFragment extends Fragment implements View.OnClickListener,
                         public void onSuccess(Void aVoid) {
                             isFavorite = false;
                             add_favorite_count(-1);
+                            make_favorite.setImageDrawable(getResources().getDrawable(R.drawable.unfavorited));
                             Toast.makeText(mainActivity, "좋아요 해제", Toast.LENGTH_SHORT).show();
                         }
                     })
@@ -336,6 +339,7 @@ public class ItemFragment extends Fragment implements View.OnClickListener,
                             isFavorite = true;
 
                             add_favorite_count(1);
+                            make_favorite.setImageDrawable(getResources().getDrawable(R.drawable.favorited));
                             Toast.makeText(mainActivity, "좋아요 설정", Toast.LENGTH_SHORT).show();
                             Log.d(Constant.TAG, "DocumentSnapshot successfully written!");
                         }
