@@ -10,7 +10,7 @@
     tools:context=".tabs.ItemFragment">
 
     <ScrollView
-        android:id="@+id/scrollView2"
+        android:id="@+id/item_scroll_view"
         android:layout_width="match_parent"
         android:layout_height="match_parent">
 

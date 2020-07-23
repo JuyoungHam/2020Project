@@ -1,6 +1,11 @@
 package com.ici.myproject73029.adapters;
 
+import android.graphics.PorterDuff;
 import android.net.Uri;
+import android.os.Build;
+import android.os.Handler;
+import android.text.format.DateFormat;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -11,6 +16,7 @@ import android.widget.RatingBar;
 import android.widget.TextView;
 
 import androidx.annotation.NonNull;
+import androidx.annotation.RequiresApi;
 import androidx.recyclerview.widget.RecyclerView;
 
 import com.bumptech.glide.Glide;
@@ -20,19 +26,25 @@ import com.google.android.gms.tasks.OnSuccessListener;
 import com.google.android.gms.tasks.Task;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.auth.FirebaseUser;
+import com.google.firebase.firestore.DocumentReference;
 import com.google.firebase.firestore.DocumentSnapshot;
+import com.google.firebase.firestore.FieldValue;
 import com.google.firebase.firestore.FirebaseFirestore;
+import com.google.firebase.firestore.QuerySnapshot;
+import com.google.firebase.firestore.SetOptions;
 import com.google.firebase.storage.FirebaseStorage;
 import com.google.firebase.storage.StorageReference;
 import com.ici.myproject73029.Constant;
-import com.ici.myproject73029.MainActivity;
 import com.ici.myproject73029.R;
+import com.ici.myproject73029.firebase.Firebase;
 import com.ici.myproject73029.items.Review;
-import com.ici.myproject73029.tabs.ReviewListFragment;
 
 import java.util.ArrayList;
+import java.util.Arrays;
+import java.util.HashMap;
+import java.util.Map;
 
-import static com.firebase.ui.auth.AuthUI.getApplicationContext;
+import retrofit2.http.OPTIONS;
 
 public class ReviewAdapter extends RecyclerView.Adapter<ReviewAdapter.ViewHolder>
         implements OnItemClickListener {
@@ -43,7 +55,6 @@ public class ReviewAdapter extends RecyclerView.Adapter<ReviewAdapter.ViewHolder
     private FirebaseStorage storage;
     private View itemView;
     private FirebaseFirestore db;
-    private FirebaseUser user;
 
     public ReviewAdapter() {
         super();
@@ -52,6 +63,7 @@ public class ReviewAdapter extends RecyclerView.Adapter<ReviewAdapter.ViewHolder
     public ReviewAdapter(int i) {
         super();
         this.type = i;
+        db = FirebaseFirestore.getInstance();
     }
 
     @NonNull
@@ -60,8 +72,6 @@ public class ReviewAdapter extends RecyclerView.Adapter<ReviewAdapter.ViewHolder
         LayoutInflater inflater = LayoutInflater.from(parent.getContext());
         itemView = inflater.inflate(R.layout.review, parent, false);
         storage = FirebaseStorage.getInstance();
-        db = FirebaseFirestore.getInstance();
-        user = FirebaseAuth.getInstance().getCurrentUser();
 
         return new ViewHolder(itemView, this);
     }
@@ -93,23 +103,29 @@ public class ReviewAdapter extends RecyclerView.Adapter<ReviewAdapter.ViewHolder
         }
     }
 
-    public class ViewHolder extends RecyclerView.ViewHolder {
+    public class ViewHolder extends RecyclerView.ViewHolder implements View.OnClickListener {
         TextView info;
         TextView title;
         TextView comments;
         LinearLayout container = itemView.findViewById(R.id.review_item_container);
         ImageView profile;
         private final RatingBar ratingBar;
-        ImageButton heartUp;
+        private final TextView date;
+        final ImageButton like;
+        private final TextView review_item_like_count;
 
         public ViewHolder(@NonNull View itemView, final OnItemClickListener listener) {
             super(itemView);
-
             info = itemView.findViewById(R.id.review_item_info);
             title = itemView.findViewById(R.id.review_item_title);
             comments = itemView.findViewById(R.id.review_item_comments);
             profile = itemView.findViewById(R.id.review_item_profile);
             ratingBar = itemView.findViewById(R.id.review_rating_bar);
+            date = itemView.findViewById(R.id.review_item_date);
+            like = itemView.findViewById(R.id.review_item_like);
+            like.setOnClickListener(this);
+            like.setColorFilter(R.color.colorAccent);
+            review_item_like_count = itemView.findViewById(R.id.review_item_like_count);
 
             container.setVisibility(View.VISIBLE);
 
@@ -130,6 +146,7 @@ public class ReviewAdapter extends RecyclerView.Adapter<ReviewAdapter.ViewHolder
             if (type == Constant.MYREVIEWPAGE) {
                 info.setText(item.getItemInfo());
                 profile.setVisibility(View.GONE);
+                like.setVisibility(View.GONE);
             } else {
                 info.setText(item.getWriter());
             }
@@ -150,6 +167,82 @@ public class ReviewAdapter extends RecyclerView.Adapter<ReviewAdapter.ViewHolder
                     }
                 });
             }
+            CharSequence format = DateFormat.format("yyyy-MM-dd hh:mm", item.getCreate_date());
+            date.setText(format + " 작성");
+            review_item_like_count.setText(item.get_number_who_liked() + "");
+        }
+
+        @Override
+        public void onClick(View v) {
+            int i = v.getId();
+            if (i == R.id.review_item_like) {
+                new Thread(new Runnable() {
+                    @Override
+                    public void run() {
+                        make_favorite();
+                    }
+                }).start();
+            }
+        }
+
+        private void make_favorite() {
+            db = FirebaseFirestore.getInstance();
+            final FirebaseUser user = FirebaseAuth.getInstance().getCurrentUser();
+            db.collectionGroup("comments").whereEqualTo("title", title.getText()).whereEqualTo(
+                    "comments", comments.getText()).get()
+                    .addOnCompleteListener(new OnCompleteListener<QuerySnapshot>() {
+                        @RequiresApi(api = Build.VERSION_CODES.M)
+                        @Override
+                        public void onComplete(@NonNull Task<QuerySnapshot> task) {
+                            if (task.isSuccessful()) {
+                                for (DocumentSnapshot document : task.getResult()) {
+                                    ArrayList<String> list = (ArrayList<String>) document.get("who_liked");
+                                    if (list != null) {
+                                        final int count = list.size();
+                                        if (!list.contains(user.getUid())) {
+//                                            like.setColorFilter(R.color.colorAccent, PorterDuff.Mode.SRC_ATOP);
+                                            like.clearColorFilter();
+                                            Map<String, Object> data = new HashMap<>();
+                                            data.put("who_liked", FieldValue.arrayUnion(user.getUid()));
+                                            document.getReference().set(data, SetOptions.merge()).addOnSuccessListener(new OnSuccessListener<Void>() {
+                                                @Override
+                                                public void onSuccess(Void aVoid) {
+                                                    review_item_like_count.setText(String.valueOf(count + 1));
+                                                }
+                                            });
+                                        } else {
+                                            like.setColorFilter(R.color.colorAccent, PorterDuff.Mode.SRC_ATOP);
+//                                            like.clearColorFilter();
+                                            Map<String, Object> data = new HashMap<>();
+                                            data.put("who_liked", FieldValue.arrayRemove(user.getUid()));
+                                            document.getReference().set(data, SetOptions.merge()).addOnSuccessListener(new OnSuccessListener<Void>() {
+                                                @Override
+                                                public void onSuccess(Void aVoid) {
+                                                    review_item_like_count.setText(String.valueOf(count - 1));
+                                                }
+                                            });
+                                        }
+                                    } else {
+//                                        like.setColorFilter(R.color.colorAccent, PorterDuff.Mode.SRC_ATOP);
+                                        like.clearColorFilter();
+                                        Map<String, Object> data = new HashMap<>();
+                                        data.put("who_liked", Arrays.asList(user.getUid()));
+                                        document.getReference().set(data, SetOptions.merge()).addOnSuccessListener(new OnSuccessListener<Void>() {
+                                            @Override
+                                            public void onSuccess(Void aVoid) {
+                                                review_item_like_count.setText(String.valueOf(1));
+                                            }
+                                        });
+                                    }
+                                }
+                            }
+                        }
+                    }).addOnFailureListener(new OnFailureListener() {
+                @Override
+                public void onFailure(@NonNull Exception e) {
+                    Log.e("like", e.toString());
+                }
+            });
         }
     }
 

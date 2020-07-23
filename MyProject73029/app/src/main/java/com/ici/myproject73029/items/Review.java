@@ -3,6 +3,7 @@ package com.ici.myproject73029.items;
 import com.ici.myproject73029.BR;
 import com.ici.myproject73029.Constant;
 
+import java.util.ArrayList;
 import java.util.Date;
 
 public class Review extends FundamentalItem {
@@ -12,6 +13,24 @@ public class Review extends FundamentalItem {
     private String writer;
     Date create_date;
     float rating;
+
+    public ArrayList<String> getWho_liked() {
+        return who_liked;
+    }
+
+    public void setWho_liked(ArrayList<String> who_liked) {
+        this.who_liked = who_liked;
+    }
+
+    public int get_number_who_liked() {
+        if (who_liked != null) {
+            return who_liked.size();
+        } else {
+            return 0;
+        }
+    }
+
+    ArrayList<String> who_liked;
 
     public Review() {
         super();

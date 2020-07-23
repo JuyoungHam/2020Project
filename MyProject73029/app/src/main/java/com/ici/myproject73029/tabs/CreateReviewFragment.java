@@ -3,11 +3,15 @@ package com.ici.myproject73029.tabs;
 import android.app.Dialog;
 import android.content.DialogInterface;
 import android.os.Bundle;
+import android.text.Html;
 import android.util.Log;
+import android.view.KeyEvent;
 import android.view.LayoutInflater;
 import android.view.ViewGroup;
 import android.widget.EditText;
 import android.widget.RatingBar;
+import android.widget.TextView;
+import android.widget.Toast;
 
 import androidx.annotation.NonNull;
 import androidx.appcompat.app.AlertDialog;
@@ -46,6 +50,7 @@ public class CreateReviewFragment extends DialogFragment {
     private Map<String, Object> comment = new HashMap<>();
     private boolean isFirst = true;
     int type;
+    private AlertDialog.Builder builder;
 
     public CreateReviewFragment() {
         super();
@@ -65,10 +70,9 @@ public class CreateReviewFragment extends DialogFragment {
     @Override
     public Dialog onCreateDialog(Bundle savedInstanceState) {
         mainActivity = (MainActivity) getActivity();
-        AlertDialog.Builder builder = new AlertDialog.Builder(mainActivity);
-
         LayoutInflater inflater = getActivity().getLayoutInflater();
         ViewGroup rootView = (ViewGroup) inflater.inflate(R.layout.fragment_create_review, null);
+        builder = new AlertDialog.Builder(mainActivity).setView(rootView);
 
         user = FirebaseAuth.getInstance().getCurrentUser();
 
@@ -93,8 +97,10 @@ public class CreateReviewFragment extends DialogFragment {
                     }
                 });
 
-        builder.setView(rootView)
-                .setPositiveButton("네", new DialogInterface.OnClickListener() {
+        addDeleteButton();
+
+        builder.setPositiveButton(Html.fromHtml("<font color='#000000'>네</font>"),
+                new DialogInterface.OnClickListener() {
                     public void onClick(DialogInterface dialog, int id) {
                         comment.put("title", review_title.getText().toString());
                         comment.put("comments", review_comments.getText().toString());
@@ -115,18 +121,7 @@ public class CreateReviewFragment extends DialogFragment {
                                         @Override
                                         public void onSuccess(Void aVoid) {
                                             Log.d(Constant.TAG, "DocumentSnapshot successfully written!");
-                                            mainActivity.db.collection("All").document(item).get().addOnCompleteListener(new OnCompleteListener<DocumentSnapshot>() {
-                                                @Override
-                                                public void onComplete(@NonNull Task<DocumentSnapshot> task) {
-                                                    if (type == Constant.EXHIBITION) {
-                                                        Exhibition item = task.getResult().toObject(Exhibition.class);
-                                                        mainActivity.onItemFragmentChanged(item);
-                                                    } else if (type == Constant.SHOW) {
-                                                        Show item = task.getResult().toObject(Show.class);
-                                                        mainActivity.onItemFragmentChanged(item);
-                                                    }
-                                                }
-                                            });
+                                            refreshItem();
                                         }
                                     })
                                     .addOnFailureListener(new OnFailureListener() {
@@ -138,12 +133,54 @@ public class CreateReviewFragment extends DialogFragment {
                         }
 
                     }
-                }).setNegativeButton("아니요", new DialogInterface.OnClickListener() {
+                }).setNegativeButton(Html.fromHtml("<font color='#000000'>아니요</font>"),
+                new DialogInterface.OnClickListener() {
+                    public void onClick(DialogInterface dialog, int id) {
+                        // User cancelled the dialog
+                    }
+                });
+        return builder.create();
+    }
+
+    private void addDeleteButton() {
+        builder.setNeutralButton(Html.fromHtml("<font color='#000000'>삭제</font>"), new DialogInterface.OnClickListener() {
             public void onClick(DialogInterface dialog, int id) {
-                // User cancelled the dialog
+                mainActivity.db.collection("All").document(item).collection("comments")
+                        .document(user.getUid()).get().addOnSuccessListener(new OnSuccessListener<DocumentSnapshot>() {
+                    @Override
+                    public void onSuccess(DocumentSnapshot documentSnapshot) {
+                        if (documentSnapshot.exists()) {
+                            documentSnapshot.getReference().delete().addOnCompleteListener(new OnCompleteListener<Void>() {
+                                @Override
+                                public void onComplete(@NonNull Task<Void> task) {
+                                    if (task.isSuccessful()) {
+                                        Toast.makeText(mainActivity, "댓글이 삭제되었습니다.", Toast.LENGTH_SHORT).show();
+                                        refreshItem();
+                                    } else {
+                                        Toast.makeText(mainActivity, "삭제 도중 오류가 발생하였습니다.", Toast.LENGTH_SHORT).show();
+                                    }
+                                }
+                            });
+                        }
+                    }
+                });
             }
         });
-        return builder.create();
+    }
+
+    private void refreshItem() {
+        mainActivity.db.collection("All").document(item).get().addOnCompleteListener(new OnCompleteListener<DocumentSnapshot>() {
+            @Override
+            public void onComplete(@NonNull Task<DocumentSnapshot> task) {
+                if (type == Constant.EXHIBITION) {
+                    Exhibition item = task.getResult().toObject(Exhibition.class);
+                    mainActivity.onItemFragmentChanged(item);
+                } else if (type == Constant.SHOW) {
+                    Show item = task.getResult().toObject(Show.class);
+                    mainActivity.onItemFragmentChanged(item);
+                }
+            }
+        });
     }
 
 }

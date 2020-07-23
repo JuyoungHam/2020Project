@@ -8,6 +8,8 @@ import android.view.ViewGroup;
 import android.view.ViewTreeObserver;
 import android.widget.AdapterView;
 import android.widget.ArrayAdapter;
+import android.widget.FrameLayout;
+import android.widget.ScrollView;
 import android.widget.Spinner;
 
 import androidx.annotation.NonNull;
@@ -47,6 +49,8 @@ public class ExhibitionTab extends Fragment implements SwipeRefreshLayout.OnRefr
     private FirebaseFirestore db;
     private Spinner spinner;
     private ArrayAdapter<String> spinner_adapter;
+    private ScrollView scrollView;
+    private FrameLayout framelayout_review_list;
 
     @Override
     public void onCreate(@Nullable Bundle savedInstanceState) {
@@ -90,6 +94,8 @@ public class ExhibitionTab extends Fragment implements SwipeRefreshLayout.OnRefr
 //        GridLayoutManager layoutManager = new GridLayoutManager(getContext(), 2);
 
         recyclerView.setLayoutManager(layoutManager);
+        scrollView = rootView.findViewById(R.id.item_scroll_view);
+        framelayout_review_list = rootView.findViewById(R.id.framelayout_review_list);
 
         mainActivity = (MainActivity) getActivity();
         mainActivity.isActionBarVisible(false);
@@ -166,8 +172,9 @@ public class ExhibitionTab extends Fragment implements SwipeRefreshLayout.OnRefr
     }
 
     @Override
-    public void onItemSelected(AdapterView<?> parent, View view, int position, long id) {
+    public void onItemSelected(AdapterView<?> parent, final View view, int position, long id) {
         updateItemList(Constant.EXHIBITION_TAGS[position]);
+//        scrollView.scrollTo(0, scrollView.getBottom());
     }
 
     @Override

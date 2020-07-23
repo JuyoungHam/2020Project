@@ -5,6 +5,9 @@ import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.AdapterView;
+import android.widget.ArrayAdapter;
+import android.widget.Spinner;
 
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
@@ -31,7 +34,7 @@ import com.ici.myproject73029.firebase.Firebase;
 import com.ici.myproject73029.items.Exhibition;
 import com.ici.myproject73029.items.Review;
 
-public class ReviewListFragment extends Fragment {
+public class ReviewListFragment extends Fragment implements AdapterView.OnItemSelectedListener {
     private RecyclerView recyclerView;
     private MainActivity mainActivity;
     String title;
@@ -62,6 +65,13 @@ public class ReviewListFragment extends Fragment {
                 false);
         ViewGroup rootView = (ViewGroup) binding.getRoot();
 
+        Spinner spinner = rootView.findViewById(R.id.review_list_spinner);
+        ArrayAdapter<String> spinner_adapter = new ArrayAdapter<>(getContext(), android.R.layout.simple_spinner_item,
+                Constant.REVIEW_LIST_SPINNER);
+        spinner_adapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
+        spinner.setAdapter(spinner_adapter);
+        spinner.setOnItemSelectedListener(this);
+
         recyclerView = rootView.findViewById(R.id.reviewlist_recyclerView);
 
         LinearLayoutManager layoutManager = new LinearLayoutManager(getContext(),
@@ -72,31 +82,37 @@ public class ReviewListFragment extends Fragment {
         Firebase firebase = new Firebase();
         db = firebase.startFirebase();
 
-        getCommentsFromDatabase();
-
         return rootView;
     }
 
-    public void getCommentsFromDatabase() {
+    public void getCommentsFromDatabase(String option) {
         adapter.clearItems();
         adapter.notifyDataSetChanged();
-        db.collection("All").document(title).collection("comments").orderBy("create_date",
-                Query.Direction.DESCENDING).get()
-                .addOnCompleteListener(new OnCompleteListener<QuerySnapshot>() {
-                    @Override
-                    public void onComplete(@NonNull Task<QuerySnapshot> task) {
-                        if (task.isSuccessful()) {
-                            int i = 0;
-                            for (QueryDocumentSnapshot document : task.getResult()) {
-                                Review item = document.toObject(Review.class);
-                                adapter.addItem(item);
-                                adapter.notifyItemInserted(i++);
-                            }
-                        } else {
-                            Log.d(Constant.TAG, "Error getting documents: ", task.getException());
-                        }
+        Query query = db.collection("All").document(title).collection("comments");
+        if (option.equals(Constant.REVIEW_LIST_SPINNER[0])) {
+            query = query.orderBy("create_date", Query.Direction.DESCENDING);
+        } else if (option.equals(Constant.REVIEW_LIST_SPINNER[1])) {
+            query = query.orderBy("create_date", Query.Direction.ASCENDING);
+        } else if (option.equals(Constant.REVIEW_LIST_SPINNER[2])) {
+            query = query.orderBy("rating", Query.Direction.DESCENDING);
+        } else if (option.equals(Constant.REVIEW_LIST_SPINNER[3])) {
+            query = query.orderBy("rating", Query.Direction.ASCENDING);
+        }
+        query.get().addOnCompleteListener(new OnCompleteListener<QuerySnapshot>() {
+            @Override
+            public void onComplete(@NonNull Task<QuerySnapshot> task) {
+                if (task.isSuccessful()) {
+                    int i = 0;
+                    for (QueryDocumentSnapshot document : task.getResult()) {
+                        Review item = document.toObject(Review.class);
+                        adapter.addItem(item);
+                        adapter.notifyItemInserted(i++);
+                    }
+                } else {
+                    Log.d(Constant.TAG, "Error getting documents: ", task.getException());
+                }
 
-                        recyclerView.setAdapter(adapter);
+                recyclerView.setAdapter(adapter);
 
 //                            adapter.setOnItemClickListener(new OnItemClickListener() {
 //                                @Override
@@ -106,7 +122,17 @@ public class ReviewListFragment extends Fragment {
 //                                    mainActivity.onItemFragmentChanged(item);
 //                                }
 //                            });
-                    }
-                });
+            }
+        });
+    }
+
+    @Override
+    public void onItemSelected(AdapterView<?> parent, View view, int position, long id) {
+        getCommentsFromDatabase(Constant.REVIEW_LIST_SPINNER[position]);
+    }
+
+    @Override
+    public void onNothingSelected(AdapterView<?> parent) {
+
     }
 }

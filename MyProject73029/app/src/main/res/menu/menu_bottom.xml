@@ -3,24 +3,25 @@
     xmlns:android="http://schemas.android.com/apk/res/android">
 
     <item
+        android:id="@+id/tab_home"
+        android:icon="@drawable/ic_baseline_home_24"
+        android:title="홈"
+        app:showAsAction="always|withText" />
+    <item
         android:id="@+id/tab_exhibition"
         android:enabled="true"
         android:icon="@drawable/ic_baseline_photo"
         android:title="전시"
-        app:showAsAction="ifRoom" />
-    <item
-        android:id="@+id/tab_home"
-        android:icon="@drawable/ic_baseline_home_24"
-        android:title="홈"
-        app:showAsAction="always" />
+        app:showAsAction="always|withText" />
     <item
         android:id="@+id/tab_show"
         android:enabled="true"
         android:icon="@drawable/ic_baseline_slideshow_24"
         android:title="공연"
-        app:showAsAction="ifRoom" />
+        app:showAsAction="always|withText" />
     <item
         android:id="@+id/tab_mypage"
         android:icon="@drawable/ic_baseline_perm_identity_24"
-        android:title="마이페이지" />
+        android:title="마이페이지"
+        app:showAsAction="always|withText" />
 </menu>

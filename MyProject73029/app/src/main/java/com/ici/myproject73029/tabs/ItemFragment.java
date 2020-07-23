@@ -6,8 +6,6 @@ import android.content.Intent;
 import android.content.pm.PackageManager;
 import android.content.pm.ResolveInfo;
 import android.graphics.Color;
-import android.graphics.drawable.Drawable;
-import android.graphics.drawable.DrawableWrapper;
 import android.location.Address;
 import android.location.Geocoder;
 import android.net.Uri;
@@ -18,16 +16,16 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.view.ViewTreeObserver;
+import android.widget.FrameLayout;
 import android.widget.ImageButton;
 import android.widget.ImageView;
+import android.widget.LinearLayout;
 import android.widget.ScrollView;
 import android.widget.TextView;
 import android.widget.Toast;
 
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
-import androidx.appcompat.widget.DrawableUtils;
-import androidx.constraintlayout.widget.ConstraintLayout;
 import androidx.databinding.DataBindingUtil;
 import androidx.fragment.app.DialogFragment;
 import androidx.fragment.app.Fragment;
@@ -88,6 +86,7 @@ public class ItemFragment extends Fragment implements View.OnClickListener,
     private ReviewListFragment listFragment;
     private ChipGroup chipGroup;
     private TextView rating_score;
+    private FrameLayout review_list;
 
     public ItemFragment(FundamentalItem item) {
 
@@ -123,11 +122,12 @@ public class ItemFragment extends Fragment implements View.OnClickListener,
         favorite_count = rootView.findViewById(R.id.favorite_count);
         ImageButton img_map = rootView.findViewById(R.id.connect_map);
         img_map.setOnClickListener(this);
+        LinearLayout set_map = rootView.findViewById(R.id.set_map);
         ImageButton make_comment = rootView.findViewById(R.id.make_comment);
         make_comment.setOnClickListener(this);
         make_favorite = rootView.findViewById(R.id.make_favorite);
         make_favorite.setOnClickListener(this);
-        final ScrollView scrollView2 = rootView.findViewById(R.id.scrollView2);
+        final ScrollView scrollView2 = rootView.findViewById(R.id.item_scroll_view);
         refreshLayout = rootView.findViewById(R.id.swipeRefreshLayout_item);
         refreshLayout.setDistanceToTriggerSync(200);
         refreshLayout.getViewTreeObserver().addOnScrollChangedListener(new ViewTreeObserver.OnScrollChangedListener() {
@@ -146,7 +146,6 @@ public class ItemFragment extends Fragment implements View.OnClickListener,
         item_venue.setVisibility(View.GONE);
         item_period.setVisibility(View.GONE);
         ImageButton go_to_url = rootView.findViewById(R.id.go_to_url);
-        go_to_url.setVisibility(View.GONE);
 
         if (FirebaseAuth.getInstance().getCurrentUser() == null) {
             make_favorite.setVisibility(View.GONE);
@@ -154,6 +153,24 @@ public class ItemFragment extends Fragment implements View.OnClickListener,
         }
 
         geocoder = new Geocoder(getContext());
+        if (venue != null) {
+            try {
+                list = geocoder.getFromLocationName(venue, 100);
+
+            } catch (IOException e) {
+                Log.d("Map Error", e.toString());
+            }
+            if (list != null) {
+                set_map.setVisibility(View.VISIBLE);
+                rootView.findViewById(R.id.space_map).setVisibility(View.VISIBLE);
+            }
+        }
+
+        if (url != null) {
+            go_to_url.setOnClickListener(this);
+            rootView.findViewById(R.id.set_url).setVisibility(View.VISIBLE);
+            rootView.findViewById(R.id.space_url).setVisibility(View.VISIBLE);
+        }
 
         ImageButton share_button = rootView.findViewById(R.id.share_button);
         share_button.setOnClickListener(this);
@@ -167,10 +184,6 @@ public class ItemFragment extends Fragment implements View.OnClickListener,
             item_venue.setText(venue);
             item_venue.setVisibility(View.VISIBLE);
         }
-        if (url != null) {
-            go_to_url.setOnClickListener(this);
-            go_to_url.setVisibility(View.VISIBLE);
-        }
 
         Firebase firebase = new Firebase();
         db = firebase.startFirebase();
@@ -179,6 +192,7 @@ public class ItemFragment extends Fragment implements View.OnClickListener,
         user = mainActivity.mAuth.getCurrentUser();
         checkIsFavorite();
 
+        review_list = rootView.findViewById(R.id.framelayout_review_list);
         listFragment = new ReviewListFragment(title);
         getChildFragmentManager().beginTransaction().replace(R.id.framelayout_review_list,
                 listFragment).commit();
@@ -253,7 +267,7 @@ public class ItemFragment extends Fragment implements View.OnClickListener,
     }
 
     public void updateComments() {
-        listFragment.getCommentsFromDatabase();
+        listFragment.getCommentsFromDatabase(Constant.REVIEW_LIST_SPINNER[0]);
     }
 
     private void checkIsFavorite() {
@@ -266,10 +280,8 @@ public class ItemFragment extends Fragment implements View.OnClickListener,
                                 DocumentSnapshot document = task.getResult();
                                 if (document.exists()) {
                                     isFavorite = true;
-                                    make_favorite.setColorFilter(mainActivity.resources.getColor(R.color.colorAccent));
                                 } else {
                                     isFavorite = false;
-                                    make_favorite.clearColorFilter();
                                 }
                             }
                         }
@@ -302,7 +314,6 @@ public class ItemFragment extends Fragment implements View.OnClickListener,
                         @Override
                         public void onSuccess(Void aVoid) {
                             isFavorite = false;
-                            make_favorite.clearColorFilter();
                             add_favorite_count(-1);
                             Toast.makeText(mainActivity, "좋아요 해제", Toast.LENGTH_SHORT).show();
                         }
@@ -323,7 +334,7 @@ public class ItemFragment extends Fragment implements View.OnClickListener,
                         @Override
                         public void onSuccess(Void aVoid) {
                             isFavorite = true;
-                            make_favorite.setColorFilter(R.color.colorAccent);
+
                             add_favorite_count(1);
                             Toast.makeText(mainActivity, "좋아요 설정", Toast.LENGTH_SHORT).show();
                             Log.d(Constant.TAG, "DocumentSnapshot successfully written!");
@@ -344,12 +355,6 @@ public class ItemFragment extends Fragment implements View.OnClickListener,
     }
 
     private void get_geoApp() {
-        try {
-            list = geocoder.getFromLocationName(venue, 100);
-
-        } catch (IOException e) {
-            Log.d("Map Error", e.toString());
-        }
         if (list != null) {
             if (list.size() == 0) {
                 Toast.makeText(getContext(), "주소 없음", Toast.LENGTH_SHORT).show();
@@ -461,4 +466,5 @@ public class ItemFragment extends Fragment implements View.OnClickListener,
                     }
                 });
     }
+
 }
