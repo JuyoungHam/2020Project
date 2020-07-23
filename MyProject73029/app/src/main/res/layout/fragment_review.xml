@@ -65,17 +65,6 @@
                             android:layout_width="wrap_content"
                             android:layout_height="wrap_content" />
 
-                        <TextView
-                            android:id="@+id/create_date"
-                            android:layout_width="match_parent"
-                            android:layout_height="wrap_content"
-                            android:layout_gravity="center|center_vertical"
-                            android:layout_margin="4dp"
-                            android:singleLine="true"
-                            android:textAppearance="@style/TextAppearance.AppCompat.Small"
-                            android:textSize="12sp"
-                            android:visibility="visible" />
-
 
                     </LinearLayout>
 
@@ -102,13 +91,52 @@
                 android:textAppearance="@style/TextAppearance.AppCompat.Large"
                 android:textSize="20sp" />
 
+            <androidx.constraintlayout.widget.ConstraintLayout
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:layout_gravity="clip_vertical|center_horizontal">
+
+                <TextView
+                    android:id="@+id/item_create_date"
+                    android:layout_width="wrap_content"
+                    android:layout_height="0dp"
+                    android:layout_gravity="center_horizontal|center_vertical"
+                    android:gravity="center"
+                    android:text="작성일"
+                    app:layout_constraintBottom_toBottomOf="parent"
+                    app:layout_constraintEnd_toEndOf="parent"
+                    app:layout_constraintStart_toStartOf="parent"
+                    app:layout_constraintTop_toTopOf="parent" />
+
+                <TextView
+                    android:id="@+id/item_like_count"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_marginStart="32dp"
+                    android:layout_marginLeft="32dp"
+                    android:text="0"
+                    app:layout_constraintBottom_toBottomOf="parent"
+                    app:layout_constraintStart_toEndOf="@+id/item_create_date"
+                    app:layout_constraintTop_toTopOf="parent" />
+
+                <ImageView
+                    android:id="@+id/imageView2"
+                    android:layout_width="0dp"
+                    android:layout_height="wrap_content"
+                    android:layout_marginStart="4dp"
+                    android:layout_marginLeft="4dp"
+                    android:src="@drawable/favorited"
+                    app:layout_constraintStart_toEndOf="@+id/item_like_count"
+                    app:layout_constraintTop_toTopOf="parent" />
+            </androidx.constraintlayout.widget.ConstraintLayout>
+
             <TextView
                 android:id="@+id/item_comments"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_gravity="center_horizontal"
                 android:layout_margin="16dp"
-                android:text="설명" />
+                android:text="내용" />
 
             <LinearLayout
                 android:layout_width="match_parent"

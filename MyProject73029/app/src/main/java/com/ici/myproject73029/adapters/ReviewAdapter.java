@@ -142,7 +142,7 @@ public class ReviewAdapter extends RecyclerView.Adapter<ReviewAdapter.ViewHolder
             if (type == Constant.MYREVIEWPAGE) {
                 info.setText(item.getItemInfo());
                 profile.setVisibility(View.GONE);
-                like.setVisibility(View.GONE);
+                like.setEnabled(false);
             } else {
                 info.setText(item.getWriter());
             }

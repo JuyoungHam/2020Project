@@ -42,6 +42,7 @@ public class MyReviewFragment extends Fragment implements MainActivity.onBackPre
     int type;
     Date create_date;
     float rating;
+    int like_count;
     private MainActivity mainActivity;
     private ImageView review_item_poster;
     private TextView review_item_title;
@@ -53,6 +54,7 @@ public class MyReviewFragment extends Fragment implements MainActivity.onBackPre
         this.comments = item.getComments();
         this.itemInfo = item.getItemInfo();
         this.rating = item.getRating();
+        this.like_count = item.get_number_who_liked();
         this.create_date = item.getCreate_date();
         type = Constant.REVIEW;
     }
@@ -71,10 +73,12 @@ public class MyReviewFragment extends Fragment implements MainActivity.onBackPre
         review_item_title = itemView.findViewById(R.id.review_item_title);
         review_item_description = itemView.findViewById(R.id.review_item_description);
         final RatingBar ratingBar = itemView.findViewById(R.id.item_rating_bar);
-        final TextView date_textView = itemView.findViewById(R.id.create_date);
-        ratingBar.setRating(rating);
+        final TextView item_create_date = itemView.findViewById(R.id.item_create_date);
+        final TextView item_like_count = itemView.findViewById(R.id.item_like_count);
+        item_like_count.setText(like_count + "");
         CharSequence date = DateFormat.format("yyyy-MM-dd hh:mm", create_date);
-        date_textView.setText(date + " 작성");
+        item_create_date.setText(date + " 작성");
+        ratingBar.setRating(rating);
         CardView cardView = itemView.findViewById(R.id.review_item_container);
         cardView.setOnClickListener(this);
         Button update = itemView.findViewById(R.id.review_update_button);
