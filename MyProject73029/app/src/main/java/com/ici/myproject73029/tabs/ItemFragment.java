@@ -233,7 +233,7 @@ public class ItemFragment extends Fragment implements View.OnClickListener,
                                     chip.setText(tag);
                                     chip.setChipIcon(mainActivity.resources.getDrawable(R.drawable.ic_iconfinder_icon_hashtag));
                                     chip.setChipIconSize(50);
-                                    chip.setChipBackgroundColorResource(R.color.colorPrimaryDark);
+                                    chip.setChipBackgroundColorResource(R.color.colorAccent);
                                     chip.setTextColor(Color.WHITE);
                                     chipGroup.addView(chip);
                                 }

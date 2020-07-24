@@ -46,21 +46,24 @@
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:text="myreview"
-                android:textColor="#000000" />
+                android:textColor="#FFFFFF"
+                app:backgroundTint="@color/colorPrimaryDark" />
 
             <Button
                 android:id="@+id/button_favorite"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:text="favorite"
-                android:textColor="#000000" />
+                android:textColor="#FFFFFF"
+                app:backgroundTint="@color/colorPrimaryDark" />
 
             <Button
                 android:id="@+id/button_login_control"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:text="계정 관리"
-                android:textColor="#000000" />
+                android:textColor="#FFFFFF"
+                app:backgroundTint="@color/colorPrimaryDark" />
 
         </LinearLayout>
     </androidx.constraintlayout.widget.ConstraintLayout>

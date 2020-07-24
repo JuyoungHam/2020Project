@@ -52,7 +52,9 @@
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:text="댓글 모두 보기"
-            android:visibility="gone" />
+            android:textColor="#FFFFFF"
+            android:visibility="gone"
+            app:backgroundTint="@color/colorPrimaryDark" />
 
     </LinearLayout>
 

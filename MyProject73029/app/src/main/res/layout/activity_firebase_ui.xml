@@ -37,7 +37,8 @@
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:text="update profile"
-            android:textColor="@android:color/black"
+            android:textColor="@android:color/white"
+            app:backgroundTint="@color/colorPrimaryDark"
             app:layout_constraintBottom_toBottomOf="parent"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintHorizontal_bias="0.498"
@@ -102,7 +103,8 @@
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:text="logout"
-                android:textColor="@android:color/black" />
+                android:textColor="@android:color/white"
+                app:backgroundTint="@color/colorPrimaryDark" />
 
             <Space
                 android:layout_width="wrap_content"
@@ -114,7 +116,8 @@
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:text="unregister"
-                android:textColor="@android:color/black" />
+                android:textColor="@android:color/white"
+                app:backgroundTint="@color/colorPrimaryDark" />
 
         </LinearLayout>
 
