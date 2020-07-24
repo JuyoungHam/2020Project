@@ -8,6 +8,7 @@ import androidx.appcompat.app.AlertDialog;
 import androidx.fragment.app.DialogFragment;
 import androidx.fragment.app.Fragment;
 
+import android.text.Html;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -21,17 +22,19 @@ public class UnregisterConfirmFragment extends DialogFragment {
         // Use the Builder class for convenient dialog construction
         AlertDialog.Builder builder = new AlertDialog.Builder(getActivity());
         builder.setMessage("탈퇴를 진행하시겠습니까?")
-                .setPositiveButton("네", new DialogInterface.OnClickListener() {
-                    public void onClick(DialogInterface dialog, int id) {
-                        FirebaseUIActivity firebaseUIActivity = (FirebaseUIActivity) getActivity();
-                        firebaseUIActivity.unregister();
-                    }
-                })
-                .setNegativeButton("아니요", new DialogInterface.OnClickListener() {
-                    public void onClick(DialogInterface dialog, int id) {
-                        // User cancelled the dialog
-                    }
-                });
+                .setPositiveButton(Html.fromHtml("<font color='#000000'>네</font>"),
+                        new DialogInterface.OnClickListener() {
+                            public void onClick(DialogInterface dialog, int id) {
+                                FirebaseUIActivity firebaseUIActivity = (FirebaseUIActivity) getActivity();
+                                firebaseUIActivity.unregister();
+                            }
+                        })
+                .setNegativeButton(Html.fromHtml("<font color='#000000'>아니요</font>"),
+                        new DialogInterface.OnClickListener() {
+                            public void onClick(DialogInterface dialog, int id) {
+                                // User cancelled the dialog
+                            }
+                        });
         // Create the AlertDialog object and return it
         return builder.create();
     }

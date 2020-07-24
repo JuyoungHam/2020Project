@@ -13,6 +13,7 @@ import androidx.appcompat.app.AlertDialog;
 import androidx.fragment.app.DialogFragment;
 
 import android.provider.MediaStore;
+import android.text.Html;
 import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -91,18 +92,20 @@ public class ProfileUpdateFragment extends DialogFragment {
         });
 
         builder.setView(rootView)
-                .setPositiveButton("네", new DialogInterface.OnClickListener() {
+                .setPositiveButton(Html.fromHtml("<font color='#000000'>네</font>"),
+                        new DialogInterface.OnClickListener() {
+                            public void onClick(DialogInterface dialog, int id) {
+                                firebaseUIActivity.change_profile(user, nickname.getText().toString());
+                                if (bitmap != null) {
+                                    uploadProfileImage(bitmap);
+                                }
+                            }
+                        }).setNegativeButton(Html.fromHtml("<font color='#000000'>아니요</font>"),
+                new DialogInterface.OnClickListener() {
                     public void onClick(DialogInterface dialog, int id) {
-                        firebaseUIActivity.change_profile(user, nickname.getText().toString());
-                        if (bitmap != null) {
-                            uploadProfileImage(bitmap);
-                        }
+                        // User cancelled the dialog
                     }
-                }).setNegativeButton("아니요", new DialogInterface.OnClickListener() {
-            public void onClick(DialogInterface dialog, int id) {
-                // User cancelled the dialog
-            }
-        });
+                });
         return builder.create();
     }
 

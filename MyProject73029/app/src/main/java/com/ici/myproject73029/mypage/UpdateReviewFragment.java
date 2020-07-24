@@ -3,6 +3,7 @@ package com.ici.myproject73029.mypage;
 import android.app.Dialog;
 import android.content.DialogInterface;
 import android.os.Bundle;
+import android.text.Html;
 import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.ViewGroup;
@@ -85,17 +86,18 @@ public class UpdateReviewFragment extends DialogFragment {
                 });
 
         builder.setView(rootView)
-                .setPositiveButton("네", new DialogInterface.OnClickListener() {
-                    public void onClick(DialogInterface dialog, int id) {
-                        comment.put("title", review_title.getText().toString());
-                        comment.put("comments", review_comments.getText().toString());
-                        comment.put("update_date", Timestamp.now());
-                        comment.put("itemInfo", item);
-                        if (ratingBar.getRating() != 0) {
-                            comment.put("rating", ratingBar.getRating());
-                        }
-                        if (user != null) {
-                            comment.put("userId", user.getUid());
+                .setPositiveButton(Html.fromHtml("<font color='#000000'>네</font>"),
+                        new DialogInterface.OnClickListener() {
+                            public void onClick(DialogInterface dialog, int id) {
+                                comment.put("title", review_title.getText().toString());
+                                comment.put("comments", review_comments.getText().toString());
+                                comment.put("update_date", Timestamp.now());
+                                comment.put("itemInfo", item);
+                                if (ratingBar.getRating() != 0) {
+                                    comment.put("rating", ratingBar.getRating());
+                                }
+                                if (user != null) {
+                                    comment.put("userId", user.getUid());
                             comment.put("writer", user.getDisplayName());
                             mainActivity.db.collection("All").document(item).collection("comments")
                                     .document(user.getUid()).set(comment, SetOptions.merge())
@@ -119,14 +121,15 @@ public class UpdateReviewFragment extends DialogFragment {
                                             Log.w(Constant.TAG, "Error writing document", e);
                                         }
                                     });
-                        }
+                                }
 
+                            }
+                        }).setNegativeButton(Html.fromHtml("<font color='#000000'>아니요</font>"),
+                new DialogInterface.OnClickListener() {
+                    public void onClick(DialogInterface dialog, int id) {
+                        // User cancelled the dialog
                     }
-                }).setNegativeButton("아니요", new DialogInterface.OnClickListener() {
-            public void onClick(DialogInterface dialog, int id) {
-                // User cancelled the dialog
-            }
-        });
+                });
         return builder.create();
     }
 

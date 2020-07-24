@@ -107,7 +107,7 @@ public class MyPageTab extends Fragment implements View.OnClickListener, SwipeRe
         }
     }
 
-    public void updateUI(FirebaseUser user) {
+    public void updateUI(final FirebaseUser user) {
         if (user != null) {
             mainActivity.db.collection("Users").document(user.getUid()).get().addOnCompleteListener(new OnCompleteListener<DocumentSnapshot>() {
                 @Override
@@ -115,7 +115,7 @@ public class MyPageTab extends Fragment implements View.OnClickListener, SwipeRe
                     if (task.isSuccessful()) {
                         DocumentSnapshot document = task.getResult();
                         if (document.exists()) {
-                            text_profile.setText(document.get("nickname").toString());
+                            text_profile.setText(user.getDisplayName());
                             mainActivity.getUserProfileImage(profile_image);
                             Log.d(Constant.TAG, "DocumentSnapshot data: " + document.getData());
                         } else {

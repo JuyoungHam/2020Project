@@ -17,6 +17,7 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.view.ViewTreeObserver;
 import android.widget.ImageButton;
+import android.widget.TextView;
 import android.widget.Toast;
 
 import com.google.android.gms.tasks.OnCompleteListener;
@@ -45,6 +46,7 @@ public class FavoritePage extends Fragment implements View.OnClickListener,
     private MainActivity mainActivity;
     private FirebaseUser user;
     private SwipeRefreshLayout refreshLayout;
+    private ConstraintLayout constraintLayout;
 
     @Override
     public void onCreate(Bundle savedInstanceState) {
@@ -61,7 +63,7 @@ public class FavoritePage extends Fragment implements View.OnClickListener,
         user = mainActivity.mAuth.getCurrentUser();
 
         recyclerView = rootView.findViewById(R.id.favorite_recyclerView);
-        final ConstraintLayout constraintLayout = rootView.findViewById(R.id.constraintlayout_favorite);
+        constraintLayout = rootView.findViewById(R.id.constraintlayout_favorite);
         refreshLayout = rootView.findViewById(R.id.swipeRefreshLayout_favorite);
         refreshLayout.setDistanceToTriggerSync(200);
         refreshLayout.getViewTreeObserver().addOnScrollChangedListener(new ViewTreeObserver.OnScrollChangedListener() {
@@ -100,6 +102,11 @@ public class FavoritePage extends Fragment implements View.OnClickListener,
                         if (task.isSuccessful()) {
                             for (QueryDocumentSnapshot document : task.getResult()) {
                                 getFavorite(document.getId());
+                            }
+                            if (task.getResult().getDocuments().size() == 0) {
+                                TextView textView = new TextView(getContext());
+                                textView.setText("좋아요를 설정한 아이템이 없습니다.");
+                                constraintLayout.addView(textView);
                             }
                         } else {
                             Log.d(Constant.TAG, "Error getting documents: ", task.getException());

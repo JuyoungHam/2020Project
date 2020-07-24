@@ -3,6 +3,7 @@ package com.ici.myproject73029.mypage;
 import android.app.Dialog;
 import android.content.DialogInterface;
 import android.os.Bundle;
+import android.text.Html;
 import android.util.Log;
 import android.widget.Toast;
 
@@ -38,28 +39,30 @@ public class ReviewDeleteConfirmFragment extends DialogFragment {
         user = FirebaseAuth.getInstance().getCurrentUser();
 
         builder.setMessage("리뷰를 삭제 하시겠습니까?")
-                .setPositiveButton("네", new DialogInterface.OnClickListener() {
-                    public void onClick(DialogInterface dialog, int id) {
-                        mainActivity.db.collection("All").document(item).collection("comments")
-                                .document(user.getUid()).delete().addOnSuccessListener(new OnSuccessListener<Void>() {
-                            @Override
-                            public void onSuccess(Void aVoid) {
-                                Toast.makeText(mainActivity, "리뷰가 삭제되었습니다.", Toast.LENGTH_SHORT).show();
-                                mainActivity.onMyPageChanged(R.id.button_myreview);
+                .setPositiveButton(Html.fromHtml("<font color='#000000'>네</font>"),
+                        new DialogInterface.OnClickListener() {
+                            public void onClick(DialogInterface dialog, int id) {
+                                mainActivity.db.collection("All").document(item).collection("comments")
+                                        .document(user.getUid()).delete().addOnSuccessListener(new OnSuccessListener<Void>() {
+                                    @Override
+                                    public void onSuccess(Void aVoid) {
+                                        Toast.makeText(mainActivity, "리뷰가 삭제되었습니다.", Toast.LENGTH_SHORT).show();
+                                        mainActivity.onMyPageChanged(R.id.button_myreview);
+                                    }
+                                }).addOnFailureListener(new OnFailureListener() {
+                                    @Override
+                                    public void onFailure(@NonNull Exception e) {
+                                        Toast.makeText(mainActivity, "삭제 도중 오류가 발생하였습니다.", Toast.LENGTH_SHORT).show();
+                                    }
+                                });
                             }
-                        }).addOnFailureListener(new OnFailureListener() {
-                            @Override
-                            public void onFailure(@NonNull Exception e) {
-                                Toast.makeText(mainActivity, "삭제 도중 오류가 발생하였습니다.", Toast.LENGTH_SHORT).show();
+                        })
+                .setNegativeButton(Html.fromHtml("<font color='#000000'>아니요</font>"),
+                        new DialogInterface.OnClickListener() {
+                            public void onClick(DialogInterface dialog, int id) {
+                                // User cancelled the dialog
                             }
                         });
-                    }
-                })
-                .setNegativeButton("아니요", new DialogInterface.OnClickListener() {
-                    public void onClick(DialogInterface dialog, int id) {
-                        // User cancelled the dialog
-                    }
-                });
         // Create the AlertDialog object and return it
         return builder.create();
     }

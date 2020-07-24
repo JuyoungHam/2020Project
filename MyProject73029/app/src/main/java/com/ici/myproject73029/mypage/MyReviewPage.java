@@ -8,6 +8,7 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.view.ViewTreeObserver;
+import android.widget.TextView;
 
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
@@ -45,6 +46,7 @@ public class MyReviewPage extends Fragment implements MainActivity.onBackPressed
     private SwipeRefreshLayout refreshLayout;
     private ReviewAdapter adapter;
     private FirebaseFirestore db;
+    private ConstraintLayout constraintLayout;
 
     @Override
     public void onCreate(Bundle savedInstanceState) {
@@ -61,7 +63,7 @@ public class MyReviewPage extends Fragment implements MainActivity.onBackPressed
 
         recyclerView = rootView.findViewById(R.id.myreview_recyclerView);
 
-        final ConstraintLayout constraintLayout = rootView.findViewById(R.id.constraintlayout_myreview);
+        constraintLayout = rootView.findViewById(R.id.constraintlayout_myreview);
         refreshLayout = rootView.findViewById(R.id.swipeRefreshLayout_myreview);
         refreshLayout.setDistanceToTriggerSync(200);
         refreshLayout.getViewTreeObserver().addOnScrollChangedListener(new ViewTreeObserver.OnScrollChangedListener() {
@@ -111,6 +113,11 @@ public class MyReviewPage extends Fragment implements MainActivity.onBackPressed
                                 adapter.addItem(item);
                                 adapter.notifyItemInserted(i++);
                             }
+                            if (task.getResult().getDocuments().size() == 0) {
+                                TextView textView = new TextView(getContext());
+                                textView.setText("작성한 리뷰가 존재하지 않습니다.");
+                                constraintLayout.addView(textView);
+                            }
                         } else {
                             Log.d(Constant.TAG, "Error getting documents: ", task.getException());
                         }
@@ -120,7 +127,7 @@ public class MyReviewPage extends Fragment implements MainActivity.onBackPressed
                         adapter.setOnItemClickListener(new OnItemClickListener() {
                             @Override
                             public void onItemClick(View view, int position) {
-                                Review item = (Review) adapter.getItem(position);
+                                Review item = adapter.getItem(position);
                                 MainActivity mainActivity = (MainActivity) getActivity();
                                 mainActivity.onItemFragmentChanged(item);
                             }
