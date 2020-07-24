@@ -1,33 +1,26 @@
 package com.ici.myproject73029;
 
 import android.annotation.SuppressLint;
-import android.content.ClipData;
 import android.content.Intent;
 import android.content.res.Resources;
-import android.graphics.Bitmap;
 import android.net.Uri;
 import android.os.Bundle;
 import android.util.Log;
 import android.view.Menu;
 import android.view.MenuItem;
-import android.view.View;
 import android.widget.ImageView;
 import android.widget.Toast;
 
 import androidx.annotation.NonNull;
 import androidx.appcompat.app.ActionBar;
 import androidx.appcompat.app.AppCompatActivity;
-import androidx.core.graphics.drawable.RoundedBitmapDrawable;
-import androidx.core.graphics.drawable.RoundedBitmapDrawableFactory;
 
 import com.bumptech.glide.Glide;
-import com.bumptech.glide.request.target.BitmapImageViewTarget;
 import com.google.android.gms.tasks.OnCompleteListener;
 import com.google.android.gms.tasks.OnFailureListener;
 import com.google.android.gms.tasks.OnSuccessListener;
 import com.google.android.gms.tasks.Task;
 import com.google.android.material.bottomnavigation.BottomNavigationView;
-import com.google.android.material.floatingactionbutton.FloatingActionButton;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.auth.FirebaseUser;
 import com.google.firebase.firestore.FirebaseFirestore;
@@ -35,14 +28,13 @@ import com.google.firebase.iid.FirebaseInstanceId;
 import com.google.firebase.iid.InstanceIdResult;
 import com.google.firebase.storage.FirebaseStorage;
 import com.google.firebase.storage.StorageReference;
-import com.ici.myproject73029.adapters.FundamentalAdapter;
 import com.ici.myproject73029.firebase.Firebase;
 import com.ici.myproject73029.items.FundamentalItem;
 import com.ici.myproject73029.items.Review;
 import com.ici.myproject73029.mypage.FavoritePage;
 import com.ici.myproject73029.mypage.MyPageTab;
-import com.ici.myproject73029.mypage.MyReviewPage;
 import com.ici.myproject73029.mypage.MyReviewFragment;
+import com.ici.myproject73029.mypage.MyReviewPage;
 import com.ici.myproject73029.tabs.ExhibitionTab;
 import com.ici.myproject73029.tabs.HomeTab;
 import com.ici.myproject73029.tabs.ItemFragment;
@@ -209,8 +201,12 @@ public class MainActivity extends AppCompatActivity {
     }
 
     public void loadMoreReview(String title) {
-        getSupportFragmentManager().beginTransaction().replace(R.id.main_fragment,
-                new ReviewListFragment(title)).commit();
+        if (title != null) {
+            getSupportFragmentManager().beginTransaction().replace(R.id.main_fragment,
+                    new ReviewListFragment(title)).commit();
+        } else {
+            Toast.makeText(this, "마지막 리뷰입니다.", Toast.LENGTH_SHORT).show();
+        }
     }
 
     @Override

@@ -194,7 +194,7 @@ public class ItemFragment extends Fragment implements View.OnClickListener,
         checkIsFavorite();
 
         review_list = rootView.findViewById(R.id.framelayout_review_list);
-        listFragment = new ReviewListFragment(title);
+        listFragment = new ReviewListFragment(title, mainActivity);
         getChildFragmentManager().beginTransaction().replace(R.id.framelayout_review_list,
                 listFragment).commit();
 

@@ -51,7 +51,7 @@
             style="@style/MyButtonStyle"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:text="댓글 더 보기"
+            android:text="댓글 모두 보기"
             android:visibility="gone" />
 
     </LinearLayout>

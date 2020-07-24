@@ -21,6 +21,7 @@ import androidx.recyclerview.widget.RecyclerView;
 
 import com.google.android.gms.tasks.OnCompleteListener;
 import com.google.android.gms.tasks.Task;
+import com.google.firebase.firestore.DocumentSnapshot;
 import com.google.firebase.firestore.FirebaseFirestore;
 import com.google.firebase.firestore.Query;
 import com.google.firebase.firestore.QueryDocumentSnapshot;
@@ -33,9 +34,11 @@ import com.ici.myproject73029.databinding.FragmentReviewListBinding;
 import com.ici.myproject73029.firebase.Firebase;
 import com.ici.myproject73029.items.Review;
 
+import java.util.List;
+
 public class ReviewListFragment extends Fragment implements AdapterView.OnItemSelectedListener {
     private RecyclerView recyclerView;
-    private MainActivity mainActivity;
+    private MainActivity mainActivity = null;
     String title;
     private FirebaseFirestore db;
     private ReviewAdapter adapter;
@@ -48,6 +51,12 @@ public class ReviewListFragment extends Fragment implements AdapterView.OnItemSe
 
     public ReviewListFragment(String title) {
         super();
+        this.title = title;
+    }
+
+    public ReviewListFragment(String title, MainActivity mainActivity) {
+        super();
+        this.mainActivity = mainActivity;
         this.title = title;
     }
 
@@ -105,15 +114,13 @@ public class ReviewListFragment extends Fragment implements AdapterView.OnItemSe
         }
         query.get().addOnCompleteListener(new OnCompleteListener<QuerySnapshot>() {
             @Override
-            public void onComplete(@NonNull Task<QuerySnapshot> task) {
+            public void onComplete(@NonNull final Task<QuerySnapshot> task) {
                 if (task.isSuccessful()) {
                     if (task.getResult().size() != 0) {
                         int i = 0;
                         for (final QueryDocumentSnapshot document : task.getResult()) {
                             final Review item = document.toObject(Review.class);
-                            adapter.addItem(item);
-                            adapter.notifyItemInserted(i++);
-                            if (i > 3) {
+                            if (mainActivity != null && i > 2) {
                                 load_review.setVisibility(View.VISIBLE);
                                 load_review.setOnClickListener(new View.OnClickListener() {
                                     @Override
@@ -121,8 +128,10 @@ public class ReviewListFragment extends Fragment implements AdapterView.OnItemSe
                                         mainActivity.loadMoreReview(item.getItemInfo());
                                     }
                                 });
-
+                                break;
                             }
+                            adapter.addItem(item);
+                            adapter.notifyItemInserted(i++);
                         }
                     } else {
                         LinearLayout linearLayout = rootView.findViewById(R.id.review_list_container);
