@@ -46,6 +46,7 @@ import com.ici.myproject73029.mypage.MyReviewFragment;
 import com.ici.myproject73029.tabs.ExhibitionTab;
 import com.ici.myproject73029.tabs.HomeTab;
 import com.ici.myproject73029.tabs.ItemFragment;
+import com.ici.myproject73029.tabs.ReviewListFragment;
 import com.ici.myproject73029.tabs.ShowTab;
 
 public class MainActivity extends AppCompatActivity {
@@ -205,6 +206,11 @@ public class MainActivity extends AppCompatActivity {
             getSupportFragmentManager().beginTransaction().replace(R.id.main_fragment,
                     myReviewPage).commit();
         }
+    }
+
+    public void loadMoreReview(String title) {
+        getSupportFragmentManager().beginTransaction().replace(R.id.main_fragment,
+                new ReviewListFragment(title)).commit();
     }
 
     @Override

@@ -7,6 +7,7 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.AdapterView;
 import android.widget.ArrayAdapter;
+import android.widget.Button;
 import android.widget.LinearLayout;
 import android.widget.Spinner;
 import android.widget.TextView;
@@ -39,6 +40,7 @@ public class ReviewListFragment extends Fragment implements AdapterView.OnItemSe
     private FirebaseFirestore db;
     private ReviewAdapter adapter;
     private ViewGroup rootView;
+    private Button load_review;
 
     public ReviewListFragment() {
         super();
@@ -73,6 +75,8 @@ public class ReviewListFragment extends Fragment implements AdapterView.OnItemSe
 
         recyclerView = rootView.findViewById(R.id.reviewlist_recyclerView);
 
+        load_review = rootView.findViewById(R.id.load_review);
+
         LinearLayoutManager layoutManager = new LinearLayoutManager(getContext(),
                 LinearLayoutManager.VERTICAL, false);
         recyclerView.setLayoutManager(layoutManager);
@@ -105,10 +109,20 @@ public class ReviewListFragment extends Fragment implements AdapterView.OnItemSe
                 if (task.isSuccessful()) {
                     if (task.getResult().size() != 0) {
                         int i = 0;
-                        for (QueryDocumentSnapshot document : task.getResult()) {
-                            Review item = document.toObject(Review.class);
+                        for (final QueryDocumentSnapshot document : task.getResult()) {
+                            final Review item = document.toObject(Review.class);
                             adapter.addItem(item);
                             adapter.notifyItemInserted(i++);
+                            if (i > 3) {
+                                load_review.setVisibility(View.VISIBLE);
+                                load_review.setOnClickListener(new View.OnClickListener() {
+                                    @Override
+                                    public void onClick(View v) {
+                                        mainActivity.loadMoreReview(item.getItemInfo());
+                                    }
+                                });
+
+                            }
                         }
                     } else {
                         LinearLayout linearLayout = rootView.findViewById(R.id.review_list_container);

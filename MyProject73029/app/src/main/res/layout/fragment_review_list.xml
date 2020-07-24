@@ -20,13 +20,6 @@
             android:gravity="center"
             android:orientation="horizontal">
 
-            <Spinner
-                android:id="@+id/review_list_spinner"
-                android:layout_width="wrap_content"
-                android:layout_height="match_parent"
-                android:layout_weight="1"
-                android:textSize="12sp" />
-
             <TextView
                 android:id="@+id/textView2"
                 android:layout_width="wrap_content"
@@ -36,6 +29,13 @@
                 android:text="리뷰"
                 android:textAppearance="@style/TextAppearance.AppCompat.Medium"
                 android:textSize="14sp" />
+
+            <Spinner
+                android:id="@+id/review_list_spinner"
+                android:layout_width="wrap_content"
+                android:layout_height="match_parent"
+                android:layout_weight="1"
+                android:textSize="12sp" />
 
         </LinearLayout>
 
