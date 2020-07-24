@@ -41,7 +41,8 @@ import java.lang.reflect.Array;
 import java.util.ArrayList;
 import java.util.Arrays;
 
-public class ExhibitionTab extends Fragment implements SwipeRefreshLayout.OnRefreshListener, AdapterView.OnItemSelectedListener {
+public class ExhibitionTab extends Fragment implements SwipeRefreshLayout.OnRefreshListener,
+        AdapterView.OnItemSelectedListener {
     private RecyclerView recyclerView;
     private MainActivity mainActivity;
     private SwipeRefreshLayout refreshLayout;

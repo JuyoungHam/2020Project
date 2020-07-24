@@ -95,10 +95,10 @@ public class ProfileUpdateFragment extends DialogFragment {
                 .setPositiveButton(Html.fromHtml("<font color='#000000'>네</font>"),
                         new DialogInterface.OnClickListener() {
                             public void onClick(DialogInterface dialog, int id) {
-                                firebaseUIActivity.change_profile(user, nickname.getText().toString());
                                 if (bitmap != null) {
                                     uploadProfileImage(bitmap);
                                 }
+                                firebaseUIActivity.change_profile(user, nickname.getText().toString());
                             }
                         }).setNegativeButton(Html.fromHtml("<font color='#000000'>아니요</font>"),
                 new DialogInterface.OnClickListener() {

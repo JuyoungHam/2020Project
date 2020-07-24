@@ -20,6 +20,13 @@
             android:gravity="center"
             android:orientation="horizontal">
 
+            <Spinner
+                android:id="@+id/review_list_spinner"
+                android:layout_width="wrap_content"
+                android:layout_height="match_parent"
+                android:layout_weight="1"
+                android:textSize="12sp" />
+
             <TextView
                 android:id="@+id/textView2"
                 android:layout_width="wrap_content"
@@ -30,13 +37,6 @@
                 android:textAppearance="@style/TextAppearance.AppCompat.Medium"
                 android:textSize="14sp" />
 
-            <Spinner
-                android:id="@+id/review_list_spinner"
-                android:layout_width="wrap_content"
-                android:layout_height="match_parent"
-                android:layout_weight="1"
-                android:textSize="12sp" />
-
         </LinearLayout>
 
         <androidx.recyclerview.widget.RecyclerView
@@ -45,6 +45,15 @@
             android:layout_height="wrap_content"
             android:layout_weight="1"
             tools:listitem="@layout/review" />
+
+        <Button
+            android:id="@+id/load_review"
+            style="@style/MyButtonStyle"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:text="댓글 더 보기"
+            android:visibility="gone" />
+
     </LinearLayout>
 
     <data>
