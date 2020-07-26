@@ -281,10 +281,10 @@ public class ItemFragment extends Fragment implements View.OnClickListener,
                                 DocumentSnapshot document = task.getResult();
                                 if (document.exists()) {
                                     isFavorite = true;
-                                    make_favorite.setImageDrawable(getResources().getDrawable(R.drawable.favorited));
+                                    make_favorite.setImageResource(R.drawable.unfavorited);
                                 } else {
                                     isFavorite = false;
-                                    make_favorite.setImageDrawable(getResources().getDrawable(R.drawable.unfavorited));
+                                    make_favorite.setImageResource(R.drawable.unfavorited);
                                 }
                             }
                         }
@@ -460,7 +460,7 @@ public class ItemFragment extends Fragment implements View.OnClickListener,
 
                         for (DocumentChange change : querySnapshot.getDocumentChanges()) {
                             if (change.getType() == DocumentChange.Type.ADDED) {
-                                Log.d(Constant.TAG, "New city:" + change.getDocument().getData());
+                                Log.d(Constant.TAG, change.getDocument().getId());
                             }
 
                             String source = querySnapshot.getMetadata().isFromCache() ?

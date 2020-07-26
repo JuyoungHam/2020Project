@@ -46,7 +46,7 @@
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:text="myreview"
-                android:textColor="#FFFFFF"
+                android:textColor="#000000"
                 app:backgroundTint="@color/colorPrimaryDark" />
 
             <Button
@@ -54,7 +54,7 @@
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:text="favorite"
-                android:textColor="#FFFFFF"
+                android:textColor="#000000"
                 app:backgroundTint="@color/colorPrimaryDark" />
 
             <Button
@@ -62,7 +62,7 @@
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:text="계정 관리"
-                android:textColor="#FFFFFF"
+                android:textColor="#000000"
                 app:backgroundTint="@color/colorPrimaryDark" />
 
         </LinearLayout>

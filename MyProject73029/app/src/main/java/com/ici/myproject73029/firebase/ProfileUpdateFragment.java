@@ -139,6 +139,7 @@ public class ProfileUpdateFragment extends DialogFragment {
         }).addOnSuccessListener(new OnSuccessListener<UploadTask.TaskSnapshot>() {
             @Override
             public void onSuccess(UploadTask.TaskSnapshot taskSnapshot) {
+                firebaseUIActivity.change_profile(user, nickname.getText().toString());
             }
         });
 

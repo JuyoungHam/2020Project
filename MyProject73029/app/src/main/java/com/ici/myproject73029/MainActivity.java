@@ -64,7 +64,6 @@ public class MainActivity extends AppCompatActivity {
     private Uri user_image_uri;
     public Resources resources;
 
-    @SuppressLint("RestrictedApi")
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);

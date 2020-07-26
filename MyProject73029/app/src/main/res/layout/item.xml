@@ -45,8 +45,8 @@
 
         <ImageView
             android:id="@+id/image_gird"
-            android:layout_width="100pt"
-            android:layout_height="100pt"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
             android:layout_gravity="center|center_vertical"
             android:layout_margin="4dp"
             android:visibility="gone"
