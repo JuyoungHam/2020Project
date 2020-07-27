@@ -119,7 +119,8 @@ public class ReviewAdapter extends RecyclerView.Adapter<ReviewAdapter.ViewHolder
             ratingBar = itemView.findViewById(R.id.review_rating_bar);
             date = itemView.findViewById(R.id.review_item_date);
             like = itemView.findViewById(R.id.review_item_like);
-            like.setOnClickListener(this);
+            user = FirebaseAuth.getInstance().getCurrentUser();
+            if (user != null) like.setOnClickListener(this);
             review_item_like_count = itemView.findViewById(R.id.review_item_like_count);
 
             container.setVisibility(View.VISIBLE);
@@ -172,6 +173,7 @@ public class ReviewAdapter extends RecyclerView.Adapter<ReviewAdapter.ViewHolder
         }
 
         private void isLiked() {
+            user = FirebaseAuth.getInstance().getCurrentUser();
             if (user != null) {
                 db = FirebaseFirestore.getInstance();
                 db.collection("All").document(item_info).collection("comments")
@@ -211,6 +213,7 @@ public class ReviewAdapter extends RecyclerView.Adapter<ReviewAdapter.ViewHolder
         }
 
         private void make_favorite() {
+            user = FirebaseAuth.getInstance().getCurrentUser();
             db = FirebaseFirestore.getInstance();
             db.collection("All").document(item_info).collection("comments")
                     .whereEqualTo("userId", writer).get()

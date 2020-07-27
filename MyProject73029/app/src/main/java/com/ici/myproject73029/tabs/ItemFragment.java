@@ -281,7 +281,7 @@ public class ItemFragment extends Fragment implements View.OnClickListener,
                                 DocumentSnapshot document = task.getResult();
                                 if (document.exists()) {
                                     isFavorite = true;
-                                    make_favorite.setImageResource(R.drawable.unfavorited);
+                                    make_favorite.setImageResource(R.drawable.favorited);
                                 } else {
                                     isFavorite = false;
                                     make_favorite.setImageResource(R.drawable.unfavorited);
