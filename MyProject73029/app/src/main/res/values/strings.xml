@@ -2,13 +2,7 @@
     <string name="app_name">My Project 73029</string>
 
     <!-- Facebook application ID and custom URL scheme (app ID prefixed by 'fb'). -->
-    <string name="facebook_app_id">674334136753830</string>
-    <string name="facebook_application_id">674334136753830</string>
-    <string name="fb_login_protocol_scheme" translatable="false">fb674334136753830</string>
 
-    <!-- Twitter consumer key and secret -->
-    <string name="twitter_consumer_key" translatable="false">M4NNev4TLAoW0IRej74o1LAeh</string>
-    <string name="twitter_consumer_secret" translatable="false">j30RendXqk0aeuJLSs4IrE0LrbPLbWf8pnrjJnofkcCA05j2DE</string>
 
     <!-- Strings related to login -->
     <string name="prompt_email">Email</string>
