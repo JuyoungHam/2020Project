@@ -1,7 +1,7 @@
 import requests
 session = requests.Session()
 
-params = {'username' : 'Ryan', 'password':'password'}
+params = {'username': 'Ryan', 'password': 'password'}
 welcome_page = 'http://pythonscraping.com/pages/cookies/welcome.php'
 s = session.post(welcome_page, params)
 
