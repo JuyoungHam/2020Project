@@ -25,17 +25,25 @@ class Website:
 
 
 def scrape(url):
+    temp = []
     try:
         try:
             req = requests.get(url)
             bs = BeautifulSoup(req.text, 'html.parser')
             # print(bs.prettify())
-            items = bs.findAll('body')
-            # file = open('bodies.txt', 'a+',encoding='utf-8')
+            items = bs.findAll(['div', 'span', 'p'],
+                               string=re.compile('.전시(?!관)(?!실)|특별전|기획전|展'))
+            file = open('contents.txt', 'a+', encoding='utf-8')
             for item in items:
-                print(items.text)
-            #     file.write(item.text)
-            # file.close()
+                if item.text not in temp:
+                    temp.append(item.text)
+                    if item.parent.text is not None:
+                        if item.parent.text not in temp:
+                            temp.append(item.parent.text)
+                            print(item.parent.text)
+                            file.write(item.parent.text)
+            file.write("-----------------------페이지끝---------------------------\n")
+            file.close()
         except HTTPError as errh:
             print("Http Error:", errh)
         except URLError as e:

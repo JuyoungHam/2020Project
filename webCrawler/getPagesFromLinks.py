@@ -10,6 +10,14 @@ import re
 from urllib.parse import parse_qsl, urljoin, urlparse
 sys.stdout = io.TextIOWrapper(sys.stdout.detach(), encoding='utf-8')
 
+session = requests.Session()
+headers = {
+    'User-Agent': 'Mozilla/5.0 (Macintosh; Intel Mac OS X 10_9_5)'
+    'AppleWebKit 537.36 (KHTML, like Gecko) Chrome',
+    'Accept': 'text/html, application/xhtml+xml,application/xml;'
+    'q=0.9,image/webp,*/*;q=0.8'
+}
+
 
 class Content:
     def __init__(self, url, title, body):
@@ -57,7 +65,9 @@ def getInternalLinks(bs, includeUrl):
                     internalLinks.append(link.attrs['href'])
     return internalLinks
 
+
 pages = []
+
 
 def getLinks(url):
     try:
@@ -70,7 +80,7 @@ def getLinks(url):
                 link = 'http://' + link
             if link not in pages:
                 pages.append(link)
-                file.write(link+"\n")
+                file.write(link + "\n")
         file.close()
     except HTTPError as errh:
         print("Http Error:", errh)
@@ -82,7 +92,6 @@ def getLinks(url):
         print("Timeout Error:", errt)
     except requests.exceptions.RequestException as err:
         print("OOps: Something Else", err)
-
 
 
 for url in urllist:
