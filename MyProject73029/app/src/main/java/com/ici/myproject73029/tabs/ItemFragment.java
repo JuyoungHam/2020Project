@@ -176,7 +176,7 @@ public class ItemFragment extends Fragment implements View.OnClickListener,
         ImageButton share_button = rootView.findViewById(R.id.share_button);
         share_button.setOnClickListener(this);
 
-        item_title.setText(title);
+        item_title.setText(Html.fromHtml(title));
         if (description != null) {
             item_description.setText(Html.fromHtml(description));
             item_description.setVisibility(View.VISIBLE);
@@ -228,16 +228,17 @@ public class ItemFragment extends Fragment implements View.OnClickListener,
                                 }
 
                                 ArrayList<String> tags = (ArrayList<String>) document.get("tag");
-                                for (String tag : tags) {
-                                    Chip chip = new Chip(getContext());
-                                    chip.setText(tag);
-                                    chip.setChipIcon(mainActivity.resources.getDrawable(R.drawable.ic_iconfinder_icon_hashtag));
-                                    chip.setChipIconSize(50);
-                                    chip.setChipBackgroundColorResource(R.color.colorAccent);
-                                    chip.setTextColor(Color.WHITE);
-                                    chipGroup.addView(chip);
+                                if (tags != null) {
+                                    for (String tag : tags) {
+                                        Chip chip = new Chip(getContext());
+                                        chip.setText(tag);
+                                        chip.setChipIcon(mainActivity.resources.getDrawable(R.drawable.ic_iconfinder_icon_hashtag));
+                                        chip.setChipIconSize(50);
+                                        chip.setChipBackgroundColorResource(R.color.colorAccent);
+                                        chip.setTextColor(Color.WHITE);
+                                        chipGroup.addView(chip);
+                                    }
                                 }
-
                                 getAverageRates(document.getReference());
                             }
                         } else {

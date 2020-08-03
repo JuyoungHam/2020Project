@@ -21,9 +21,13 @@ import com.google.android.gms.tasks.OnFailureListener;
 import com.google.android.gms.tasks.OnSuccessListener;
 import com.google.android.gms.tasks.Task;
 import com.google.android.material.bottomnavigation.BottomNavigationView;
+import com.google.firebase.Timestamp;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.auth.FirebaseUser;
+import com.google.firebase.firestore.DocumentSnapshot;
 import com.google.firebase.firestore.FirebaseFirestore;
+import com.google.firebase.firestore.QuerySnapshot;
+import com.google.firebase.firestore.SetOptions;
 import com.google.firebase.iid.FirebaseInstanceId;
 import com.google.firebase.iid.InstanceIdResult;
 import com.google.firebase.storage.FirebaseStorage;
@@ -40,6 +44,10 @@ import com.ici.myproject73029.tabs.HomeTab;
 import com.ici.myproject73029.tabs.ItemFragment;
 import com.ici.myproject73029.tabs.ReviewListFragment;
 import com.ici.myproject73029.tabs.ShowTab;
+
+import java.util.Date;
+import java.util.HashMap;
+import java.util.Map;
 
 public class MainActivity extends AppCompatActivity {
 
@@ -73,6 +81,31 @@ public class MainActivity extends AppCompatActivity {
 
         Firebase firebase = new Firebase();
         db = firebase.startFirebase();
+        db.collection("All").get().addOnCompleteListener(new OnCompleteListener<QuerySnapshot>() {
+            @Override
+            public void onComplete(@NonNull Task<QuerySnapshot> task) {
+                if (task.isSuccessful()) {
+                    for (DocumentSnapshot document : task.getResult()) {
+                        Map<String, Object> map = new HashMap<>();
+                        if (document.get("end_date") != null) {
+                            Timestamp end = (Timestamp) document.get("end_date");
+                            if(Timestamp.now().compareTo(end) > 0){
+                                map.put("isOn", false);
+                            }
+                        }
+                        if (document.get("start_date") != null) {
+                            Timestamp start = (Timestamp) document.get("start_date");
+                            if(Timestamp.now().compareTo(start) < 0){
+                                map.put("isOn", false);
+                            } else {
+                                map.put("isOn", true);
+                            }
+                        }
+                        document.getReference().set(map, SetOptions.merge());
+                    }
+                }
+            }
+        });
 
         mAuth = FirebaseAuth.getInstance();
         storage = FirebaseStorage.getInstance();

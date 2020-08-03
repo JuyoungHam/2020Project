@@ -111,11 +111,11 @@ public class FundamentalAdapter extends RecyclerView.Adapter<FundamentalAdapter.
         }
 
         public void setItem(FundamentalItem item) {
-            listTitle.setText(item.getTitle());
+            listTitle.setText(Html.fromHtml(item.getTitle()));
             listDescription.setText((item.getDescription() != null ?
                     Html.fromHtml(item.getDescription()) : ""));
             if (isGrid) {
-                gridTitle.setText(item.getTitle());
+                gridTitle.setText(Html.fromHtml(item.getTitle()));
 //                gridDescription.setText((item.getDescription() != null ?
 //                        Html.fromHtml(item.getDescription()) : ""));
                 if (item.getPoster() != null) {
