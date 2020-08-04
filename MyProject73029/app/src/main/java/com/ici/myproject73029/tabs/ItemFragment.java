@@ -151,6 +151,7 @@ public class ItemFragment extends Fragment implements View.OnClickListener,
             make_favorite.setEnabled(false);
             make_favorite.setImageResource(R.drawable.favorited);
             rootView.findViewById(R.id.set_comment).setVisibility(View.GONE);
+            rootView.findViewById(R.id.space_comment).setVisibility(View.GONE);
         }
 
         geocoder = new Geocoder(getContext());

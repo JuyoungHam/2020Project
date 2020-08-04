@@ -81,31 +81,6 @@ public class MainActivity extends AppCompatActivity {
 
         Firebase firebase = new Firebase();
         db = firebase.startFirebase();
-        db.collection("All").get().addOnCompleteListener(new OnCompleteListener<QuerySnapshot>() {
-            @Override
-            public void onComplete(@NonNull Task<QuerySnapshot> task) {
-                if (task.isSuccessful()) {
-                    for (DocumentSnapshot document : task.getResult()) {
-                        Map<String, Object> map = new HashMap<>();
-                        if (document.get("end_date") != null) {
-                            Timestamp end = (Timestamp) document.get("end_date");
-                            if(Timestamp.now().compareTo(end) > 0){
-                                map.put("isOn", false);
-                            }
-                        }
-                        if (document.get("start_date") != null) {
-                            Timestamp start = (Timestamp) document.get("start_date");
-                            if(Timestamp.now().compareTo(start) < 0){
-                                map.put("isOn", false);
-                            } else {
-                                map.put("isOn", true);
-                            }
-                        }
-                        document.getReference().set(map, SetOptions.merge());
-                    }
-                }
-            }
-        });
 
         mAuth = FirebaseAuth.getInstance();
         storage = FirebaseStorage.getInstance();

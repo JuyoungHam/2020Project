@@ -138,6 +138,7 @@ public class ReviewListFragment extends Fragment implements AdapterView.OnItemSe
                         TextView textView = new TextView(getContext());
                         textView.setText("리뷰가 존재하지 않습니다.");
                         textView.setPadding(4, 4, 4, 4);
+                        linearLayout.removeAllViews();
                         linearLayout.addView(textView);
                     }
 

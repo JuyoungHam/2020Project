@@ -89,7 +89,7 @@ public class ExhibitionTab extends Fragment implements SwipeRefreshLayout.OnRefr
         });
         refreshLayout.setOnRefreshListener(this);
 
-        StaggeredGridLayoutManager layoutManager = new StaggeredGridLayoutManager(2,
+        StaggeredGridLayoutManager layoutManager = new StaggeredGridLayoutManager(1,
                 StaggeredGridLayoutManager.VERTICAL);
 
 //        GridLayoutManager layoutManager = new GridLayoutManager(getContext(), 2);
@@ -129,7 +129,7 @@ public class ExhibitionTab extends Fragment implements SwipeRefreshLayout.OnRefr
     private void updateItemList(String tag) {
         adapter.clearItems();
         adapter.notifyDataSetChanged();
-        Query query = db.collection("All").whereEqualTo("category", 101);
+        Query query = db.collection("All").whereEqualTo("category", 101).whereEqualTo("isOn", true);
 
         if (tag != null && !tag.equals(Constant.EXHIBITION_TAGS[0])) {
             query = query.whereArrayContains("tag", tag);
@@ -174,7 +174,7 @@ public class ExhibitionTab extends Fragment implements SwipeRefreshLayout.OnRefr
 
     @Override
     public void onItemSelected(AdapterView<?> parent, final View view, int position, long id) {
-        updateItemList(Constant.EXHIBITION_TAGS[position]);
+        if (position != 0) updateItemList(Constant.EXHIBITION_TAGS[position]);
 //        scrollView.scrollTo(0, scrollView.getBottom());
     }
 
