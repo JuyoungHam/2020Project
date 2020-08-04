@@ -151,6 +151,7 @@ public class ItemFragment extends Fragment implements View.OnClickListener,
             make_favorite.setEnabled(false);
             make_favorite.setImageResource(R.drawable.favorited);
             rootView.findViewById(R.id.set_comment).setVisibility(View.GONE);
+            rootView.findViewById(R.id.space_comment).setVisibility(View.GONE);
         }
 
         geocoder = new Geocoder(getContext());
@@ -319,7 +320,7 @@ public class ItemFragment extends Fragment implements View.OnClickListener,
                         public void onSuccess(Void aVoid) {
                             isFavorite = false;
                             add_favorite_count(-1);
-                            make_favorite.setImageDrawable(getResources().getDrawable(R.drawable.unfavorited));
+                            make_favorite.setImageResource(R.drawable.unfavorited);
                             Toast.makeText(mainActivity, "좋아요 해제", Toast.LENGTH_SHORT).show();
                         }
                     })
@@ -341,7 +342,7 @@ public class ItemFragment extends Fragment implements View.OnClickListener,
                             isFavorite = true;
 
                             add_favorite_count(1);
-                            make_favorite.setImageDrawable(getResources().getDrawable(R.drawable.favorited));
+                            make_favorite.setImageResource(R.drawable.favorited);
                             Toast.makeText(mainActivity, "좋아요 설정", Toast.LENGTH_SHORT).show();
                             Log.d(Constant.TAG, "DocumentSnapshot successfully written!");
                         }

@@ -43,6 +43,8 @@ public class MyPageTab extends Fragment implements View.OnClickListener, SwipeRe
     private ImageView profile_image;
     private FirebaseAuth auth;
     private SwipeRefreshLayout refreshLayout;
+    private Button review_button;
+    private Button favorite_button;
 
     @Override
     public void onCreate(Bundle savedInstanceState) {
@@ -68,9 +70,9 @@ public class MyPageTab extends Fragment implements View.OnClickListener, SwipeRe
         login_control_button = rootView.findViewById(R.id.button_login_control);
         login_control_button.setOnClickListener(this);
 
-        Button favorite_button = rootView.findViewById(R.id.button_favorite);
+        favorite_button = rootView.findViewById(R.id.button_favorite);
         favorite_button.setOnClickListener(this);
-        Button review_button = rootView.findViewById(R.id.button_myreview);
+        review_button = rootView.findViewById(R.id.button_myreview);
         review_button.setOnClickListener(this);
         text_profile = rootView.findViewById(R.id.text_profile);
         profile_image = rootView.findViewById(R.id.image_profile);
@@ -109,6 +111,9 @@ public class MyPageTab extends Fragment implements View.OnClickListener, SwipeRe
 
     public void updateUI(final FirebaseUser user) {
         if (user != null) {
+            review_button.setVisibility(View.VISIBLE);
+            favorite_button.setVisibility(View.VISIBLE);
+            login_control_button.setText("계정 관리");
             mainActivity.db.collection("Users").document(user.getUid()).get().addOnCompleteListener(new OnCompleteListener<DocumentSnapshot>() {
                 @Override
                 public void onComplete(@NonNull Task<DocumentSnapshot> task) {
@@ -130,7 +135,10 @@ public class MyPageTab extends Fragment implements View.OnClickListener, SwipeRe
                 }
             });
         } else {
-            text_profile.setText(null);
+            review_button.setVisibility(View.GONE);
+            favorite_button.setVisibility(View.GONE);
+            login_control_button.setText("로그인 하기");
+            text_profile.setText("로그인이 필요합니다.");
             profile_image.setImageResource(R.drawable.ic_baseline_portrait_24);
         }
     }
