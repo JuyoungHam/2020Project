@@ -1,0 +1,110 @@
+<!DOCTYPE html>
+<html lang="en" dir="ltr">
+
+<head>
+  <meta charset="utf-8">
+  <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.5.0/css/bootstrap.min.css" integrity="sha384-9aIt2nRpC12Uk9gS9baDl411NQApFmC26EwAOH8WgZl5MYYxFfc+NcPb1dKGj7Sk" crossorigin="anonymous">
+  <title>관리자 전용 페이지</title>
+</head>
+
+<body>
+  <script src="https://www.gstatic.com/firebasejs/7.16.1/firebase-app.js"></script>
+  <script src="https://www.gstatic.com/firebasejs/7.16.1/firebase-analytics.js"></script>
+  <script src="https://www.gstatic.com/firebasejs/7.16.1/firebase-auth.js"></script>
+  <script src="https://www.gstatic.com/firebasejs/7.16.1/firebase-firestore.js"></script>
+  <script>
+    var firebaseConfig = {
+      apiKey: "AIzaSyCFIPnKDcMHL2VdpGmUleT0qz1KJYsl6K0",
+      authDomain: "my-project-73029-baca5.firebaseapp.com",
+      databaseURL: "https://my-project-73029-baca5.firebaseio.com",
+      projectId: "my-project-73029-baca5",
+      storageBucket: "my-project-73029-baca5.appspot.com",
+      messagingSenderId: "905164925602",
+      appId: "1:905164925602:web:0c675bc7fc68cc171505fb",
+      measurementId: "G-7TQFXVHNXZ"
+    };
+    firebase.initializeApp(firebaseConfig);
+    firebase.analytics();
+    var admin2 = 'subin931024@gmail.com';
+    var admin1 = 'hamjuyoung11@gmail.com';
+    firebase.auth().onAuthStateChanged(function(user) {
+      if (!user) {
+        alert("관리자 로그인 후 이용가능.");
+        location.href = 'index.html';
+      }
+      if (admin1 != user.email && admin2 != user.email) {
+        alert("관리자 전용 페이지입니다.");
+        location.href = 'index.html';
+      }
+    });
+  </script>
+  <nav class="navbar navbar-expand-lg navbar-light bg-light">
+    <a class="navbar-brand" href="Login.html">Login</a>
+    <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarNavAltMarkup" aria-controls="navbarNavAltMarkup" aria-expanded="false" aria-label="Toggle navigation">
+      <span class="navbar-toggler-icon"></span>
+    </button>
+    <div class="collapse navbar-collapse" id="navbarNavAltMarkup">
+      <div class="navbar-nav">
+        <a class="nav-item nav-link" href="List.html">Add</a>
+        <a class="nav-item nav-link" href="Admin.html">Admin</a>
+        <a class="nav-item nav-link" href="my_page.html">My Page</a>
+        <a class="nav-item nav-link" href="my_contents.html">Contents</a>
+        <a class="nav-item nav-link" href="#" onclick="Logout()">Logout</a>
+      </div>
+    </div>
+  </nav>
+  <table border="1" style="width:700px; margin:auto; text-align: center;">
+    <tr>
+      <th>title</th>
+    </tr>
+    <tbody>
+      <script type="text/javascript">
+        const db = firebase.firestore().collection('All');
+        db.get().then(function(querySnapshot) {
+          querySnapshot.forEach(function(doc) {
+            var childData = doc.id;
+            var div = document.createElement('div');
+            var a = document.createElement('input');
+            var contents = document.createTextNode(childData);
+            div.setAttribute('style', 'margin:0 auto;text-align:center;');
+            a.setAttribute('type', 'submit');
+            a.setAttribute('onclick', 'sendData()');
+            a.setAttribute('class', 'btn btn-outline-dark');
+            a.setAttribute('style', 'width:700px;margin-top:10px;');
+            a.setAttribute('value', JSON.stringify(doc.id));
+            div.appendChild(a);
+            a.appendChild(contents);
+            document.body.appendChild(div);
+          });
+        }).catch(function(error) {
+          var errorCode = error.code;
+          var errorMessage = error.message;
+          console.log(errorMessage);
+        });
+
+        function sendData() {
+          var value = event.target.value;
+          var data = value.replace(/\"/gi, "");
+          window.location = "Read.html?param=" + encodeURI(data);
+          console.log(value);
+        }
+
+        function Logout() {
+          firebase.auth().signOut().then(function() {
+            alert("로그아웃 성공");
+            location.href = 'index.html';
+          }).catch(function(error) {
+            var errorCode = error.code;
+            var errorMessage = error.message;
+            console.log(errorMessage);
+          });
+        }
+      </script>
+    </tbody>
+  </table>
+  <script src="https://code.jquery.com/jquery-3.5.1.slim.min.js" integrity="sha384-DfXdz2htPH0lsSSs5nCTpuj/zy4C+OGpamoFVy38MVBnE+IbbVYUew+OrCXaRkfj" crossorigin="anonymous"></script>
+  <script src="https://cdn.jsdelivr.net/npm/popper.js@1.16.0/dist/umd/popper.min.js" integrity="sha384-Q6E9RHvbIyZFJoft+2mJbHaEWldlvI9IOYy5n3zV9zzTtmI3UksdQRVvoxMfooAo" crossorigin="anonymous"></script>
+  <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.5.0/js/bootstrap.min.js" integrity="sha384-OgVRvuATP1z7JjHLkuOU7Xw704+h835Lr+6QL9UvYjZE3Ipu6Tp75j7Bh/kR0JKI" crossorigin="anonymous"></script>
+</body>
+
+</html>

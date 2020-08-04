@@ -1,0 +1,68 @@
+<%@ page contentType="text/html; charset=UTF-8"%>
+  <%
+  String creator=request.getParameter("creator");
+  String title=request.getParameter("title");
+  String venue=request.getParameter("venue");
+  String startPeriod=request.getParameter("startPeriod");
+  String ensPeriod=request.getParameter("ensPeriod");
+  String publisher=request.getParameter("publisher");
+  String poster=request.getParameter("poster");
+  String description=request.getParameter("description");
+%>
+    <script type="text/javascript">
+      var firebaseConfig = {
+        apiKey: "AIzaSyCFIPnKDcMHL2VdpGmUleT0qz1KJYsl6K0",
+        authDomain: "my-project-73029-baca5.firebaseapp.com",
+        databaseURL: "https://my-project-73029-baca5.firebaseio.com",
+        projectId: "my-project-73029-baca5",
+        storageBucket: "my-project-73029-baca5.appspot.com",
+        messagingSenderId: "905164925602",
+        appId: "1:905164925602:web:0c675bc7fc68cc171505fb",
+        measurementId: "G-7TQFXVHNXZ"
+      };
+      firebase.initializeApp(firebaseConfig);
+      firebase.analytics();
+
+      var addData = {
+        creator: <% creator%>,
+        title: <% title%>,
+        venue: <% venue%>,
+        startPeriod: firebase.firestore.Timestamp.fromDate(new Date(<% startPeriod%>)),
+        endPeriod: firebase.firestore.Timestamp.fromDate(new Date(<% endPeriod%>)),
+        publisher: <% publisher%>,
+        description: <% description%>
+      };
+
+      const db = firebase.firestore().collection('Show').doc(document.getElementById('title').value);
+
+      firebase.auth().onAuthStateChanged(function (user) {
+        const userDB = firebase.firestore().collection('BusinessUser').doc(user.email);
+        userDB.get().then(function (doc) {
+          var data = doc.data();
+          if (data != null) {
+            if (data.permission == null) {
+              alert("데이터 추가 권한 받기");
+              location.href = "my_page.html";
+            } else {
+              if (data.permission == true) {
+                db.set(addData).then(function () {
+                  console.log("데이터 추가 완료");
+                  alert("데이터 추가 성공");
+                }).catch(function (error) {
+                  var errorCode = error.code;
+                  var errorMessage = error.message;
+                  console.log(errorMessage);
+                  alert("데이터 추가 실패");
+                });
+              } else {
+                alert("데이터 추가 권한 받기");
+                location.href = "my_page.html";
+              }
+            }
+          } else {
+            alert("데이터 추가 권한 받기");
+            location.href = "my_page.html";
+          }
+        });
+      });
+    </script>

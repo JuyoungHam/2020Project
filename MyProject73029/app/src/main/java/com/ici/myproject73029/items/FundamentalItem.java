@@ -1,7 +1,8 @@
 package com.ici.myproject73029.items;
 
 import androidx.databinding.BaseObservable;
-import androidx.databinding.library.baseAdapters.BR;
+//import androidx.databinding.library.baseAdapters.BR;
+
 
 import java.util.ArrayList;
 
@@ -51,7 +52,7 @@ public class FundamentalItem extends BaseObservable {
 
     public void setFavorite_count(int favorite_count) {
         this.favorite_count = favorite_count;
-        notifyPropertyChanged(BR.FundamentalItem);
+        //notifyPropertyChanged(BR.FundamentalItem);
     }
 
     public int getType() {
@@ -60,7 +61,7 @@ public class FundamentalItem extends BaseObservable {
 
     public void setType(int type) {
         this.type = type;
-        notifyPropertyChanged(BR.FundamentalItem);
+        //notifyPropertyChanged(BR.FundamentalItem);
     }
 
     public String getWriter() {
@@ -69,7 +70,7 @@ public class FundamentalItem extends BaseObservable {
 
     public void setWriter(String writer) {
         this.creator = writer;
-        notifyPropertyChanged(BR.FundamentalItem);
+        //notifyPropertyChanged(BR.FundamentalItem);
     }
 
     public String getUrl() {
@@ -78,7 +79,7 @@ public class FundamentalItem extends BaseObservable {
 
     public void setUrl(String url) {
         this.url = url;
-        notifyPropertyChanged(BR.FundamentalItem);
+        //notifyPropertyChanged(BR.FundamentalItem);
     }
 
     public int getCategory() {
@@ -87,7 +88,7 @@ public class FundamentalItem extends BaseObservable {
 
     public void setCategory(int category) {
         this.category = category;
-        notifyPropertyChanged(BR.FundamentalItem);
+        //notifyPropertyChanged(BR.FundamentalItem);
     }
 
     public String getVenue() {
@@ -96,7 +97,7 @@ public class FundamentalItem extends BaseObservable {
 
     public void setVenue(String venue) {
         this.venue = venue;
-        notifyPropertyChanged(BR.FundamentalItem);
+       // notifyPropertyChanged(BR.FundamentalItem);
     }
 
     public String getPhone() {
@@ -105,7 +106,7 @@ public class FundamentalItem extends BaseObservable {
 
     public void setPhone(String phone) {
         this.phone = phone;
-        notifyPropertyChanged(BR.FundamentalItem);
+        //notifyPropertyChanged(BR.FundamentalItem);
     }
 
     public String getPeriod() {
@@ -114,7 +115,7 @@ public class FundamentalItem extends BaseObservable {
 
     public void setPeriod(String period) {
         this.period = period;
-        notifyPropertyChanged(BR.FundamentalItem);
+       // notifyPropertyChanged(BR.FundamentalItem);
     }
 
     public String getTitle() {
@@ -123,7 +124,7 @@ public class FundamentalItem extends BaseObservable {
 
     public void setTitle(String title) {
         this.title = title;
-        notifyPropertyChanged(BR.FundamentalItem);
+       // notifyPropertyChanged(BR.FundamentalItem);
     }
 
     public String getDescription() {
@@ -132,7 +133,7 @@ public class FundamentalItem extends BaseObservable {
 
     public void setDescription(String description) {
         this.description = description;
-        notifyPropertyChanged(BR.FundamentalItem);
+       // notifyPropertyChanged(BR.FundamentalItem);
     }
 
     public String getPoster() {
@@ -141,6 +142,6 @@ public class FundamentalItem extends BaseObservable {
 
     public void setPoster(String poster) {
         this.poster = poster;
-        notifyPropertyChanged(BR.FundamentalItem);
+        //notifyPropertyChanged(BR.FundamentalItem);
     }
 }
