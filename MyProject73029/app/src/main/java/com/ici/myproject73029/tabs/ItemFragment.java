@@ -44,11 +44,13 @@ import com.google.firebase.firestore.DocumentChange;
 import com.google.firebase.firestore.DocumentReference;
 import com.google.firebase.firestore.DocumentSnapshot;
 import com.google.firebase.firestore.EventListener;
+import com.google.firebase.firestore.FieldValue;
 import com.google.firebase.firestore.FirebaseFirestore;
 import com.google.firebase.firestore.FirebaseFirestoreException;
 import com.google.firebase.firestore.MetadataChanges;
 import com.google.firebase.firestore.QueryDocumentSnapshot;
 import com.google.firebase.firestore.QuerySnapshot;
+import com.google.firebase.firestore.SetOptions;
 import com.ici.myproject73029.Constant;
 import com.ici.myproject73029.MainActivity;
 import com.ici.myproject73029.R;
@@ -340,7 +342,6 @@ public class ItemFragment extends Fragment implements View.OnClickListener,
                         @Override
                         public void onSuccess(Void aVoid) {
                             isFavorite = true;
-
                             add_favorite_count(1);
                             make_favorite.setImageResource(R.drawable.favorited);
                             Toast.makeText(mainActivity, "좋아요 설정", Toast.LENGTH_SHORT).show();
@@ -425,14 +426,23 @@ public class ItemFragment extends Fragment implements View.OnClickListener,
             public void onComplete(@NonNull Task<DocumentSnapshot> task) {
                 if (task.isSuccessful()) {
                     DocumentSnapshot document = task.getResult();
-                    final int count = (document.get(Constant.FAVORITE_COUNT) == null ? 0 :
-                            Integer.parseInt(document.get(Constant.FAVORITE_COUNT).toString()));
+                    ArrayList<String> list = (ArrayList<String>) document.get("who_liked");
+                    int count = 0;
+                    if (list != null) {
+                        count = list.size();
+                    }
                     Map<String, Object> data = new HashMap<>();
                     data.put(Constant.FAVORITE_COUNT, (count + i > 0 ? count + i : 0));
-                    db.collection("All").document(title).update(data).addOnSuccessListener(new OnSuccessListener<Void>() {
+                    if (i > 0) {
+                        data.put("who_liked", FieldValue.arrayUnion(user.getUid()));
+                    } else {
+                        data.put("who_liked", FieldValue.arrayRemove(user.getUid()));
+                    }
+                    final int finalCount = count;
+                    db.collection("All").document(title).set(data, SetOptions.merge()).addOnSuccessListener(new OnSuccessListener<Void>() {
                         @Override
                         public void onSuccess(Void aVoid) {
-                            favorite_count.setText(String.valueOf(count + i > 0 ? count + i : 0));
+                            favorite_count.setText(String.valueOf(finalCount + i > 0 ? finalCount + i : 0));
                         }
                     });
                 }

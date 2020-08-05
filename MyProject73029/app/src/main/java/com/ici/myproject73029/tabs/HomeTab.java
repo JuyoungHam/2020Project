@@ -18,6 +18,7 @@ import androidx.fragment.app.Fragment;
 import androidx.recyclerview.widget.GridLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 import androidx.recyclerview.widget.StaggeredGridLayoutManager;
+import androidx.swiperefreshlayout.widget.SwipeRefreshLayout;
 
 import com.bumptech.glide.Glide;
 import com.google.android.gms.tasks.OnCompleteListener;
@@ -41,12 +42,13 @@ import com.ici.myproject73029.items.FundamentalItem;
 
 import java.sql.Time;
 
-public class HomeTab extends Fragment {
+public class HomeTab extends Fragment implements SwipeRefreshLayout.OnRefreshListener {
     private MainActivity mainActivity;
     private FirebaseFirestore db;
     private RecyclerView new_recycler;
     private RecyclerView pop_recycler;
     private RecyclerView exp_recycler;
+    private SwipeRefreshLayout refreshLayout;
 
     @Override
     public void onResume() {
@@ -60,6 +62,21 @@ public class HomeTab extends Fragment {
         final ViewGroup rootView = (ViewGroup) inflater.inflate(R.layout.tab_home, container, false);
 
         mainActivity = (MainActivity) getActivity();
+
+        final ConstraintLayout constraintLayout = rootView.findViewById(R.id.constraintlayout_home);
+        refreshLayout = rootView.findViewById(R.id.swipeRefreshLayout_home);
+        refreshLayout.setDistanceToTriggerSync(200);
+        refreshLayout.getViewTreeObserver().addOnScrollChangedListener(new ViewTreeObserver.OnScrollChangedListener() {
+            @Override
+            public void onScrollChanged() {
+                if (constraintLayout.getScrollY() == 0)
+                    refreshLayout.setEnabled(true);
+                else
+                    refreshLayout.setEnabled(false);
+            }
+        });
+
+        refreshLayout.setOnRefreshListener(this);
 
         Firebase firebase = new Firebase();
         db = firebase.startFirebase();
@@ -93,7 +110,6 @@ public class HomeTab extends Fragment {
         updateItemList(new_recycler);
         updateItemList(pop_recycler);
         updateItemList(exp_recycler);
-
 
         ActionBar actionBar = mainActivity.getSupportActionBar();
         actionBar.hide();
@@ -140,5 +156,13 @@ public class HomeTab extends Fragment {
                 });
             }
         });
+    }
+
+    @Override
+    public void onRefresh() {
+        updateItemList(new_recycler);
+        updateItemList(pop_recycler);
+        updateItemList(exp_recycler);
+        refreshLayout.setRefreshing(false);
     }
 }
