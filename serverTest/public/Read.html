@@ -35,26 +35,28 @@
         var data = doc.data();
         var start = data.start_date;
         var end = data.end_date;
-        var startD = start.seconds;
-        var endD = end.seconds;
-        var st = new Date(startD * 1000),
-          monthS = '' + (st.getMonth() + 1),
-          dayS = '' + st.getDate(),
-          yearS = st.getFullYear();
-        if (monthS.length < 2)
-          monthS = '0' + monthS;
-        if (dayS.length < 2)
-          dayS = '0' + dayS;
-        var sd = [yearS, monthS, dayS].join('-');
-        var en = new Date(endD * 1000),
-          monthE = '' + (en.getMonth() + 1),
-          dayE = '' + en.getDate(),
-          yearE = en.getFullYear();
-        if (monthE.length < 2)
-          monthE = '0' + monthE;
-        if (dayE.lenght < 2)
-          dayE = '0' + dayE;
-        var ed = [yearE, monthE, dayE].join('-');
+        if(start!=null||end!=null){
+          var startD = start.seconds;
+          var endD = end.seconds;
+          var st = new Date(startD * 1000),
+            monthS = '' + (st.getMonth() + 1),
+            dayS = '' + st.getDate(),
+            yearS = st.getFullYear();
+          if (monthS.length < 2)
+            monthS = '0' + monthS;
+          if (dayS.length < 2)
+            dayS = '0' + dayS;
+          var sd = [yearS, monthS, dayS].join('-');
+          var en = new Date(endD * 1000),
+            monthE = '' + (en.getMonth() + 1),
+            dayE = '' + en.getDate(),
+            yearE = en.getFullYear();
+          if (monthE.length < 2)
+            monthE = '0' + monthE;
+          if (dayE.lenght < 2)
+            dayE = '0' + dayE;
+          var ed = [yearE, monthE, dayE].join('-');
+        }
         document.getElementById('creator').innerText = data.creator;
         document.getElementById('title').innerText = data.title;
         document.getElementById('venue').innerText = data.venue;
@@ -84,6 +86,7 @@
         tag: [array[0]]
       }).then(function() {
         alert("수정 완료");
+        location.href="Admin.html";
       }).catch(function(error) {
         console.error("수정 오류:" + error);
         alert("수정 실패");
@@ -122,58 +125,65 @@
   <div class="input-group mb-3" style="margin-left:20px;">
     <div class="input-group-prepend">
       <span class="input-group-text" id="basic-addon1"> 주최 </span>
-      <textarea id="creator" cols="50" rows="1" class="form-control" aria - label="With textarea"> </textarea>
+      <textarea id="creator" cols="70" rows="1" class="form-control" aria - label="With textarea"> </textarea>
     </div>
   </div>
   <div class="input-group mb-3" style="margin-left:20px;">
     <div class="input-group-prepend">
       <span class="input-group-text" id="basic-addon1"> 타이틀 </span>
-      <textarea id="title" cols="50" rows="1" class="form-control" aria - label="With textarea"> </textarea>
+      <textarea id="title" cols="70" rows="1" class="form-control" aria - label="With textarea"> </textarea>
       <br>
     </div>
   </div>
   <div class="input-group mb-3" style="margin-left:20px;">
     <div class="input-group-prepend">
       <span class="input-group-text" id="basic-addon1"> 장소 </span>
-      <textarea id="venue" cols="50" rows="1" class="form-control" aria - label="With textarea"> </textarea>
+      <textarea id="venue" cols="70" rows="1" class="form-control" aria - label="With textarea"> </textarea>
       <br>
     </div>
   </div>
   <div class="input-group mb-3" style="margin-left:20px;">
     <div class="input-group-prepend">
       <span class="input-group-text" id="basic-addon1"> 포스터 </span>
-      <textarea id="poster" cols="50" rows="1" class="form-control" aria - label="With textarea"> </textarea>
+      <textarea id="poster" cols="70" rows="1" class="form-control" aria - label="With textarea"> </textarea>
       <br>
     </div>
   </div>
   <div class="input-group mb-3" style="margin-left:20px;">
     <div class="input-group-prepend">
       <span class="input-group-text" id="basic-addon1"> 시작일 </span>
-      <textarea id="start_date" cols="50" rows="1" class="form-control" aria - label="With textarea"> </textarea>
+      <textarea id="start_date" cols="70" rows="1" class="form-control" aria - label="With textarea"> </textarea>
       <br>
     </div>
   </div>
   <div class="input-group mb-3" style="margin-left:20px;">
     <div class="input-group-prepend">
       <span class="input-group-text" id="basic-addon1"> 종료일 </span>
-      <textarea id="end_date" cols="50" rows="1" class="form-control" aria - label="With textarea"> </textarea>
+      <textarea id="end_date" cols="70" rows="1" class="form-control" aria - label="With textarea"> </textarea>
       <br>
     </div>
   </div>
   <div class="input-group mb-3" style="margin-left:20px;">
     <div class="input-group-prepend">
       <span class="input-group-text" id="basic-addon1"> 태그 </span>
-      <input type="text" id="tag" class="form-control" placeholder=",로 구분해서 적어주세요">
+      <input type="text" id="tag" cols="70" class="form-control" placeholder=",로 구분해서 적어주세요">
       <br>
     </div>
   </div>
-  <div class="input-group mb-3">
-    <textarea id="description" rows="10" cols="100" style="margin-left: 20px">전시/공연의 설명을 적어주세요</textarea>
+  <div class="input-group mb-3" style="margin-left:20px;">
+    <div class="input-group-prepend" >
+      <span class="input-group-text" id="basic-addon1"> 설명 </span>
+      <textarea id="description" cols="70" rows="10" class="form-control" aria - label="With textarea" placeholder="전시/공연의 설명을 적어주세요"> </textarea>
+      <br>
+    </div>
   </div>
+  <!-- <div class="input-group mb-3">
+    <textarea id="description" rows="10" cols="100" style="margin-left: 20px">전시/공연의 설명을 적어주세요</textarea>
+  </div> -->
   <div style="margin-left:20px;">
     <input type="button" value="수정" onclick="update()" class="btn btn-primary">
   </div>
-  <script type="text/javascript">
+  <!-- <script type="text/javascript">
     var oEditors = [];
     nhn.husky.EZCreator.createInIFrame({
       oAppRef: oEditors,
@@ -181,7 +191,7 @@
       sSkinURI: "smarteditor2-2.9.2/smarteditor2-2.9.2/dist/SmartEditor2Skin.html",
       fCreator: "createSEditor2"
     });
-  </script>
+  </script> -->
   <script src="https://code.jquery.com/jquery-3.5.1.slim.min.js" integrity="sha384-DfXdz2htPH0lsSSs5nCTpuj/zy4C+OGpamoFVy38MVBnE+IbbVYUew+OrCXaRkfj" crossorigin="anonymous"></script>
   <script src="https://cdn.jsdelivr.net/npm/popper.js@1.16.0/dist/umd/popper.min.js" integrity="sha384-Q6E9RHvbIyZFJoft+2mJbHaEWldlvI9IOYy5n3zV9zzTtmI3UksdQRVvoxMfooAo" crossorigin="anonymous"> </script>
   <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.5.0/js/bootstrap.min.js" integrity="sha384-OgVRvuATP1z7JjHLkuOU7Xw704+h835Lr+6QL9UvYjZE3Ipu6Tp75j7Bh/kR0JKI" crossorigin="anonymous"> </script>

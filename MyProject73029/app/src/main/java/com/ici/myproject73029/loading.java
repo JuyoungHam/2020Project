@@ -13,7 +13,7 @@ public class loading extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_loading);
         Handler handler=new Handler();
-        handler.postDelayed(new startLoading(),2000);
+        handler.postDelayed(new startLoading(),1000);
     }
 
     public class startLoading implements Runnable{

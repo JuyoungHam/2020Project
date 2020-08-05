@@ -40,6 +40,10 @@ import com.google.android.material.chip.Chip;
 import com.google.android.material.chip.ChipGroup;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.auth.FirebaseUser;
+import com.google.firebase.dynamiclinks.DynamicLink;
+import com.google.firebase.dynamiclinks.FirebaseDynamicLinks;
+import com.google.firebase.dynamiclinks.PendingDynamicLinkData;
+import com.google.firebase.dynamiclinks.ShortDynamicLink;
 import com.google.firebase.firestore.DocumentChange;
 import com.google.firebase.firestore.DocumentReference;
 import com.google.firebase.firestore.DocumentSnapshot;
@@ -59,12 +63,14 @@ import com.ici.myproject73029.firebase.Firebase;
 import com.ici.myproject73029.items.FundamentalItem;
 
 import java.io.IOException;
+import java.net.URISyntaxException;
 import java.util.ArrayList;
 import java.util.Calendar;
 import java.util.Date;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
+import java.util.concurrent.Executor;
 
 public class ItemFragment extends Fragment implements View.OnClickListener,
         MainActivity.onBackPressedListener, SwipeRefreshLayout.OnRefreshListener {
@@ -301,6 +307,7 @@ public class ItemFragment extends Fragment implements View.OnClickListener,
         int i = v.getId();
         if (i == R.id.share_button) {
             start_share();
+            //Create_DynamicLink();
         } else if (i == R.id.connect_map) {
             get_geoApp();
         } else if (i == R.id.make_comment) {
@@ -380,6 +387,55 @@ public class ItemFragment extends Fragment implements View.OnClickListener,
             }
         }
     }
+
+//    public void Create_DynamicLink(){
+//        Task<ShortDynamicLink> shortLinkTask = FirebaseDynamicLinks.getInstance().createDynamicLink()
+//                .setLink(Uri.parse("https://myproject73029.page.link/bjYi"))
+//                .setDomainUriPrefix("프리픽스")
+//                .setAndroidParameters(
+//                        new DynamicLink.AndroidParameters.Builder("https://myproject73029.page.link/bjYi")
+//                                .build())
+//                .setSocialMetaTagParameters(
+//                        new DynamicLink.SocialMetaTagParameters.Builder()
+//                                .setTitle("공유테스트")
+//                                .build())
+//                .buildShortDynamicLink()
+//                .addOnCompleteListener(getActivity(), new OnCompleteListener<ShortDynamicLink>() {
+//                    @Override
+//                    public void onComplete(@NonNull Task<ShortDynamicLink> task) {
+//                        if (task.isSuccessful()) {
+//                            Uri ShortLink = task.getResult().getShortLink();
+//                            try {
+//                                Intent Sharing_Intent = new Intent();
+//                                Sharing_Intent.setAction(Intent.ACTION_SEND);
+//                                Sharing_Intent.putExtra(Intent.EXTRA_TEXT, title + "\n" + (description != null ? description : ""));
+//                                Sharing_Intent.putExtra(Intent.EXTRA_TEXT, ShortLink.toString());
+//                                Sharing_Intent.setType("text/*");
+//                                startActivity(Intent.createChooser(Sharing_Intent, "공유하기"));
+//                            }
+//                            catch (Exception e) {
+//                            }
+//                        }
+//                    }
+//                }).addOnFailureListener(new OnFailureListener() {
+//                    @Override
+//                    public void onFailure(@NonNull Exception e) {
+//                        Log.d("ERROR",e.toString());
+//                    }
+//                });
+//    }
+//    private void handleDeepLink() throws URISyntaxException {
+//        FirebaseDynamicLinks.getInstance().getDynamicLink(Intent.getIntent("https://myproject73029.page.link/bjYi"))
+//                .addOnSuccessListener(getActivity(),new OnSuccessListener<PendingDynamicLinkData>() {
+//                    @Override
+//                    public void onSuccess(PendingDynamicLinkData pendingDynamicLinkData) {
+//                        Uri deepLink = null;
+//                        if (pendingDynamicLinkData != null) {
+//                            deepLink = pendingDynamicLinkData.getLink();
+//                        }
+//                    }
+//                });
+//    }
 
     private void start_share() {
         Intent sendIntent = new Intent();
