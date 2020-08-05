@@ -3,6 +3,8 @@
     package="com.ici.myproject73029">
 
     <uses-permission android:name="android.permission.VIBRATE" />
+    <uses-permission android:name="android.permission.INTERNET" />
+
     <application
         android:name=".firebase.KakaoAuthApp"
         android:allowBackup="true"
@@ -12,8 +14,9 @@
         android:supportsRtl="true"
         android:theme="@style/AppTheme"
         android:usesCleartextTraffic="true">
+        <activity android:name=".MainActivity"></activity>
         <activity
-            android:name=".MainActivity"
+            android:name=".loading"
             android:launchMode="singleTop">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
@@ -21,7 +24,6 @@
                 <category android:name="android.intent.category.LAUNCHER" />
             </intent-filter>
         </activity>
-
         <activity android:name=".firebase.FirebaseUIActivity">
 
             <!-- <intent-filter> -->
@@ -53,11 +55,9 @@
         <meta-data
             android:name="com.kakao.sdk.AppKey"
             android:value="e061a583ea85a8a9729143371cce7da0" />
-
         <meta-data
             android:name="firebase_messaging_auto_init_enabled"
             android:value="false" />
-
         <meta-data
             android:name="firebase_analytics_collection_enabled"
             android:value="false" />
@@ -71,10 +71,7 @@
                 <action android:name="com.google.firebase.MESSAGING_EVENT" />
                 <action android:name="com.google.firebase.INSTANCE_ID_EVENT" />
             </intent-filter>
-
         </service>
     </application>
-
-    <uses-permission android:name="android.permission.INTERNET" />
 
 </manifest>
