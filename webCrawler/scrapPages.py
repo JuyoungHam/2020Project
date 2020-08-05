@@ -23,9 +23,9 @@ class Website:
         self.titleTag = titleTag
         self.bodyTag = bodyTag
 
-
+temp = []
 def scrape(url):
-    temp = []
+    global temp
     try:
         try:
             req = requests.get(url)
@@ -33,7 +33,7 @@ def scrape(url):
             # print(bs.prettify())
             items = bs.findAll(['div', 'span', 'p'],
                                string=re.compile('.전시(?!관)(?!실)|특별전|기획전|展'))
-            file = open('contents.txt', 'a+', encoding='utf-8')
+            file = open('contents1.txt', 'a+', encoding='utf-8')
             for item in items:
                 if item.text not in temp:
                     temp.append(item.text)

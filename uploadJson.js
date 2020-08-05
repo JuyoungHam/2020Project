@@ -29,8 +29,7 @@ menu.DATA.forEach(function(obj) {
   var config = {
     title: obj.title,
     publisher: "administrator",
-    category: 102,
-    description: ""
+    category:102,
   };
   if (!isNull(obj.place)) {
     config.venue = obj.place;
@@ -47,21 +46,11 @@ menu.DATA.forEach(function(obj) {
   if (!isNull(obj.org_name)) {
     config.creator = obj.org_name;
   }
-  if (!isNull(obj.date)) {
-    config.date = obj.date;
-  }
   if (!isNull(obj.org_link)) {
     config.url = obj.org_link;
   }
   if (!isNull(obj.end_date)) {
     config.end_date = new Date(obj.end_date);
-  }
-  if (!isNull(obj.use_trgt)) {
-    config.description = config.description + "\n"
-    obj.use_trgt;
-  }
-  if (!isNull(obj.use_fee)) {
-    config.description = config.description + "\n" + obj.use_fee;
   }
   if (!isNull(obj.strtdate)) {
     config.start_date = new Date(obj.strtdate);

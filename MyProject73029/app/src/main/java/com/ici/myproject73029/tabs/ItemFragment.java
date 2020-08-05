@@ -405,6 +405,9 @@ public class ItemFragment extends Fragment implements View.OnClickListener,
         } else if (type == Constant.MYREVIEWPAGE) {
             mainActivity.getSupportFragmentManager().beginTransaction()
                     .replace(R.id.main_fragment, mainActivity.myReviewPage).commit();
+        } else if (type == -1) {
+            mainActivity.getSupportFragmentManager().beginTransaction()
+                    .replace(R.id.main_fragment, mainActivity.homeTab).commit();
         }
     }
 

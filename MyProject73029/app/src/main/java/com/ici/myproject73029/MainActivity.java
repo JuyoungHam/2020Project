@@ -67,15 +67,16 @@ public class MainActivity extends AppCompatActivity {
     private FirebaseUser user;
     private onBackPressedListener onBackPressedListener;
     public FirebaseFirestore db;
-    private FirebaseStorage storage;
-    private StorageReference storageRef;
     private Uri user_image_uri;
     public Resources resources;
+    private FirebaseStorage storage;
+    private StorageReference storageRef;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
+        actionBar = getSupportActionBar();
 
         resources = getResources();
 
@@ -83,11 +84,7 @@ public class MainActivity extends AppCompatActivity {
         db = firebase.startFirebase();
 
         mAuth = FirebaseAuth.getInstance();
-        storage = FirebaseStorage.getInstance();
-        if (mAuth.getCurrentUser() != null) {
-            user = mAuth.getCurrentUser();
-            storageRef = storage.getReference().child("profile_images");
-        }
+        user = mAuth.getCurrentUser();
 
         homeTab =
                 (HomeTab) getSupportFragmentManager().findFragmentById(R.id.main_fragment);
@@ -126,7 +123,6 @@ public class MainActivity extends AppCompatActivity {
             }
         });
 
-        actionBar = getSupportActionBar();
         isActionBarVisible(false);
         firebaseCloudMessagingToken();
     }
@@ -193,6 +189,8 @@ public class MainActivity extends AppCompatActivity {
             getSupportFragmentManager().beginTransaction().replace(R.id.main_fragment, item_Exhibition).commit();
         } else if (item.getType() == Constant.MYREVIEWPAGE) {
             getSupportFragmentManager().beginTransaction().replace(R.id.main_fragment, new ItemFragment(item)).commit();
+        } else if (item.getType() == -1) {
+            getSupportFragmentManager().beginTransaction().replace(R.id.main_fragment, new ItemFragment(item)).commit();
         }
 
     }
@@ -256,7 +254,9 @@ public class MainActivity extends AppCompatActivity {
     }
 
     public void getUserProfileImage(final ImageView imageView) {
-        user = mAuth.getCurrentUser();
+        user = FirebaseAuth.getInstance().getCurrentUser();
+        storage = FirebaseStorage.getInstance();
+        storageRef = storage.getReference().child("profile_images");
         if (user != null) {
             storageRef.child(user.getUid()).getDownloadUrl().addOnSuccessListener(new OnSuccessListener<Uri>() {
                 @Override
