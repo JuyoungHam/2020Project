@@ -120,6 +120,8 @@ public class ReviewListFragment extends Fragment implements AdapterView.OnItemSe
                         int i = 0;
                         for (final QueryDocumentSnapshot document : task.getResult()) {
                             final Review item = document.toObject(Review.class);
+                            adapter.addItem(item);
+                            adapter.notifyItemInserted(i++);
                             if (mainActivity != null && i > 2) {
                                 load_review.setVisibility(View.VISIBLE);
                                 load_review.setOnClickListener(new View.OnClickListener() {
@@ -130,8 +132,6 @@ public class ReviewListFragment extends Fragment implements AdapterView.OnItemSe
                                 });
                                 break;
                             }
-                            adapter.addItem(item);
-                            adapter.notifyItemInserted(i++);
                         }
                     } else {
                         LinearLayout linearLayout = rootView.findViewById(R.id.review_list_container);

@@ -45,7 +45,6 @@ public class ReviewAdapter extends RecyclerView.Adapter<ReviewAdapter.ViewHolder
     ArrayList<Review> items = new ArrayList<>();
     OnItemClickListener onItemClickListener;
     int type;
-    int item_limit = 10;
     private FirebaseStorage storage;
     private FirebaseFirestore db;
 
@@ -77,11 +76,7 @@ public class ReviewAdapter extends RecyclerView.Adapter<ReviewAdapter.ViewHolder
 
     @Override
     public int getItemCount() {
-        if (items.size() > item_limit) {
-            return item_limit;
-        } else {
-            return items.size();
-        }
+        return items.size();
     }
 
 
