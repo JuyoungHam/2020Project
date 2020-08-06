@@ -175,7 +175,8 @@ public class MainActivity extends AppCompatActivity {
             item_Exhibition = new ItemFragment(item);
 
             Toast.makeText(this, "전시제목 : " + item.getTitle(), Toast.LENGTH_SHORT).show();
-            getSupportFragmentManager().beginTransaction().replace(R.id.main_fragment, item_Exhibition).commit();
+            getSupportFragmentManager().beginTransaction().replace(R.id.main_fragment,
+                    item_Exhibition).commit();
         } else if (item.getType() == Constant.SHOW) {
             item_Show = new ItemFragment(item);
 

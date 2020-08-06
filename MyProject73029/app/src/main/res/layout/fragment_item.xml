@@ -293,6 +293,7 @@
                         android:layout_margin="8dp"
                         android:gravity="center"
                         android:textAppearance="@style/TextAppearance.AppCompat.Medium"
+                        android:textSize="16sp"
                         tools:visibility="gone" />
 
                     <TextView
