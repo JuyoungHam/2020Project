@@ -306,12 +306,7 @@ public class ItemFragment extends Fragment implements View.OnClickListener,
     public void onClick(View v) {
         int i = v.getId();
         if (i == R.id.share_button) {
-            //start_share();
-            try {
-                Create_DynamicLink();
-            } catch (URISyntaxException e) {
-                e.printStackTrace();
-            }
+            start_share();
         } else if (i == R.id.connect_map) {
             get_geoApp();
         } else if (i == R.id.make_comment) {
@@ -392,65 +387,10 @@ public class ItemFragment extends Fragment implements View.OnClickListener,
         }
     }
 
-    public void Create_DynamicLink() throws URISyntaxException {
-        Task<ShortDynamicLink> shortLinkTask = FirebaseDynamicLinks.getInstance().createDynamicLink()
-                .setLink(Uri.parse("https://www.google.com"))
-                .setDomainUriPrefix("https://myproject73029.page.link")
-                .setAndroidParameters(
-                        new DynamicLink.AndroidParameters.Builder("com.ici.myproject73029")
-                                .build())
-                .setSocialMetaTagParameters(
-                        new DynamicLink.SocialMetaTagParameters.Builder()
-                                .setTitle("공유테스트")
-                                .build())
-                .buildShortDynamicLink()
-                .addOnCompleteListener(getActivity(), new OnCompleteListener<ShortDynamicLink>() {
-                    @Override
-                    public void onComplete(@NonNull Task<ShortDynamicLink> task) {
-                        if (task.isSuccessful()) {
-                            Uri ShortLink = task.getResult().getShortLink();
-                            try {
-                                Intent Sharing_Intent = new Intent();
-                                Sharing_Intent.setAction(Intent.ACTION_SEND);
-                                Sharing_Intent.putExtra(Intent.EXTRA_TEXT, title + "\n"+ShortLink.toString());
-                               // Sharing_Intent.putExtra(Intent.EXTRA_TEXT, ShortLink.toString());
-                                Sharing_Intent.setType("text/*");
-                                startActivity(Intent.createChooser(Sharing_Intent, "공유하기"));
-                            }
-                            catch (Exception e) {
-                                Log.d("ERROR",e.toString());
-                            }
-                        }
-                    }
-                }).addOnFailureListener(new OnFailureListener() {
-                    @Override
-                    public void onFailure(@NonNull Exception e) {
-                        Log.d("ERROR",e.toString());
-                    }
-                });
-
-        FirebaseDynamicLinks.getInstance().getDynamicLink(Intent.getIntent("https://myproject73029.page.link/bjYi"))
-                .addOnSuccessListener(getActivity(),new OnSuccessListener<PendingDynamicLinkData>() {
-                    @Override
-                    public void onSuccess(PendingDynamicLinkData pendingDynamicLinkData) {
-                        Uri deepLink = null;
-                        if (pendingDynamicLinkData != null) {
-                            deepLink = pendingDynamicLinkData.getLink();
-                            Toast.makeText(getContext(),"딥링크:"+deepLink.toString(),Toast.LENGTH_SHORT).show();
-                        }
-                    }
-                }).addOnFailureListener(new OnFailureListener() {
-            @Override
-            public void onFailure(@NonNull Exception e) {
-                Log.d("Error",e.toString());
-        }
-        });
-    }
-
     private void start_share() {
         Intent sendIntent = new Intent();
         sendIntent.setAction(Intent.ACTION_SEND);
-        sendIntent.putExtra(Intent.EXTRA_TEXT, title + "\n" + (description != null ? description : ""));
+        sendIntent.putExtra(Intent.EXTRA_TEXT, title);
         sendIntent.setType("text/*");
         Intent shareIntent = Intent.createChooser(sendIntent, "공유하기");
         startActivity(shareIntent);

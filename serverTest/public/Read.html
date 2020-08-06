@@ -35,7 +35,7 @@
         var data = doc.data();
         var start = data.start_date;
         var end = data.end_date;
-        if(start!=null||end!=null){
+        if (start != null && end != null) {
           var startD = start.seconds;
           var endD = end.seconds;
           var st = new Date(startD * 1000),
@@ -75,23 +75,31 @@
     function update() {
       var tagArr = document.getElementById('tag').value;
       var array = tagArr.split(",");
-      db.update({
-        creator: document.getElementById('creator').value,
-        title: document.getElementById('title').value,
-        venue: document.getElementById('venue').value,
-        poster: document.getElementById('poster').value,
-        description: document.getElementById('description').value,
-        start_date: document.getElementById('start_date').value,
-        end_date: document.getElementById('end_date').value,
-        tag: [array[0]]
-      }).then(function() {
-        alert("수정 완료");
-        location.href="Admin.html";
-      }).catch(function(error) {
-        console.error("수정 오류:" + error);
-        alert("수정 실패");
-      });
+
+      if (document.getElementById('title').value == "" || document.getElementById('creator').value == "") {
+        alert("필수 항목을 입력해주세요");
+      }else if(document.getElementById('start_date').value=="NaN-NaN-NaN"||document.getElementById('end_date').value=="NaN-NaN-NaN"){
+        alert("날짜 형식 오류");
+      }else {
+        db.update({
+          poster: (document.getElementById('poster').value != "" ? document.getElementById('poster').value : null),
+          creator: document.getElementById('creator').value,
+          title: document.getElementById('title').value,
+          venue: document.getElementById('venue').value,
+          description: document.getElementById('description').value,
+          start_date: (document.getElementById('start_date').value != "" ? document.getElementById('start_date').value : null),
+          end_date: (document.getElementById('end_date').value != "" ? document.getElementById('end_date').value : null),
+          tag: [array[0]]
+        }).then(function() {
+          alert("수정 완료");
+          location.href = "Admin.html";
+        }).catch(function(error) {
+          console.error("수정 오류:" + error);
+          alert("수정 실패");
+        });
+      }
     }
+
 
     function Logout() {
       firebase.auth().signOut().then(function() {
@@ -122,15 +130,16 @@
   <h1>
     <p class="font-weight-normal" style="margin-left:20px;"> 데이터 수정 </p>
   </h1>
+  <p class="font-weight-normal" style="margin-left:20px;"> * 표시는 필수 입력 사항입니다 </p>
   <div class="input-group mb-3" style="margin-left:20px;">
     <div class="input-group-prepend">
-      <span class="input-group-text" id="basic-addon1"> 주최 </span>
+      <span class="input-group-text" id="basic-addon1"> *주최 </span>
       <textarea id="creator" cols="70" rows="1" class="form-control" aria - label="With textarea"> </textarea>
     </div>
   </div>
   <div class="input-group mb-3" style="margin-left:20px;">
     <div class="input-group-prepend">
-      <span class="input-group-text" id="basic-addon1"> 타이틀 </span>
+      <span class="input-group-text" id="basic-addon1"> *타이틀 </span>
       <textarea id="title" cols="70" rows="1" class="form-control" aria - label="With textarea"> </textarea>
       <br>
     </div>
@@ -171,7 +180,7 @@
     </div>
   </div>
   <div class="input-group mb-3" style="margin-left:20px;">
-    <div class="input-group-prepend" >
+    <div class="input-group-prepend">
       <span class="input-group-text" id="basic-addon1"> 설명 </span>
       <textarea id="description" cols="70" rows="10" class="form-control" aria - label="With textarea" placeholder="전시/공연의 설명을 적어주세요"> </textarea>
       <br>

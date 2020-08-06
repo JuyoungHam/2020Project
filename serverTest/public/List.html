@@ -169,15 +169,20 @@
               location.href = "my_page.html";
             } else {
               if (data.permission == true) {
-                db.set(addData).then(function() {
-                  console.log("데이터 추가 완료");
-                  alert("데이터 추가 성공");
-                }).catch(function(error) {
-                  var errorCode = error.code;
-                  var errorMessage = error.message;
-                  console.log(errorMessage);
-                  alert("데이터 추가 실패");
-                });
+                if (document.getElementById('title').value == "" && document.getElementById('venue').value == "" &&
+                  document.getElementById('start_date').value == "" && document.getElementById('end_date').value == "") {
+                  alert("필수 항목을 입력해주세요");
+                } else {
+                  db.set(addData).then(function() {
+                    console.log("데이터 추가 완료");
+                    alert("데이터 추가 성공");
+                  }).catch(function(error) {
+                    var errorCode = error.code;
+                    var errorMessage = error.message;
+                    console.log(errorMessage);
+                    alert("데이터 추가 실패");
+                  });
+                }
               } else {
                 alert("데이터 추가 권한 받기");
                 location.href = "my_page.html";
