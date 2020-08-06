@@ -29,6 +29,7 @@ import androidx.annotation.Nullable;
 import androidx.databinding.DataBindingUtil;
 import androidx.fragment.app.DialogFragment;
 import androidx.fragment.app.Fragment;
+import androidx.fragment.app.FragmentManager;
 import androidx.swiperefreshlayout.widget.SwipeRefreshLayout;
 
 import com.bumptech.glide.Glide;
@@ -38,6 +39,7 @@ import com.google.android.gms.tasks.OnSuccessListener;
 import com.google.android.gms.tasks.Task;
 import com.google.android.material.chip.Chip;
 import com.google.android.material.chip.ChipGroup;
+import com.google.firebase.Timestamp;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.auth.FirebaseUser;
 import com.google.firebase.dynamiclinks.DynamicLink;
@@ -64,11 +66,13 @@ import com.ici.myproject73029.items.FundamentalItem;
 
 import java.io.IOException;
 import java.net.URISyntaxException;
+import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Calendar;
 import java.util.Date;
 import java.util.HashMap;
 import java.util.List;
+import java.util.Locale;
 import java.util.Map;
 import java.util.concurrent.Executor;
 
@@ -80,6 +84,10 @@ public class ItemFragment extends Fragment implements View.OnClickListener,
     int type;
     boolean isFavorite;
     String url;
+    String poster;
+    Timestamp start_date;
+    Timestamp end_date;
+    FundamentalItem item;
     private List<Address> list = null;
 
     private MainActivity mainActivity;
@@ -97,7 +105,7 @@ public class ItemFragment extends Fragment implements View.OnClickListener,
     private FrameLayout review_list;
 
     public ItemFragment(FundamentalItem item) {
-
+        this.item = item;
         this.title = item.getTitle();
         this.description = item.getDescription();
         if (item.getVenue() != null) {
@@ -105,6 +113,9 @@ public class ItemFragment extends Fragment implements View.OnClickListener,
         }
         this.type = item.getType();
         this.url = item.getUrl();
+        this.poster = item.getPoster();
+        this.start_date = item.getStart_date();
+        this.end_date = item.getEnd_date();
     }
 
 
@@ -123,6 +134,7 @@ public class ItemFragment extends Fragment implements View.OnClickListener,
         mainActivity.setActionBarOption(ActionBar.DISPLAY_HOME_AS_UP | ActionBar.DISPLAY_SHOW_TITLE);
 
         img_poster = rootView.findViewById(R.id.item_poster);
+        img_poster.setOnClickListener(this);
         TextView item_title = rootView.findViewById(R.id.item_title);
         TextView item_venue = rootView.findViewById(R.id.item_venue);
         TextView item_period = rootView.findViewById(R.id.item_period);
@@ -193,6 +205,11 @@ public class ItemFragment extends Fragment implements View.OnClickListener,
         if (venue != null) {
             item_venue.setText(venue);
             item_venue.setVisibility(View.VISIBLE);
+        }
+        if (start_date != null && end_date != null) {
+            SimpleDateFormat sfd = new SimpleDateFormat("yyyy년 MM월 dd일", Locale.getDefault());
+            item_period.setText(sfd.format(start_date.toDate()) + " ~ " + sfd.format(end_date.toDate()));
+            item_period.setVisibility(View.VISIBLE);
         }
 
         Firebase firebase = new Firebase();
@@ -317,6 +334,8 @@ public class ItemFragment extends Fragment implements View.OnClickListener,
             Intent intent = new Intent(Intent.ACTION_VIEW);
             intent.setData(Uri.parse(url));
             startActivity(intent);
+        } else if (i == R.id.item_poster) {
+            mainActivity.loadMultiMediaWeb(item, poster);
         }
     }
 
@@ -390,7 +409,7 @@ public class ItemFragment extends Fragment implements View.OnClickListener,
     private void start_share() {
         Intent sendIntent = new Intent();
         sendIntent.setAction(Intent.ACTION_SEND);
-        sendIntent.putExtra(Intent.EXTRA_TEXT, title);
+        sendIntent.putExtra(Intent.EXTRA_TEXT, title + "\n" + (description != null ? description : ""));
         sendIntent.setType("text/*");
         Intent shareIntent = Intent.createChooser(sendIntent, "공유하기");
         startActivity(shareIntent);
@@ -413,6 +432,7 @@ public class ItemFragment extends Fragment implements View.OnClickListener,
             mainActivity.getSupportFragmentManager().beginTransaction()
                     .replace(R.id.main_fragment, mainActivity.myReviewPage).commit();
         } else if (type == -1) {
+            mainActivity.getSupportActionBar().hide();
             mainActivity.getSupportFragmentManager().beginTransaction()
                     .replace(R.id.main_fragment, mainActivity.homeTab).commit();
         }

@@ -16,6 +16,7 @@ import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.databinding.DataBindingUtil;
 import androidx.fragment.app.Fragment;
+import androidx.fragment.app.FragmentManager;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
@@ -36,7 +37,7 @@ import com.ici.myproject73029.items.Review;
 
 import java.util.List;
 
-public class ReviewListFragment extends Fragment implements AdapterView.OnItemSelectedListener {
+public class ReviewListFragment extends Fragment implements AdapterView.OnItemSelectedListener{
     private RecyclerView recyclerView;
     private MainActivity mainActivity = null;
     String title;
