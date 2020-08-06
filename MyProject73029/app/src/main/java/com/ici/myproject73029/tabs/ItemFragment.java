@@ -436,9 +436,15 @@ public class ItemFragment extends Fragment implements View.OnClickListener,
                         Uri deepLink = null;
                         if (pendingDynamicLinkData != null) {
                             deepLink = pendingDynamicLinkData.getLink();
+                            Toast.makeText(getContext(),"딥링크:"+deepLink.toString(),Toast.LENGTH_SHORT).show();
                         }
                     }
-                });
+                }).addOnFailureListener(new OnFailureListener() {
+            @Override
+            public void onFailure(@NonNull Exception e) {
+                Log.d("Error",e.toString());
+        }
+        });
     }
 
     private void start_share() {
