@@ -2,13 +2,18 @@ package com.ici.myproject73029.tabs;
 
 import android.app.Dialog;
 import android.content.DialogInterface;
+import android.content.res.ColorStateList;
+import android.graphics.Color;
 import android.os.Bundle;
+import android.text.Editable;
 import android.text.Html;
+import android.text.TextWatcher;
 import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.ViewGroup;
 import android.widget.EditText;
 import android.widget.RatingBar;
+import android.widget.TextView;
 import android.widget.Toast;
 
 import androidx.annotation.NonNull;
@@ -30,10 +35,12 @@ import com.ici.myproject73029.R;
 import com.ici.myproject73029.items.Exhibition;
 import com.ici.myproject73029.items.Show;
 
+import org.w3c.dom.Text;
+
 import java.util.HashMap;
 import java.util.Map;
 
-public class CreateReviewFragment extends DialogFragment {
+public class CreateReviewFragment extends DialogFragment implements TextWatcher {
 
     private String item;
     private MainActivity mainActivity;
@@ -45,6 +52,7 @@ public class CreateReviewFragment extends DialogFragment {
     private boolean isFirst = true;
     int type;
     private AlertDialog.Builder builder;
+    private TextView title_length;
 
     public CreateReviewFragment() {
         super();
@@ -71,6 +79,8 @@ public class CreateReviewFragment extends DialogFragment {
         user = FirebaseAuth.getInstance().getCurrentUser();
 
         review_title = rootView.findViewById(R.id.review_title_editText);
+        title_length = rootView.findViewById(R.id.title_length);
+        review_title.addTextChangedListener(this);
         review_comments = rootView.findViewById(R.id.review_comments_editText);
         ratingBar = rootView.findViewById(R.id.item_rating_bar);
 
@@ -178,4 +188,23 @@ public class CreateReviewFragment extends DialogFragment {
         });
     }
 
+    @Override
+    public void beforeTextChanged(CharSequence s, int start, int count, int after) {
+        title_length.setText(review_title.getText().length() + "/20");
+    }
+
+    @Override
+    public void onTextChanged(CharSequence s, int start, int before, int count) {
+        int length = review_title.getText().length();
+        title_length.setText(length + "/20");
+        if (length >= 20) {
+            title_length.setTextColor(getResources().getColor(R.color.colorAccent));
+        } else if (length < 20) {
+            title_length.setTextColor(getResources().getColor(android.R.color.secondary_text_light));
+        }
+    }
+
+    @Override
+    public void afterTextChanged(Editable s) {
+    }
 }

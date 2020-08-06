@@ -39,6 +39,7 @@ import com.google.android.gms.tasks.OnSuccessListener;
 import com.google.android.gms.tasks.Task;
 import com.google.android.material.chip.Chip;
 import com.google.android.material.chip.ChipGroup;
+import com.google.firebase.Timestamp;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.auth.FirebaseUser;
 import com.google.firebase.dynamiclinks.DynamicLink;
@@ -65,11 +66,13 @@ import com.ici.myproject73029.items.FundamentalItem;
 
 import java.io.IOException;
 import java.net.URISyntaxException;
+import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Calendar;
 import java.util.Date;
 import java.util.HashMap;
 import java.util.List;
+import java.util.Locale;
 import java.util.Map;
 import java.util.concurrent.Executor;
 
@@ -82,6 +85,8 @@ public class ItemFragment extends Fragment implements View.OnClickListener,
     boolean isFavorite;
     String url;
     String poster;
+    Timestamp start_date;
+    Timestamp end_date;
     FundamentalItem item;
     private List<Address> list = null;
 
@@ -109,6 +114,8 @@ public class ItemFragment extends Fragment implements View.OnClickListener,
         this.type = item.getType();
         this.url = item.getUrl();
         this.poster = item.getPoster();
+        this.start_date = item.getStart_date();
+        this.end_date = item.getEnd_date();
     }
 
 
@@ -198,6 +205,11 @@ public class ItemFragment extends Fragment implements View.OnClickListener,
         if (venue != null) {
             item_venue.setText(venue);
             item_venue.setVisibility(View.VISIBLE);
+        }
+        if (start_date != null && end_date != null) {
+            SimpleDateFormat sfd = new SimpleDateFormat("yyyy년 MM월 dd일", Locale.getDefault());
+            item_period.setText(sfd.format(start_date.toDate()) + " ~ " + sfd.format(end_date.toDate()));
+            item_period.setVisibility(View.VISIBLE);
         }
 
         Firebase firebase = new Firebase();
@@ -479,6 +491,7 @@ public class ItemFragment extends Fragment implements View.OnClickListener,
             mainActivity.getSupportFragmentManager().beginTransaction()
                     .replace(R.id.main_fragment, mainActivity.myReviewPage).commit();
         } else if (type == -1) {
+            mainActivity.getSupportActionBar().hide();
             mainActivity.getSupportFragmentManager().beginTransaction()
                     .replace(R.id.main_fragment, mainActivity.homeTab).commit();
         }

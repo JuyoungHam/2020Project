@@ -2,8 +2,9 @@ package com.ici.myproject73029.items;
 
 import androidx.databinding.BaseObservable;
 //import androidx.databinding.library.baseAdapters.BR;
+import com.google.firebase.Timestamp;
 
-
+import java.sql.Time;
 import java.util.ArrayList;
 
 public class FundamentalItem extends BaseObservable {
@@ -15,10 +16,11 @@ public class FundamentalItem extends BaseObservable {
     private int category;
     private String venue;
     private String phone;
-    private String period;
     private int type = -1;
     private int favorite_count;
     private ArrayList<String> tag;
+    private Timestamp start_date;
+    private Timestamp end_date;
 
     public FundamentalItem() {
     }
@@ -36,6 +38,30 @@ public class FundamentalItem extends BaseObservable {
         this.title = title;
         this.description = description;
         this.poster = poster;
+    }
+
+    public String getCreator() {
+        return creator;
+    }
+
+    public void setCreator(String creator) {
+        this.creator = creator;
+    }
+
+    public Timestamp getStart_date() {
+        return start_date;
+    }
+
+    public void setStart_date(Timestamp start_date) {
+        this.start_date = start_date;
+    }
+
+    public Timestamp getEnd_date() {
+        return end_date;
+    }
+
+    public void setEnd_date(Timestamp end_date) {
+        this.end_date = end_date;
     }
 
     public ArrayList<String> getTag() {
@@ -97,7 +123,7 @@ public class FundamentalItem extends BaseObservable {
 
     public void setVenue(String venue) {
         this.venue = venue;
-       // notifyPropertyChanged(BR.FundamentalItem);
+        // notifyPropertyChanged(BR.FundamentalItem);
     }
 
     public String getPhone() {
@@ -109,22 +135,13 @@ public class FundamentalItem extends BaseObservable {
         //notifyPropertyChanged(BR.FundamentalItem);
     }
 
-    public String getPeriod() {
-        return period;
-    }
-
-    public void setPeriod(String period) {
-        this.period = period;
-       // notifyPropertyChanged(BR.FundamentalItem);
-    }
-
     public String getTitle() {
         return title;
     }
 
     public void setTitle(String title) {
         this.title = title;
-       // notifyPropertyChanged(BR.FundamentalItem);
+        // notifyPropertyChanged(BR.FundamentalItem);
     }
 
     public String getDescription() {
@@ -133,7 +150,7 @@ public class FundamentalItem extends BaseObservable {
 
     public void setDescription(String description) {
         this.description = description;
-       // notifyPropertyChanged(BR.FundamentalItem);
+        // notifyPropertyChanged(BR.FundamentalItem);
     }
 
     public String getPoster() {

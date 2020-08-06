@@ -10,6 +10,8 @@
     <TextView
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
+        android:maxLength="20"
+        android:singleLine="true"
         android:text="댓글 작성"
         android:textAppearance="@style/TextAppearance.AppCompat.Medium" />
 
@@ -26,20 +28,38 @@
         android:stepSize="0.5" />
 
 
-    <EditText
-        android:id="@+id/review_title_editText"
+    <LinearLayout
         android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:hint="제목" />
+        android:layout_height="match_parent"
+        android:orientation="horizontal">
+
+        <EditText
+            android:id="@+id/review_title_editText"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_weight="1"
+            android:hint="제목"
+            android:maxLength="20"
+            android:singleLine="true" />
+
+        <TextView
+            android:id="@+id/title_length"
+            android:layout_width="wrap_content"
+            android:layout_height="match_parent"
+            android:gravity="center"
+            android:text="0/20" />
+    </LinearLayout>
 
     <ScrollView
         android:layout_width="match_parent"
-        android:layout_height="wrap_content">
+        android:layout_height="wrap_content"
+        android:scrollbarAlwaysDrawVerticalTrack="false">
 
         <LinearLayout
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:orientation="vertical">
+            android:orientation="vertical"
+            android:overScrollMode="ifContentScrolls">
 
             <EditText
                 android:id="@+id/review_comments_editText"
@@ -49,6 +69,8 @@
                 android:hint="코멘트"
                 android:lineSpacingExtra="8sp"
                 android:lines="5"
+                android:scrollbarStyle="insideInset"
+                android:scrollbars="vertical"
                 android:singleLine="false" />
         </LinearLayout>
     </ScrollView>
