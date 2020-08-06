@@ -42,6 +42,7 @@ import com.ici.myproject73029.mypage.MyReviewPage;
 import com.ici.myproject73029.tabs.ExhibitionTab;
 import com.ici.myproject73029.tabs.HomeTab;
 import com.ici.myproject73029.tabs.ItemFragment;
+import com.ici.myproject73029.tabs.MultiMediaFragment;
 import com.ici.myproject73029.tabs.ReviewListFragment;
 import com.ici.myproject73029.tabs.ShowTab;
 
@@ -58,8 +59,8 @@ public class MainActivity extends AppCompatActivity {
     public MyPageTab myPageTab;
     public FavoritePage favoritePage;
     public MyReviewPage myReviewPage;
-    ItemFragment item_Show;
-    ItemFragment item_Exhibition;
+    public ItemFragment item_Show;
+    public ItemFragment item_Exhibition;
     private BottomNavigationView bottomNavigation;
     private ActionBar actionBar;
     private long pressedTime = 0;
@@ -212,6 +213,12 @@ public class MainActivity extends AppCompatActivity {
         } else {
             Toast.makeText(this, "마지막 리뷰입니다.", Toast.LENGTH_SHORT).show();
         }
+    }
+
+    public void loadMultiMediaWeb(FundamentalItem item, String url) {
+        MultiMediaFragment fragment = new MultiMediaFragment(url);
+        fragment.setItem(item);
+        getSupportFragmentManager().beginTransaction().replace(R.id.main_fragment, fragment).commit();
     }
 
     @Override

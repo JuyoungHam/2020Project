@@ -6,6 +6,7 @@ import android.content.Intent;
 import android.content.pm.PackageManager;
 import android.content.pm.ResolveInfo;
 import android.graphics.Color;
+import android.graphics.drawable.Drawable;
 import android.location.Address;
 import android.location.Geocoder;
 import android.net.Uri;
@@ -80,6 +81,8 @@ public class ItemFragment extends Fragment implements View.OnClickListener,
     int type;
     boolean isFavorite;
     String url;
+    String poster;
+    FundamentalItem item;
     private List<Address> list = null;
 
     private MainActivity mainActivity;
@@ -97,7 +100,7 @@ public class ItemFragment extends Fragment implements View.OnClickListener,
     private FrameLayout review_list;
 
     public ItemFragment(FundamentalItem item) {
-
+        this.item = item;
         this.title = item.getTitle();
         this.description = item.getDescription();
         if (item.getVenue() != null) {
@@ -105,6 +108,7 @@ public class ItemFragment extends Fragment implements View.OnClickListener,
         }
         this.type = item.getType();
         this.url = item.getUrl();
+        this.poster = item.getPoster();
     }
 
 
@@ -123,6 +127,7 @@ public class ItemFragment extends Fragment implements View.OnClickListener,
         mainActivity.setActionBarOption(ActionBar.DISPLAY_HOME_AS_UP | ActionBar.DISPLAY_SHOW_TITLE);
 
         img_poster = rootView.findViewById(R.id.item_poster);
+        img_poster.setOnClickListener(this);
         TextView item_title = rootView.findViewById(R.id.item_title);
         TextView item_venue = rootView.findViewById(R.id.item_venue);
         TextView item_period = rootView.findViewById(R.id.item_period);
@@ -322,6 +327,8 @@ public class ItemFragment extends Fragment implements View.OnClickListener,
             Intent intent = new Intent(Intent.ACTION_VIEW);
             intent.setData(Uri.parse(url));
             startActivity(intent);
+        } else if (i == R.id.item_poster) {
+            mainActivity.loadMultiMediaWeb(item, poster);
         }
     }
 
@@ -412,38 +419,37 @@ public class ItemFragment extends Fragment implements View.OnClickListener,
                             try {
                                 Intent Sharing_Intent = new Intent();
                                 Sharing_Intent.setAction(Intent.ACTION_SEND);
-                                Sharing_Intent.putExtra(Intent.EXTRA_TEXT, title + "\n"+ShortLink.toString());
-                               // Sharing_Intent.putExtra(Intent.EXTRA_TEXT, ShortLink.toString());
+                                Sharing_Intent.putExtra(Intent.EXTRA_TEXT, title + "\n" + ShortLink.toString());
+                                // Sharing_Intent.putExtra(Intent.EXTRA_TEXT, ShortLink.toString());
                                 Sharing_Intent.setType("text/*");
                                 startActivity(Intent.createChooser(Sharing_Intent, "공유하기"));
-                            }
-                            catch (Exception e) {
-                                Log.d("ERROR",e.toString());
+                            } catch (Exception e) {
+                                Log.d("ERROR", e.toString());
                             }
                         }
                     }
                 }).addOnFailureListener(new OnFailureListener() {
                     @Override
                     public void onFailure(@NonNull Exception e) {
-                        Log.d("ERROR",e.toString());
+                        Log.d("ERROR", e.toString());
                     }
                 });
 
         FirebaseDynamicLinks.getInstance().getDynamicLink(Intent.getIntent("https://myproject73029.page.link/bjYi"))
-                .addOnSuccessListener(getActivity(),new OnSuccessListener<PendingDynamicLinkData>() {
+                .addOnSuccessListener(getActivity(), new OnSuccessListener<PendingDynamicLinkData>() {
                     @Override
                     public void onSuccess(PendingDynamicLinkData pendingDynamicLinkData) {
                         Uri deepLink = null;
                         if (pendingDynamicLinkData != null) {
                             deepLink = pendingDynamicLinkData.getLink();
-                            Toast.makeText(getContext(),"딥링크:"+deepLink.toString(),Toast.LENGTH_SHORT).show();
+                            Toast.makeText(getContext(), "딥링크:" + deepLink.toString(), Toast.LENGTH_SHORT).show();
                         }
                     }
                 }).addOnFailureListener(new OnFailureListener() {
             @Override
             public void onFailure(@NonNull Exception e) {
-                Log.d("Error",e.toString());
-        }
+                Log.d("Error", e.toString());
+            }
         });
     }
 

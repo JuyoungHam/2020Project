@@ -74,10 +74,10 @@ def getLinks(url):
         req = requests.get(url)
         bs = BeautifulSoup(req.text, 'html.parser')
         internalLinks = getInternalLinks(bs, url)
-        file = open('pages.txt', 'a+', encoding='utf-8')
+        file = open('melonTicketPages.txt', 'a+', encoding='utf-8')
         for link in internalLinks:
-            if not re.match('^http', link):
-                link = 'http://' + link
+            # if not re.match('^http', link):
+            #     link = 'http://' + link
             if link not in pages:
                 pages.append(link)
                 file.write(link + "\n")
@@ -93,6 +93,8 @@ def getLinks(url):
     except requests.exceptions.RequestException as err:
         print("OOps: Something Else", err)
 
+#
+# for url in urllist:
+#     getLinks(url)
 
-for url in urllist:
-    getLinks(url)
+getLinks('https://ticket.melon.com')
