@@ -14,6 +14,7 @@ public class loading extends AppCompatActivity {
         setContentView(R.layout.activity_loading);
         Handler handler=new Handler();
         handler.postDelayed(new startLoading(),1000);
+        getSupportActionBar().hide();
     }
 
     public class startLoading implements Runnable{

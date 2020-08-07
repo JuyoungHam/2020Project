@@ -33,6 +33,7 @@ import com.ici.myproject73029.Constant;
 import com.ici.myproject73029.MainActivity;
 import com.ici.myproject73029.R;
 import com.ici.myproject73029.items.Exhibition;
+import com.ici.myproject73029.items.FundamentalItem;
 import com.ici.myproject73029.items.Show;
 
 import org.w3c.dom.Text;
@@ -40,7 +41,7 @@ import org.w3c.dom.Text;
 import java.util.HashMap;
 import java.util.Map;
 
-public class CreateReviewFragment extends DialogFragment implements TextWatcher {
+public class CreateReviewFragment extends DialogFragment {
 
     private String item;
     private MainActivity mainActivity;
@@ -53,6 +54,7 @@ public class CreateReviewFragment extends DialogFragment implements TextWatcher 
     int type;
     private AlertDialog.Builder builder;
     private TextView title_length;
+    private TextView comment_length;
 
     public CreateReviewFragment() {
         super();
@@ -80,8 +82,50 @@ public class CreateReviewFragment extends DialogFragment implements TextWatcher 
 
         review_title = rootView.findViewById(R.id.review_title_editText);
         title_length = rootView.findViewById(R.id.title_length);
-        review_title.addTextChangedListener(this);
+        review_title.addTextChangedListener(new TextWatcher() {
+            @Override
+            public void beforeTextChanged(CharSequence s, int start, int count, int after) {
+                title_length.setText(review_title.getText().length() + "/20");
+            }
+
+            @Override
+            public void onTextChanged(CharSequence s, int start, int before, int count) {
+                int length = review_title.getText().length();
+                title_length.setText(length + "/20");
+                if (length >= 20) {
+                    title_length.setTextColor(getResources().getColor(R.color.colorAccent));
+                } else {
+                    title_length.setTextColor(getResources().getColor(android.R.color.secondary_text_light));
+                }
+            }
+
+            @Override
+            public void afterTextChanged(Editable s) {
+            }
+        });
         review_comments = rootView.findViewById(R.id.review_comments_editText);
+        review_comments.addTextChangedListener(new TextWatcher() {
+            @Override
+            public void beforeTextChanged(CharSequence s, int start, int count, int after) {
+                comment_length.setText(review_comments.getText().length() + "/1000");
+            }
+
+            @Override
+            public void onTextChanged(CharSequence s, int start, int before, int count) {
+                int length = review_comments.getText().length();
+                comment_length.setText(length + "/1000");
+                if (length >= 1000) {
+                    comment_length.setTextColor(getResources().getColor(R.color.colorAccent));
+                } else {
+                    comment_length.setTextColor(getResources().getColor(android.R.color.secondary_text_light));
+                }
+            }
+
+            @Override
+            public void afterTextChanged(Editable s) {
+            }
+        });
+        comment_length = rootView.findViewById(R.id.comment_length);
         ratingBar = rootView.findViewById(R.id.item_rating_bar);
 
         mainActivity.db.collection("All").document(item).collection("comments").document(user.getUid()).get()
@@ -183,28 +227,13 @@ public class CreateReviewFragment extends DialogFragment implements TextWatcher 
                 } else if (type == Constant.SHOW) {
                     Show item = task.getResult().toObject(Show.class);
                     mainActivity.onItemFragmentChanged(item);
+                } else {
+                    FundamentalItem item = task.getResult().toObject(FundamentalItem.class);
+                    mainActivity.onItemFragmentChanged(item);
                 }
             }
         });
     }
 
-    @Override
-    public void beforeTextChanged(CharSequence s, int start, int count, int after) {
-        title_length.setText(review_title.getText().length() + "/20");
-    }
 
-    @Override
-    public void onTextChanged(CharSequence s, int start, int before, int count) {
-        int length = review_title.getText().length();
-        title_length.setText(length + "/20");
-        if (length >= 20) {
-            title_length.setTextColor(getResources().getColor(R.color.colorAccent));
-        } else if (length < 20) {
-            title_length.setTextColor(getResources().getColor(android.R.color.secondary_text_light));
-        }
-    }
-
-    @Override
-    public void afterTextChanged(Editable s) {
-    }
 }

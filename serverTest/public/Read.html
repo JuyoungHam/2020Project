@@ -78,26 +78,26 @@
 
       if (document.getElementById('title').value == "" || document.getElementById('creator').value == "") {
         alert("필수 항목을 입력해주세요");
-      }else if(document.getElementById('start_date').value=="NaN-NaN-NaN"||document.getElementById('end_date').value=="NaN-NaN-NaN"){
+      } else if (document.getElementById('start_date').value == "NaN-NaN-NaN" || document.getElementById('end_date').value == "NaN-NaN-NaN") {
         alert("날짜 형식 오류");
-      }else {
+      } else {
         db.update({
-          poster: (document.getElementById('poster').value != "" ? document.getElementById('poster').value : null),
-          creator: document.getElementById('creator').value,
+            poster: (document.getElementById('poster').value != "" ? document.getElementById('poster').value : null),
+            creator: document.getElementById('creator').value != "" ? document.getElementById('creator').value : null),
           title: document.getElementById('title').value,
-          venue: document.getElementById('venue').value,
-          description: document.getElementById('description').value,
+          venue: document.getElementById('venue').value != "" ? document.getElementById('venue').value : null,
+          description: document.getElementById('description').value != "" ? document.getElementById('description').value : null,
           start_date: (document.getElementById('start_date').value != "" ? document.getElementById('start_date').value : null),
           end_date: (document.getElementById('end_date').value != "" ? document.getElementById('end_date').value : null),
           tag: [array[0]]
         }).then(function() {
-          alert("수정 완료");
-          location.href = "Admin.html";
-        }).catch(function(error) {
-          console.error("수정 오류:" + error);
-          alert("수정 실패");
-        });
-      }
+        alert("수정 완료");
+        location.href = "Admin.html";
+      }).catch(function(error) {
+        console.error("수정 오류:" + error);
+        alert("수정 실패");
+      });
+    }
     }
 
 

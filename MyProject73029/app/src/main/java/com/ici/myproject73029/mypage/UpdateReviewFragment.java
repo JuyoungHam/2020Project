@@ -34,7 +34,7 @@ import com.ici.myproject73029.items.Review;
 import java.util.HashMap;
 import java.util.Map;
 
-public class UpdateReviewFragment extends DialogFragment implements TextWatcher {
+public class UpdateReviewFragment extends DialogFragment {
 
     private String item;
     private MainActivity mainActivity;
@@ -72,8 +72,50 @@ public class UpdateReviewFragment extends DialogFragment implements TextWatcher 
 
         title_length = rootView.findViewById(R.id.title_length);
         review_title = rootView.findViewById(R.id.review_title_editText);
-        review_title.addTextChangedListener(this);
+        review_title.addTextChangedListener(new TextWatcher() {
+            @Override
+            public void beforeTextChanged(CharSequence s, int start, int count, int after) {
+                title_length.setText(review_title.getText().length() + "/20");
+            }
+
+            @Override
+            public void onTextChanged(CharSequence s, int start, int before, int count) {
+                int length = review_title.getText().length();
+                title_length.setText(length + "/20");
+                if (length >= 20) {
+                    title_length.setTextColor(getResources().getColor(R.color.colorAccent));
+                } else {
+                    title_length.setTextColor(getResources().getColor(android.R.color.secondary_text_light));
+                }
+            }
+
+            @Override
+            public void afterTextChanged(Editable s) {
+            }
+        });
+        final TextView comment_length = rootView.findViewById(R.id.comment_length);
         review_comments = rootView.findViewById(R.id.review_comments_editText);
+        review_comments.addTextChangedListener(new TextWatcher() {
+            @Override
+            public void beforeTextChanged(CharSequence s, int start, int count, int after) {
+                comment_length.setText(review_comments.getText().length() + "/1000");
+            }
+
+            @Override
+            public void onTextChanged(CharSequence s, int start, int before, int count) {
+                int length = review_comments.getText().length();
+                comment_length.setText(length + "/1000");
+                if (length >= 1000) {
+                    comment_length.setTextColor(getResources().getColor(R.color.colorAccent));
+                } else {
+                    comment_length.setTextColor(getResources().getColor(android.R.color.secondary_text_light));
+                }
+            }
+
+            @Override
+            public void afterTextChanged(Editable s) {
+            }
+        });
         ratingBar = rootView.findViewById(R.id.item_rating_bar);
 
         mainActivity.db.collection("All").document(item).collection("comments").document(user.getUid()).get()
@@ -104,29 +146,29 @@ public class UpdateReviewFragment extends DialogFragment implements TextWatcher 
                                 }
                                 if (user != null) {
                                     comment.put("userId", user.getUid());
-                            comment.put("writer", user.getDisplayName());
-                            mainActivity.db.collection("All").document(item).collection("comments")
-                                    .document(user.getUid()).set(comment, SetOptions.merge())
-                                    .addOnSuccessListener(new OnSuccessListener<Void>() {
-                                        @Override
-                                        public void onSuccess(Void aVoid) {
-                                            Log.d(Constant.TAG, "DocumentSnapshot successfully written!");
-                                            mainActivity.db.collection("All").document(item).collection("comments")
-                                                    .document(user.getUid()).get().addOnCompleteListener(new OnCompleteListener<DocumentSnapshot>() {
+                                    comment.put("writer", user.getDisplayName());
+                                    mainActivity.db.collection("All").document(item).collection("comments")
+                                            .document(user.getUid()).set(comment, SetOptions.merge())
+                                            .addOnSuccessListener(new OnSuccessListener<Void>() {
                                                 @Override
-                                                public void onComplete(@NonNull Task<DocumentSnapshot> task) {
-                                                    Review review = task.getResult().toObject(Review.class);
-                                                    mainActivity.onItemFragmentChanged(review);
+                                                public void onSuccess(Void aVoid) {
+                                                    Log.d(Constant.TAG, "DocumentSnapshot successfully written!");
+                                                    mainActivity.db.collection("All").document(item).collection("comments")
+                                                            .document(user.getUid()).get().addOnCompleteListener(new OnCompleteListener<DocumentSnapshot>() {
+                                                        @Override
+                                                        public void onComplete(@NonNull Task<DocumentSnapshot> task) {
+                                                            Review review = task.getResult().toObject(Review.class);
+                                                            mainActivity.onItemFragmentChanged(review);
+                                                        }
+                                                    });
+                                                }
+                                            })
+                                            .addOnFailureListener(new OnFailureListener() {
+                                                @Override
+                                                public void onFailure(@NonNull Exception e) {
+                                                    Log.w(Constant.TAG, "Error writing document", e);
                                                 }
                                             });
-                                        }
-                                    })
-                                    .addOnFailureListener(new OnFailureListener() {
-                                        @Override
-                                        public void onFailure(@NonNull Exception e) {
-                                            Log.w(Constant.TAG, "Error writing document", e);
-                                        }
-                                    });
                                 }
 
                             }
@@ -137,25 +179,5 @@ public class UpdateReviewFragment extends DialogFragment implements TextWatcher 
                     }
                 });
         return builder.create();
-    }
-
-    @Override
-    public void beforeTextChanged(CharSequence s, int start, int count, int after) {
-        title_length.setText(review_title.getText().length() + "/20");
-    }
-
-    @Override
-    public void onTextChanged(CharSequence s, int start, int before, int count) {
-        int length = review_title.getText().length();
-        title_length.setText(length + "/20");
-        if (length >= 20) {
-            title_length.setTextColor(getResources().getColor(R.color.colorAccent));
-        } else if (length < 20) {
-            title_length.setTextColor(getResources().getColor(android.R.color.secondary_text_light));
-        }
-    }
-
-    @Override
-    public void afterTextChanged(Editable s) {
     }
 }
