@@ -5,7 +5,8 @@
     <uses-permission android:name="android.permission.VIBRATE" />
     <uses-permission android:name="android.permission.INTERNET" />
 
-    <applicationd
+    <application
+        android:name=".firebase.KakaoAuthApp"
         android:allowBackup="true"
         android:icon="@mipmap/ic_launcher"
         android:label="@string/app_name"
@@ -26,6 +27,15 @@
                 <category android:name="android.intent.category.LAUNCHER" />
                 <action android:name="android.intent.action.VIEW" />
 
+                <category android:name="android.intent.category.DEFAULT" />
+                <category android:name="android.intent.category.BROWSABLE" />
+
+                <data
+                    android:host="myproject73029.page.link"
+                    android:scheme="https" />
+                <data
+                    android:host="myproject73029.page.link"
+                    android:scheme="http" />
             </intent-filter>
         </activity>
         <activity
@@ -78,6 +88,6 @@
                 <action android:name="com.google.firebase.INSTANCE_ID_EVENT" />
             </intent-filter>
         </service>
-    </applicationd>
+    </application>
 
 </manifest>

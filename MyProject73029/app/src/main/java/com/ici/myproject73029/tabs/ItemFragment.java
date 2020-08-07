@@ -409,7 +409,7 @@ public class ItemFragment extends Fragment implements View.OnClickListener,
     private void start_share() {
         Intent sendIntent = new Intent();
         sendIntent.setAction(Intent.ACTION_SEND);
-        sendIntent.putExtra(Intent.EXTRA_TEXT, title);
+        sendIntent.putExtra(Intent.EXTRA_TEXT, title + "\n" + (description != null ? description : ""));
         sendIntent.setType("text/*");
         Intent shareIntent = Intent.createChooser(sendIntent, "공유하기");
         startActivity(shareIntent);
