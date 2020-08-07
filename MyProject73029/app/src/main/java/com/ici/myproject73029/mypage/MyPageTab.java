@@ -99,6 +99,8 @@ public class MyPageTab extends Fragment implements View.OnClickListener, SwipeRe
         Button theme6 = rootView.findViewById(R.id.theme6);
         theme6.setOnClickListener(this);
 
+        ThemeChanger.createPreference(getContext());
+
         user = auth.getCurrentUser();
         updateUI(user);
 
