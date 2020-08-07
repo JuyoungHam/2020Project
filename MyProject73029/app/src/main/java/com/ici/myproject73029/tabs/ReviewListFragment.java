@@ -17,6 +17,7 @@ import androidx.annotation.Nullable;
 import androidx.databinding.DataBindingUtil;
 import androidx.fragment.app.Fragment;
 import androidx.fragment.app.FragmentManager;
+import androidx.recyclerview.widget.DividerItemDecoration;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
@@ -84,13 +85,15 @@ public class ReviewListFragment extends Fragment implements AdapterView.OnItemSe
         spinner.setOnItemSelectedListener(this);
 
         recyclerView = rootView.findViewById(R.id.reviewlist_recyclerView);
-
-        load_review = rootView.findViewById(R.id.load_review);
-
         LinearLayoutManager layoutManager = new LinearLayoutManager(getContext(),
                 LinearLayoutManager.VERTICAL, false);
         recyclerView.setLayoutManager(layoutManager);
         adapter = new ReviewAdapter();
+        DividerItemDecoration dividerItemDecoration = new DividerItemDecoration(recyclerView.getContext(),
+                layoutManager.getOrientation());
+        recyclerView.addItemDecoration(dividerItemDecoration);
+
+        load_review = rootView.findViewById(R.id.load_review);
 
         Firebase firebase = new Firebase();
         db = firebase.startFirebase();
