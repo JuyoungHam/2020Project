@@ -9,6 +9,7 @@ import android.view.ViewTreeObserver;
 import android.widget.AdapterView;
 import android.widget.ArrayAdapter;
 import android.widget.Spinner;
+import android.widget.Toast;
 
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
@@ -162,7 +163,7 @@ public class ShowTab extends Fragment implements SwipeRefreshLayout.OnRefreshLis
 
     @Override
     public void onItemSelected(AdapterView<?> parent, View view, int position, long id) {
-        if (position != 0) updateItemList(Constant.SHOW_TAGS[position]);
+        updateItemList(Constant.SHOW_TAGS[position]);
     }
 
     @Override

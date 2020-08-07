@@ -1,6 +1,7 @@
 package com.ici.myproject73029.mypage;
 
 import android.content.Intent;
+import android.content.SharedPreferences;
 import android.os.Bundle;
 
 import androidx.annotation.NonNull;
@@ -24,15 +25,10 @@ import com.google.android.gms.tasks.Task;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.auth.FirebaseUser;
 import com.google.firebase.firestore.DocumentSnapshot;
-import com.google.firebase.firestore.FirebaseFirestore;
-import com.google.firebase.storage.FirebaseStorage;
 import com.ici.myproject73029.Constant;
 import com.ici.myproject73029.MainActivity;
 import com.ici.myproject73029.R;
-import com.ici.myproject73029.firebase.Firebase;
 import com.ici.myproject73029.firebase.FirebaseUIActivity;
-
-import java.util.Map;
 
 public class MyPageTab extends Fragment implements View.OnClickListener, SwipeRefreshLayout.OnRefreshListener {
 
@@ -90,6 +86,19 @@ public class MyPageTab extends Fragment implements View.OnClickListener, SwipeRe
         });
         refreshLayout.setOnRefreshListener(this);
 
+        Button theme1 = rootView.findViewById(R.id.theme1);
+        theme1.setOnClickListener(this);
+        Button theme2 = rootView.findViewById(R.id.theme2);
+        theme2.setOnClickListener(this);
+        Button theme3 = rootView.findViewById(R.id.theme3);
+        theme3.setOnClickListener(this);
+        Button theme4 = rootView.findViewById(R.id.theme4);
+        theme4.setOnClickListener(this);
+        Button theme5 = rootView.findViewById(R.id.theme5);
+        theme5.setOnClickListener(this);
+        Button theme6 = rootView.findViewById(R.id.theme6);
+        theme6.setOnClickListener(this);
+
         user = auth.getCurrentUser();
         updateUI(user);
 
@@ -106,6 +115,18 @@ public class MyPageTab extends Fragment implements View.OnClickListener, SwipeRe
             mainActivity.onMyPageChanged(i);
         } else if (i == R.id.button_myreview) {
             mainActivity.onMyPageChanged(i);
+        } else if (i == R.id.theme1) {
+            ThemeChanger.themeChange(mainActivity, 1);
+        } else if (i == R.id.theme2) {
+            ThemeChanger.themeChange(mainActivity, 2);
+        } else if (i == R.id.theme3) {
+            ThemeChanger.themeChange(mainActivity, 1);
+        } else if (i == R.id.theme4) {
+            ThemeChanger.themeChange(mainActivity, 1);
+        } else if (i == R.id.theme5) {
+            ThemeChanger.themeChange(mainActivity, 1);
+        } else if (i == R.id.theme6) {
+            ThemeChanger.themeChange(mainActivity, 1);
         }
     }
 

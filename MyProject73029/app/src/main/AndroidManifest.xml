@@ -2,9 +2,6 @@
 <manifest xmlns:android="http://schemas.android.com/apk/res/android"
     package="com.ici.myproject73029">
 
-    <uses-permission android:name="android.permission.VIBRATE" />
-    <uses-permission android:name="android.permission.INTERNET" />
-
     <application
         android:name=".firebase.KakaoAuthApp"
         android:allowBackup="true"
@@ -19,13 +16,14 @@
             android:screenOrientation="portrait"></activity>
 
         <activity
-            android:name=".loading"
+            android:name=".Loading"
             android:launchMode="singleTop">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
 
-                <category android:name="android.intent.category.LAUNCHER" />
                 <action android:name="android.intent.action.VIEW" />
+
+                <category android:name="android.intent.category.LAUNCHER" />
             </intent-filter>
         </activity>
         <activity
@@ -79,5 +77,9 @@
             </intent-filter>
         </service>
     </application>
+
+    <uses-permission android:name="android.permission.INTERNET" />
+
+    <uses-permission android:name="android.permission.VIBRATE" />
 
 </manifest>

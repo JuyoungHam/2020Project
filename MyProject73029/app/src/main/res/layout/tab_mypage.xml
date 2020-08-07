@@ -48,7 +48,7 @@
                 android:layout_height="wrap_content"
                 android:text="myreview"
                 android:textColor="#000000"
-                app:backgroundTint="@color/colorPrimaryDark" />
+                app:backgroundTint="?attr/colorPrimaryDark" />
 
             <Button
                 android:id="@+id/button_favorite"
@@ -56,7 +56,7 @@
                 android:layout_height="wrap_content"
                 android:text="favorite"
                 android:textColor="#000000"
-                app:backgroundTint="@color/colorPrimaryDark" />
+                app:backgroundTint="?attr/colorPrimaryDark" />
 
             <Button
                 android:id="@+id/button_login_control"
@@ -64,7 +64,66 @@
                 android:layout_height="wrap_content"
                 android:text="계정 관리"
                 android:textColor="#000000"
-                app:backgroundTint="@color/colorPrimaryDark" />
+                app:backgroundTint="?attr/colorPrimaryDark" />
+
+            <TextView
+                android:id="@+id/textView8"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_margin="8dp"
+                android:text="테마 선택" />
+
+            <TableLayout
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content">
+
+                <TableRow
+                    android:layout_width="match_parent"
+                    android:layout_height="match_parent">
+
+                    <Button
+                        android:id="@+id/theme1"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        app:backgroundTint="#3949AB" />
+
+                    <Button
+                        android:id="@+id/theme2"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        app:backgroundTint="#00ACC1" />
+
+                    <Button
+                        android:id="@+id/theme3"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        app:backgroundTint="#FDD835"
+                        app:iconTint="#FFB300" />
+                </TableRow>
+
+                <TableRow
+                    android:layout_width="match_parent"
+                    android:layout_height="match_parent">
+
+                    <Button
+                        android:id="@+id/theme4"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        app:backgroundTint="#FFB300" />
+
+                    <Button
+                        android:id="@+id/theme5"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        app:backgroundTint="#D81B60" />
+
+                    <Button
+                        android:id="@+id/theme6"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        app:backgroundTint="#8E24AA" />
+                </TableRow>
+            </TableLayout>
 
         </LinearLayout>
     </androidx.constraintlayout.widget.ConstraintLayout>

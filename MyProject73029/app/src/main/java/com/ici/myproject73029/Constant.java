@@ -43,7 +43,7 @@ public class Constant {
     public static final String FAVORITE_COUNT = "favorite_count";
 
     public static final String[] EXHIBITION_TAGS = {"모든 장르", "어린이"};
-    public static final String[] SHOW_TAGS = {"모든 장르", "어린이"};
+    public static final String[] SHOW_TAGS = {"모든 장르", "어린이", "연극", "뮤지컬", "국악", "클래식"};
     public static final String[] REVIEW_LIST_SPINNER = {"최신순", "오래된 순", "좋아요 순", "별점 높은 순", "별점 낮은 순"};
 
 

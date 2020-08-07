@@ -174,7 +174,7 @@ public class ExhibitionTab extends Fragment implements SwipeRefreshLayout.OnRefr
 
     @Override
     public void onItemSelected(AdapterView<?> parent, final View view, int position, long id) {
-        if (position != 0) updateItemList(Constant.EXHIBITION_TAGS[position]);
+        updateItemList(Constant.EXHIBITION_TAGS[position]);
 //        scrollView.scrollTo(0, scrollView.getBottom());
     }
 

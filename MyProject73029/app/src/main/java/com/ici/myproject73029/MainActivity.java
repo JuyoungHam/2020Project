@@ -2,6 +2,7 @@ package com.ici.myproject73029;
 
 import android.annotation.SuppressLint;
 import android.content.Intent;
+import android.content.SharedPreferences;
 import android.content.res.Resources;
 import android.net.Uri;
 import android.os.Bundle;
@@ -14,6 +15,7 @@ import android.widget.Toast;
 import androidx.annotation.NonNull;
 import androidx.appcompat.app.ActionBar;
 import androidx.appcompat.app.AppCompatActivity;
+import androidx.preference.PreferenceManager;
 
 import com.bumptech.glide.Glide;
 import com.google.android.gms.tasks.OnCompleteListener;
@@ -39,6 +41,7 @@ import com.ici.myproject73029.mypage.FavoritePage;
 import com.ici.myproject73029.mypage.MyPageTab;
 import com.ici.myproject73029.mypage.MyReviewFragment;
 import com.ici.myproject73029.mypage.MyReviewPage;
+import com.ici.myproject73029.mypage.ThemeChanger;
 import com.ici.myproject73029.tabs.ExhibitionTab;
 import com.ici.myproject73029.tabs.HomeTab;
 import com.ici.myproject73029.tabs.ItemFragment;
@@ -75,6 +78,7 @@ public class MainActivity extends AppCompatActivity {
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
+        ThemeChanger.onActivityCreateSetTheme(this);
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
         actionBar = getSupportActionBar();
@@ -104,18 +108,22 @@ public class MainActivity extends AppCompatActivity {
             public boolean onNavigationItemSelected(@NonNull MenuItem item) {
                 switch (item.getItemId()) {
                     case R.id.tab_exhibition:
+                        getSupportActionBar().hide();
                         getSupportFragmentManager().beginTransaction().replace(R.id.main_fragment
                                 , exhibitionTab).commit();
                         return true;
                     case R.id.tab_home:
+                        getSupportActionBar().hide();
                         getSupportFragmentManager().beginTransaction().replace(R.id.main_fragment
                                 , homeTab).commit();
                         return true;
                     case R.id.tab_show:
+                        getSupportActionBar().hide();
                         getSupportFragmentManager().beginTransaction().replace(R.id.main_fragment
                                 , showTab).commit();
                         return true;
                     case R.id.tab_mypage:
+                        getSupportActionBar().hide();
                         getSupportFragmentManager().beginTransaction().replace(R.id.main_fragment,
                                 myPageTab).commit();
                         return true;

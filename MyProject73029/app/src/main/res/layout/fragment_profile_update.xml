@@ -21,7 +21,8 @@
         android:layout_height="wrap_content"
         android:layout_gravity="end"
         android:text="사진 변경"
-        android:textColor="#000000" />
+        android:textColor="#000000"
+        app:backgroundTint="?attr/colorPrimaryDark" />
 
     <TextView
         android:layout_width="match_parent"

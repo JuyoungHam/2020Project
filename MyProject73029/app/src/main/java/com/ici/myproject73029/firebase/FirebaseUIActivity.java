@@ -57,6 +57,7 @@ import com.google.firebase.storage.StorageReference;
 import com.ici.myproject73029.Constant;
 import com.ici.myproject73029.MainActivity;
 import com.ici.myproject73029.R;
+import com.ici.myproject73029.mypage.ThemeChanger;
 import com.kakao.auth.ApiErrorCode;
 import com.kakao.auth.ISessionCallback;
 import com.kakao.auth.Session;
@@ -133,8 +134,8 @@ public class FirebaseUIActivity extends AppCompatActivity implements View.OnClic
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
+        ThemeChanger.onActivityCreateSetTheme(this);
         super.onCreate(savedInstanceState);
-
         setContentView(R.layout.activity_firebase_ui);
 
         mAuth = FirebaseAuth.getInstance();

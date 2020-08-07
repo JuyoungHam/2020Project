@@ -153,7 +153,8 @@
                     android:layout_height="wrap_content"
                     android:layout_weight="0.5"
                     android:text="수정"
-                    android:textColor="#000000" />
+                    android:textColor="#000000"
+                    app:backgroundTint="?attr/colorPrimaryDark" />
 
                 <Space
                     android:layout_width="wrap_content"
@@ -166,7 +167,8 @@
                     android:layout_height="wrap_content"
                     android:layout_weight="0.5"
                     android:text="삭제"
-                    android:textColor="#000000" />
+                    android:textColor="#000000"
+                    app:backgroundTint="?attr/colorPrimaryDark" />
 
                 <Space
                     android:layout_width="wrap_content"
