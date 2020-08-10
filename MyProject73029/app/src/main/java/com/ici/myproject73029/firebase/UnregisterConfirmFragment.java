@@ -20,7 +20,7 @@ public class UnregisterConfirmFragment extends DialogFragment {
     @Override
     public Dialog onCreateDialog(Bundle savedInstanceState) {
         // Use the Builder class for convenient dialog construction
-        AlertDialog.Builder builder = new AlertDialog.Builder(getActivity());
+        AlertDialog.Builder builder = new AlertDialog.Builder(getActivity(), R.style.MyDialogTheme);
         builder.setMessage("탈퇴를 진행하시겠습니까?")
                 .setPositiveButton(Html.fromHtml("<font color='#000000'>네</font>"),
                         new DialogInterface.OnClickListener() {

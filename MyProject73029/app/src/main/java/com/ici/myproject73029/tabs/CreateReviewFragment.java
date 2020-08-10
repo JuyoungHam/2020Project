@@ -76,7 +76,7 @@ public class CreateReviewFragment extends DialogFragment {
         mainActivity = (MainActivity) getActivity();
         LayoutInflater inflater = getActivity().getLayoutInflater();
         ViewGroup rootView = (ViewGroup) inflater.inflate(R.layout.fragment_create_review, null);
-        builder = new AlertDialog.Builder(mainActivity).setView(rootView);
+        builder = new AlertDialog.Builder(mainActivity, R.style.MyDialogTheme).setView(rootView);
 
         user = FirebaseAuth.getInstance().getCurrentUser();
 

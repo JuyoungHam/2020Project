@@ -34,7 +34,7 @@ public class ReviewDeleteConfirmFragment extends DialogFragment {
     @Override
     public Dialog onCreateDialog(Bundle savedInstanceState) {
         mainActivity = (MainActivity) getActivity();
-        AlertDialog.Builder builder = new AlertDialog.Builder(getActivity());
+        AlertDialog.Builder builder = new AlertDialog.Builder(getActivity(), R.style.MyDialogTheme);
 
         user = FirebaseAuth.getInstance().getCurrentUser();
 

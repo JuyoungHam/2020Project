@@ -63,7 +63,7 @@ public class UpdateReviewFragment extends DialogFragment {
     @Override
     public Dialog onCreateDialog(Bundle savedInstanceState) {
         mainActivity = (MainActivity) getActivity();
-        AlertDialog.Builder builder = new AlertDialog.Builder(mainActivity);
+        AlertDialog.Builder builder = new AlertDialog.Builder(mainActivity, R.style.MyDialogTheme);
 
         LayoutInflater inflater = getActivity().getLayoutInflater();
         ViewGroup rootView = (ViewGroup) inflater.inflate(R.layout.fragment_create_review, null);
