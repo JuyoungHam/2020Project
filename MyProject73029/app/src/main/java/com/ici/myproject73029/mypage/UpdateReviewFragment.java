@@ -71,6 +71,7 @@ public class UpdateReviewFragment extends DialogFragment {
         user = FirebaseAuth.getInstance().getCurrentUser();
 
         title_length = rootView.findViewById(R.id.title_length);
+        final int textColor = title_length.getCurrentTextColor();
         review_title = rootView.findViewById(R.id.review_title_editText);
         review_title.addTextChangedListener(new TextWatcher() {
             @Override
@@ -85,7 +86,7 @@ public class UpdateReviewFragment extends DialogFragment {
                 if (length >= 20) {
                     title_length.setTextColor(getResources().getColor(R.color.colorAccent));
                 } else {
-                    title_length.setTextColor(getResources().getColor(android.R.color.secondary_text_light));
+                    title_length.setTextColor(textColor);
                 }
             }
 
@@ -108,7 +109,7 @@ public class UpdateReviewFragment extends DialogFragment {
                 if (length >= 1000) {
                     comment_length.setTextColor(getResources().getColor(R.color.colorAccent));
                 } else {
-                    comment_length.setTextColor(getResources().getColor(android.R.color.secondary_text_light));
+                    comment_length.setTextColor(textColor);
                 }
             }
 
@@ -134,7 +135,7 @@ public class UpdateReviewFragment extends DialogFragment {
                 });
 
         builder.setView(rootView)
-                .setPositiveButton(Html.fromHtml("<font color='#000000'>네</font>"),
+                .setPositiveButton("네",
                         new DialogInterface.OnClickListener() {
                             public void onClick(DialogInterface dialog, int id) {
                                 comment.put("title", review_title.getText().toString());
@@ -172,7 +173,7 @@ public class UpdateReviewFragment extends DialogFragment {
                                 }
 
                             }
-                        }).setNegativeButton(Html.fromHtml("<font color='#000000'>아니요</font>"),
+                        }).setNegativeButton("아니요",
                 new DialogInterface.OnClickListener() {
                     public void onClick(DialogInterface dialog, int id) {
                         // User cancelled the dialog

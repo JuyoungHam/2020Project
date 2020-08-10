@@ -92,7 +92,7 @@ public class ProfileUpdateFragment extends DialogFragment {
         });
 
         builder.setView(rootView)
-                .setPositiveButton(Html.fromHtml("<font color='#000000'>네</font>"),
+                .setPositiveButton("네",
                         new DialogInterface.OnClickListener() {
                             public void onClick(DialogInterface dialog, int id) {
                                 if (bitmap != null) {
@@ -100,7 +100,7 @@ public class ProfileUpdateFragment extends DialogFragment {
                                 }
                                 firebaseUIActivity.change_profile(user, nickname.getText().toString());
                             }
-                        }).setNegativeButton(Html.fromHtml("<font color='#000000'>아니요</font>"),
+                        }).setNegativeButton("아니요",
                 new DialogInterface.OnClickListener() {
                     public void onClick(DialogInterface dialog, int id) {
                         // User cancelled the dialog

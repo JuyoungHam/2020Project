@@ -22,14 +22,14 @@ public class UnregisterConfirmFragment extends DialogFragment {
         // Use the Builder class for convenient dialog construction
         AlertDialog.Builder builder = new AlertDialog.Builder(getActivity(), R.style.MyDialogTheme);
         builder.setMessage("탈퇴를 진행하시겠습니까?")
-                .setPositiveButton(Html.fromHtml("<font color='#000000'>네</font>"),
+                .setPositiveButton("네",
                         new DialogInterface.OnClickListener() {
                             public void onClick(DialogInterface dialog, int id) {
                                 FirebaseUIActivity firebaseUIActivity = (FirebaseUIActivity) getActivity();
                                 firebaseUIActivity.unregister();
                             }
                         })
-                .setNegativeButton(Html.fromHtml("<font color='#000000'>아니요</font>"),
+                .setNegativeButton("아니요",
                         new DialogInterface.OnClickListener() {
                             public void onClick(DialogInterface dialog, int id) {
                                 // User cancelled the dialog

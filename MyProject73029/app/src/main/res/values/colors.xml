@@ -4,5 +4,6 @@
 <!--    <color name="colorPrimaryDark">#9E9E9E</color>-->
     <color name="colorPrimaryDark">#ffde03</color>
     <color name="colorAccent">#ff0266</color>
+    <color name="pink">#ff0266</color>
     <color name="colorAccentDark">#1F0163</color>
 </resources>

@@ -23,7 +23,7 @@
         android:layout_gravity="end"
         android:text="사진 변경"
         android:textColor="#000000"
-        app:backgroundTint="?attr/colorPrimaryDark" />
+        app:backgroundTint="?attr/colorAccent" />
 
     <TextView
         android:layout_width="match_parent"

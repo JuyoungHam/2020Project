@@ -77,11 +77,11 @@ public class CreateReviewFragment extends DialogFragment {
         LayoutInflater inflater = getActivity().getLayoutInflater();
         ViewGroup rootView = (ViewGroup) inflater.inflate(R.layout.fragment_create_review, null);
         builder = new AlertDialog.Builder(mainActivity, R.style.MyDialogTheme).setView(rootView);
-
         user = FirebaseAuth.getInstance().getCurrentUser();
 
         review_title = rootView.findViewById(R.id.review_title_editText);
         title_length = rootView.findViewById(R.id.title_length);
+        final int textColor = title_length.getCurrentTextColor();
         review_title.addTextChangedListener(new TextWatcher() {
             @Override
             public void beforeTextChanged(CharSequence s, int start, int count, int after) {
@@ -95,7 +95,7 @@ public class CreateReviewFragment extends DialogFragment {
                 if (length >= 20) {
                     title_length.setTextColor(getResources().getColor(R.color.colorAccent));
                 } else {
-                    title_length.setTextColor(getResources().getColor(android.R.color.secondary_text_light));
+                    title_length.setTextColor(textColor);
                 }
             }
 
@@ -117,7 +117,7 @@ public class CreateReviewFragment extends DialogFragment {
                 if (length >= 1000) {
                     comment_length.setTextColor(getResources().getColor(R.color.colorAccent));
                 } else {
-                    comment_length.setTextColor(getResources().getColor(android.R.color.secondary_text_light));
+                    comment_length.setTextColor(textColor);
                 }
             }
 
@@ -147,7 +147,7 @@ public class CreateReviewFragment extends DialogFragment {
 
         addDeleteButton();
 
-        builder.setPositiveButton(Html.fromHtml("<font color='#000000'>네</font>"),
+        builder.setPositiveButton("네",
                 new DialogInterface.OnClickListener() {
                     public void onClick(DialogInterface dialog, int id) {
                         comment.put("title", review_title.getText().toString());
@@ -182,7 +182,7 @@ public class CreateReviewFragment extends DialogFragment {
                         }
 
                     }
-                }).setNegativeButton(Html.fromHtml("<font color='#000000'>아니요</font>"),
+                }).setNegativeButton("아니요",
                 new DialogInterface.OnClickListener() {
                     public void onClick(DialogInterface dialog, int id) {
                         // User cancelled the dialog
@@ -192,7 +192,7 @@ public class CreateReviewFragment extends DialogFragment {
     }
 
     private void addDeleteButton() {
-        builder.setNeutralButton(Html.fromHtml("<font color='#000000'>삭제</font>"), new DialogInterface.OnClickListener() {
+        builder.setNeutralButton("삭제", new DialogInterface.OnClickListener() {
             public void onClick(DialogInterface dialog, int id) {
                 mainActivity.db.collection("All").document(item).collection("comments")
                         .document(user.getUid()).get().addOnSuccessListener(new OnSuccessListener<DocumentSnapshot>() {

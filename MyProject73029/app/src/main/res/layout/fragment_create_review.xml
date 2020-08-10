@@ -52,6 +52,7 @@
         android:layout_gravity="right"
         android:layout_marginRight="4dp"
         android:gravity="center"
+        android:textColor="?android:attr/textColor"
         android:text="0/20" />
 
     <ScrollView
@@ -92,6 +93,7 @@
         android:layout_gravity="right"
         android:layout_marginEnd="4dp"
         android:layout_marginRight="4dp"
+        android:textColor="?android:attr/textColor"
         android:text="0/1000" />
 
 </LinearLayout>

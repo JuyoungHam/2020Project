@@ -19,7 +19,7 @@
             android:layout_height="wrap_content"
             android:text="프로필 변경"
             android:textColor="#000000"
-            app:backgroundTint="?attr/colorPrimaryDark"
+            app:backgroundTint="?attr/colorAccent"
             app:layout_constraintBottom_toBottomOf="parent"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintHorizontal_bias="0.498"
@@ -52,7 +52,7 @@
                 android:layout_height="wrap_content"
                 android:text="로그아웃"
                 android:textColor="#000000"
-                app:backgroundTint="?attr/colorPrimaryDark" />
+                app:backgroundTint="?attr/colorAccent" />
 
             <Space
                 android:layout_width="wrap_content"
@@ -65,7 +65,7 @@
                 android:layout_height="wrap_content"
                 android:text="회원탈퇴"
                 android:textColor="#000000"
-                app:backgroundTint="?attr/colorPrimaryDark" />
+                app:backgroundTint="?attr/colorAccent" />
 
         </LinearLayout>
 
