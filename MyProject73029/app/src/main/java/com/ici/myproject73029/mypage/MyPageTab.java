@@ -122,13 +122,13 @@ public class MyPageTab extends Fragment implements View.OnClickListener, SwipeRe
         } else if (i == R.id.theme2) {
             ThemeChanger.themeChange(mainActivity, 2);
         } else if (i == R.id.theme3) {
-            ThemeChanger.themeChange(mainActivity, 1);
+            ThemeChanger.themeChange(mainActivity, 3);
         } else if (i == R.id.theme4) {
-            ThemeChanger.themeChange(mainActivity, 1);
+            ThemeChanger.themeChange(mainActivity, 4);
         } else if (i == R.id.theme5) {
-            ThemeChanger.themeChange(mainActivity, 1);
+            ThemeChanger.themeChange(mainActivity, 5);
         } else if (i == R.id.theme6) {
-            ThemeChanger.themeChange(mainActivity, 1);
+            ThemeChanger.themeChange(mainActivity, 6);
         }
     }
 

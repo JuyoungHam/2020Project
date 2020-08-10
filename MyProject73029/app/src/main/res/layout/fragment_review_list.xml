@@ -7,7 +7,7 @@
         android:id="@+id/review_list_container"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
-        android:background="#FFFFFF"
+        android:background="?attr/backgroundColor"
         android:gravity="center"
         android:orientation="vertical">
 
@@ -35,6 +35,9 @@
                 android:layout_width="wrap_content"
                 android:layout_height="match_parent"
                 android:layout_weight="1"
+                android:background="?attr/backgroundColor"
+                android:popupBackground="?attr/backgroundColor"
+                android:spinnerMode="dropdown"
                 android:textSize="12sp" />
 
         </LinearLayout>
@@ -44,7 +47,9 @@
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:layout_weight="1"
-            tools:listitem="@layout/review" />
+            tools:listitem="@layout/review">
+
+        </androidx.recyclerview.widget.RecyclerView>
 
         <Button
             android:id="@+id/load_review"

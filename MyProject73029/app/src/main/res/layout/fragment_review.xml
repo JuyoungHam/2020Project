@@ -5,7 +5,7 @@
     android:id="@+id/item_fragment"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:background="#FFFFFF"
+    android:background="?attr/backgroundColor"
     android:padding="16dp"
     tools:context=".tabs.ItemFragment">
 
@@ -24,6 +24,7 @@
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 app:cardElevation="5dp"
+                app:cardBackgroundColor="?attr/backgroundColor"
                 app:cardUseCompatPadding="true">
 
                 <LinearLayout

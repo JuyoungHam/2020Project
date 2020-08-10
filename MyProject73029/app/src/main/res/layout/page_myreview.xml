@@ -7,17 +7,17 @@
 
     <androidx.constraintlayout.widget.ConstraintLayout
         android:id="@+id/constraintlayout_myreview"
-        tools:context=".mypage.FavoritePage"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
-        android:background="#FFFFFF">
+        android:background="?attr/backgroundColor"
+        tools:context=".mypage.FavoritePage">
 
         <androidx.recyclerview.widget.RecyclerView
             android:id="@+id/myreview_recyclerView"
-            tools:layout_editor_absoluteY="602dp"
-            tools:listitem="@layout/item"
             android:layout_width="match_parent"
-            android:layout_height="match_parent" />
+            android:layout_height="match_parent"
+            tools:layout_editor_absoluteY="602dp"
+            tools:listitem="@layout/item" />
 
     </androidx.constraintlayout.widget.ConstraintLayout>
 </androidx.swiperefreshlayout.widget.SwipeRefreshLayout>

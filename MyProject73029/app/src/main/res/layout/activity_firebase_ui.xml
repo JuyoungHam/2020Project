@@ -10,8 +10,22 @@
         android:id="@+id/constraintlayout_id"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
-        android:background="#FFFFFF"
+        android:background="?attr/backgroundColor"
         tools:context=".firebase.FirebaseUIActivity">
+
+        <Button
+            android:id="@+id/update_profile"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="프로필 변경"
+            android:textColor="#000000"
+            app:backgroundTint="?attr/colorPrimaryDark"
+            app:layout_constraintBottom_toBottomOf="parent"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintHorizontal_bias="0.498"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@+id/userProfile"
+            app:layout_constraintVertical_bias="0.0" />
 
         <ImageView
             android:id="@+id/userProfile"
@@ -23,6 +37,38 @@
             app:layout_constraintTop_toTopOf="parent"
             app:srcCompat="@drawable/ic_baseline_perm_identity_24" />
 
+        <LinearLayout
+            android:layout_width="250dp"
+            android:layout_height="wrap_content"
+            android:layout_marginBottom="16dp"
+            android:orientation="horizontal"
+            app:layout_constraintBottom_toBottomOf="parent"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent">
+
+            <Button
+                android:id="@+id/logout"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="로그아웃"
+                android:textColor="#000000"
+                app:backgroundTint="?attr/colorPrimaryDark" />
+
+            <Space
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_weight="1" />
+
+            <Button
+                android:id="@+id/unregister"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="회원탈퇴"
+                android:textColor="#000000"
+                app:backgroundTint="?attr/colorPrimaryDark" />
+
+        </LinearLayout>
+
         <TextView
             android:id="@+id/login_text"
             android:layout_width="wrap_content"
@@ -31,20 +77,6 @@
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toBottomOf="@+id/update_profile" />
-
-        <Button
-            android:id="@+id/update_profile"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:text="update profile"
-            android:textColor="#000000"
-            app:backgroundTint="?attr/colorPrimaryDark"
-            app:layout_constraintBottom_toBottomOf="parent"
-            app:layout_constraintEnd_toEndOf="parent"
-            app:layout_constraintHorizontal_bias="0.498"
-            app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toBottomOf="@+id/userProfile"
-            app:layout_constraintVertical_bias="0.0" />
 
         <com.facebook.login.widget.LoginButton
             android:id="@+id/facebook_login_button"
@@ -88,38 +120,6 @@
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toBottomOf="@+id/google_login_button" />
-
-        <LinearLayout
-            android:layout_width="250dp"
-            android:layout_height="wrap_content"
-            android:layout_marginBottom="16dp"
-            android:orientation="horizontal"
-            app:layout_constraintBottom_toBottomOf="parent"
-            app:layout_constraintEnd_toEndOf="parent"
-            app:layout_constraintStart_toStartOf="parent">
-
-            <Button
-                android:id="@+id/logout"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:text="logout"
-                android:textColor="#000000"
-                app:backgroundTint="?attr/colorPrimaryDark" />
-
-            <Space
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_weight="1" />
-
-            <Button
-                android:id="@+id/unregister"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:text="unregister"
-                android:textColor="#000000"
-                app:backgroundTint="?attr/colorPrimaryDark" />
-
-        </LinearLayout>
 
     </androidx.constraintlayout.widget.ConstraintLayout>
 </androidx.swiperefreshlayout.widget.SwipeRefreshLayout>

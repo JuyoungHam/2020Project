@@ -10,7 +10,7 @@
         android:id="@+id/constraintLayout_gridtab"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
-        android:background="#FFFFFF">
+        android:background="?attr/backgroundColor">
 
         <LinearLayout
             android:id="@+id/spinners"
@@ -28,6 +28,8 @@
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:layout_marginBottom="8dp"
+                android:background="?attr/colorPrimary"
+                android:popupBackground="?attr/backgroundColor"
                 app:layout_constraintEnd_toEndOf="parent"
                 app:layout_constraintStart_toStartOf="parent"
                 app:layout_constraintTop_toTopOf="parent" />

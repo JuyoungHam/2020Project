@@ -35,12 +35,18 @@ public class ThemeChanger {
 
     public static void onActivityCreateSetTheme(Activity activity) {
         int i = activity.getSharedPreferences("theme", Context.MODE_PRIVATE).getInt("theme", 1);
-        Log.d("dddddddddddddddddd", i + " ");
         if (i == 1) {
             activity.setTheme(R.style.AppTheme);
         } else if (i == 2) {
             activity.setTheme(R.style.AppTheme2);
+        } else if (i == 3) {
+            activity.setTheme(R.style.AppTheme2);
+        } else if (i == 4) {
+            activity.setTheme(R.style.AppTheme2);
+        } else if (i == 5) {
+            activity.setTheme(R.style.AppTheme2);
+        } else if (i == 6) {
+            activity.setTheme(R.style.DarkTheme);
         }
     }
-
 }

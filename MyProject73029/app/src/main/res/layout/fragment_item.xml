@@ -12,7 +12,7 @@
             android:id="@+id/item_fragment"
             android:layout_width="match_parent"
             android:layout_height="match_parent"
-            android:background="#FFFFFF"
+            android:background="?attr/backgroundColor"
             android:padding="16dp"
             tools:context=".tabs.ItemFragment">
 
@@ -123,7 +123,7 @@
                                 android:layout_width="50dp"
                                 android:layout_height="50dp"
                                 android:layout_gravity="center"
-                                android:background="@android:color/white"
+                                android:background="?attr/backgroundColor"
                                 app:srcCompat="@drawable/ic_baseline_place_24" />
 
                             <TextView
@@ -186,7 +186,7 @@
                                 android:id="@+id/share_button"
                                 android:layout_width="50dp"
                                 android:layout_height="50dp"
-                                android:background="#FFFFFF"
+                                android:background="?attr/backgroundColor"
                                 android:src="@drawable/ic_baseline_share_24" />
 
                             <TextView
@@ -213,7 +213,7 @@
                                 android:id="@+id/make_comment"
                                 android:layout_width="50dp"
                                 android:layout_height="50dp"
-                                android:background="@android:color/white"
+                                android:background="?attr/backgroundColor"
                                 android:src="@drawable/ic_baseline_send_24" />
 
                             <TextView

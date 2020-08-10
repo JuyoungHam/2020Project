@@ -10,7 +10,7 @@
         android:id="@+id/constraintlayout_mypage"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
-        android:background="#FFFFFF"
+        android:background="?attr/backgroundColor"
         tools:context=".mypage.MyPageTab">
 
         <LinearLayout
@@ -74,54 +74,66 @@
                 android:text="테마 선택" />
 
             <TableLayout
-                android:layout_width="wrap_content"
+                android:layout_width="match_parent"
                 android:layout_height="wrap_content">
 
                 <TableRow
                     android:layout_width="match_parent"
-                    android:layout_height="match_parent">
+                    android:layout_height="wrap_content">
 
                     <Button
                         android:id="@+id/theme1"
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
-                        app:backgroundTint="#3949AB" />
+                        android:layout_weight="1"
+                        app:backgroundTint="#3949AB"
+                        app:cornerRadius="0dp" />
 
                     <Button
                         android:id="@+id/theme2"
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
-                        app:backgroundTint="#00ACC1" />
+                        android:layout_weight="1"
+                        app:backgroundTint="#00ACC1"
+                        app:cornerRadius="0dp" />
 
                     <Button
                         android:id="@+id/theme3"
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
+                        android:layout_weight="1"
                         app:backgroundTint="#FDD835"
+                        app:cornerRadius="0dp"
                         app:iconTint="#FFB300" />
                 </TableRow>
 
                 <TableRow
                     android:layout_width="match_parent"
-                    android:layout_height="match_parent">
+                    android:layout_height="wrap_content">
 
                     <Button
                         android:id="@+id/theme4"
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
-                        app:backgroundTint="#FFB300" />
+                        android:layout_weight="1"
+                        app:backgroundTint="#FFB300"
+                        app:cornerRadius="0dp" />
 
                     <Button
                         android:id="@+id/theme5"
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
-                        app:backgroundTint="#D81B60" />
+                        android:layout_weight="1"
+                        app:backgroundTint="#D81B60"
+                        app:cornerRadius="0dp" />
 
                     <Button
                         android:id="@+id/theme6"
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
-                        app:backgroundTint="#8E24AA" />
+                        android:layout_weight="1"
+                        app:backgroundTint="#121212"
+                        app:cornerRadius="0dp" />
                 </TableRow>
             </TableLayout>
 

@@ -9,6 +9,6 @@
         android:id="@+id/exhibition_recyclerView"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:background="#FFFFFF"
+        android:background="?attr/backgroundColor"
         tools:listitem="@layout/item" />
 </FrameLayout>
