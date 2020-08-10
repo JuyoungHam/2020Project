@@ -193,7 +193,7 @@ public class MainActivity extends AppCompatActivity {
             getSupportFragmentManager().beginTransaction().replace(R.id.main_fragment, item_Show).commit();
         } else if (item.getType() == Constant.REVIEW) {
             item_review = new MyReviewFragment((Review) item);
-            Toast.makeText(this, "마이리뷰 : " + item.getTitle(), Toast.LENGTH_SHORT).show();
+            Toast.makeText(this, "마이리뷰 : " + ((Review) item).getItemInfo(), Toast.LENGTH_SHORT).show();
             getSupportFragmentManager().beginTransaction().replace(R.id.main_fragment, item_review).commit();
         } else if (item.getType() == Constant.FAVORITE) {
             item_Exhibition = new ItemFragment(item);

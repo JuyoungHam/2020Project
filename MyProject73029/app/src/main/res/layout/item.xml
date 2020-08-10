@@ -8,7 +8,7 @@
     app:cardBackgroundColor="?attr/backgroundColor"
     app:cardCornerRadius="0dp"
     app:cardElevation="0dp"
-    app:cardUseCompatPadding="false">
+    app:cardUseCompatPadding="true">
 
     <LinearLayout
         android:id="@+id/list_container"

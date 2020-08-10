@@ -30,7 +30,6 @@
         <item name="colorControlActivated">#C2185B</item>
         <item name="android:textColorPrimary">#deffffff</item>
         <item name="backgroundColor">#121212</item>
-
     </style>
 
     <style name="MyDialogTheme" parent="Theme.AppCompat.Light.Dialog.Alert">
