@@ -6,6 +6,7 @@ import android.content.Intent;
 import android.content.pm.PackageManager;
 import android.content.pm.ResolveInfo;
 import android.graphics.Color;
+import android.graphics.Typeface;
 import android.location.Address;
 import android.location.Geocoder;
 import android.net.Uri;
@@ -167,6 +168,10 @@ public class ItemFragment extends Fragment implements View.OnClickListener,
         item_period.setVisibility(View.GONE);
         ImageButton go_to_url = rootView.findViewById(R.id.go_to_url);
 
+        TextView item=rootView.findViewById(R.id.item_title);
+        Typeface tf=Typeface.createFromAsset(getContext().getAssets(),"font/Cafe24Oneprettynight.ttf");
+        item.setTypeface(tf);
+
         if (FirebaseAuth.getInstance().getCurrentUser() == null) {
             make_favorite.setEnabled(false);
             make_favorite.setImageResource(R.drawable.favorited);
@@ -207,7 +212,7 @@ public class ItemFragment extends Fragment implements View.OnClickListener,
             item_venue.setVisibility(View.VISIBLE);
         }
         if (start_date != null && end_date != null) {
-            SimpleDateFormat sfd = new SimpleDateFormat("yyyy년 MM월 dd일", Locale.getDefault());
+            SimpleDateFormat sfd = new SimpleDateFormat("yy년 MM월 dd일", Locale.getDefault());
             item_period.setText(sfd.format(start_date.toDate()) + " ~ " + sfd.format(end_date.toDate()));
             item_period.setVisibility(View.VISIBLE);
         }

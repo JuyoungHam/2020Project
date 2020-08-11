@@ -49,7 +49,8 @@
                         android:layout_marginTop="8dp"
                         android:layout_marginBottom="8dp"
                         android:textAppearance="@style/TextAppearance.AppCompat.Large"
-                        android:textSize="20sp" />
+                        android:textSize="24sp"
+                        android:textStyle="bold" />
 
                     <com.google.android.material.chip.ChipGroup
                         android:id="@+id/item_chip_group"
@@ -102,7 +103,7 @@
                                 android:layout_height="wrap_content"
                                 android:gravity="center"
                                 android:text="평균 별점"
-                                android:textSize="10sp" />
+                                android:textSize="12sp" />
                         </LinearLayout>
 
                         <Space
@@ -130,7 +131,7 @@
                                 android:layout_width="wrap_content"
                                 android:layout_height="wrap_content"
                                 android:text="지도"
-                                android:textSize="10sp" />
+                                android:textSize="12sp" />
 
                         </LinearLayout>
 
@@ -164,7 +165,7 @@
                                 android:gravity="center"
                                 android:text="홈페이지"
                                 android:textAppearance="@style/TextAppearance.AppCompat.Small"
-                                android:textSize="10sp" />
+                                android:textSize="12sp" />
                         </LinearLayout>
 
                         <Space
@@ -194,7 +195,7 @@
                                 android:layout_height="wrap_content"
                                 android:gravity="center"
                                 android:text="공유"
-                                android:textSize="10sp" />
+                                android:textSize="12sp" />
                         </LinearLayout>
 
                         <Space
@@ -221,7 +222,7 @@
                                 android:layout_height="wrap_content"
                                 android:gravity="center"
                                 android:text="댓글"
-                                android:textSize="10sp" />
+                                android:textSize="12sp" />
                         </LinearLayout>
 
                         <Space
@@ -264,7 +265,7 @@
                                 android:layout_height="wrap_content"
                                 android:gravity="center"
                                 android:text="좋아요"
-                                android:textSize="10sp" />
+                                android:textSize="12sp" />
 
                         </LinearLayout>
 
@@ -283,7 +284,8 @@
                         android:layout_margin="8dp"
                         android:gravity="center"
                         android:textAppearance="@style/TextAppearance.AppCompat.Medium"
-                        tools:visibility="gone" />
+                        tools:visibility="gone"
+                        android:textSize="20sp"/>
 
                     <TextView
                         android:id="@+id/item_period"
@@ -293,7 +295,7 @@
                         android:layout_margin="8dp"
                         android:gravity="center"
                         android:textAppearance="@style/TextAppearance.AppCompat.Medium"
-                        android:textSize="16sp"
+                        android:textSize="20sp"
                         tools:visibility="gone" />
 
                     <TextView
@@ -301,6 +303,7 @@
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
                         android:layout_margin="8dp"
+                        android:textSize="20sp"
                         tools:visibility="gone" />
 
                     <FrameLayout

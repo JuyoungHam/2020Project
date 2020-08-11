@@ -42,9 +42,9 @@ public class ThemeChanger {
         } else if (i == 3) {
             activity.setTheme(R.style.AppTheme3);
         } else if (i == 4) {
-            activity.setTheme(R.style.AppTheme2);
+            activity.setTheme(R.style.AppTheme4);
         } else if (i == 5) {
-            activity.setTheme(R.style.AppTheme2);
+            activity.setTheme(R.style.AppTheme5);
         } else if (i == 6) {
             activity.setTheme(R.style.DarkTheme);
         }

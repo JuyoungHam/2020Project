@@ -22,7 +22,7 @@
             android:layout_height="150dp"
             android:layout_gravity="center|center_vertical"
             android:layout_margin="4dp"
-            tools:srcCompat="@drawable/ic_baseline_photo" />
+            tools:srcCompat="@drawable/ic_baseline_photo"/>
 
         <TextView
             android:id="@+id/title_grid"
@@ -34,7 +34,8 @@
             android:layout_marginBottom="8dp"
             android:gravity="center"
             android:singleLine="true"
-            android:textAppearance="@style/TextAppearance.AppCompat.Small" />
+            android:textAppearance="@style/TextAppearance.AppCompat.Small"
+            android:textSize="16sp" />
 
     </LinearLayout>
 </androidx.cardview.widget.CardView>

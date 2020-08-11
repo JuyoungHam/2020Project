@@ -2,32 +2,78 @@
     <!-- Base application theme. -->
     <style name="AppTheme" parent="Theme.MaterialComponents.DayNight">
         <!-- Customize your theme here. -->
-        <item name="colorPrimary">#FFFFFF</item>
-        <item name="colorPrimaryDark">#E91E63</item>
-        <item name="colorAccent">#E91E63</item>
+        <item name="colorPrimary">#FBFBFB</item>
+        <item name="colorPrimaryDark">#E4BEB3</item>
+        <item name="colorAccent">#E4BEB3</item>
         <item name="android:textColor">#121212</item>
         <item name="colorControlActivated">@color/pink</item>
         <item name="backgroundColor">#ffffff</item>
+        <item name="android:textViewStyle">@style/customTextViewFontStyle</item>
+        <item name="android:buttonStyle">@style/customButtonFontStyle</item>
+        <item name="android:editTextStyle">@style/customEditTextFontStyle</item>
+        <item name="android:radioButtonStyle">@style/customRadioButtonFontStyle</item>
+        <item name="android:checkboxStyle">@style/customCheckboxFontStyle</item>
+
     </style>
 
     <style name="AppTheme2" parent="Theme.MaterialComponents.DayNight">
         <!-- Customize your theme here. -->
         <item name="colorPrimary">#FFFFFF</item>
-        <item name="colorPrimaryDark">#FF5722</item>
-        <item name="colorAccent">#FF5722</item>
+        <item name="colorPrimaryDark">#FFD0A6</item>
+        <item name="colorAccent">#FFD0A6</item>
         <item name="colorControlActivated">@color/pink</item>
         <item name="android:textColor">#121212</item>
         <item name="backgroundColor">#ffffff</item>
+        <item name="android:textViewStyle">@style/customTextViewFontStyle</item>
+        <item name="android:buttonStyle">@style/customButtonFontStyle</item>
+        <item name="android:editTextStyle">@style/customEditTextFontStyle</item>
+        <item name="android:radioButtonStyle">@style/customRadioButtonFontStyle</item>
+        <item name="android:checkboxStyle">@style/customCheckboxFontStyle</item>
     </style>
 
     <style name="AppTheme3" parent="Theme.MaterialComponents.DayNight">
         <!-- Customize your theme here. -->
         <item name="colorPrimary">#FFFFFF</item>
-        <item name="colorPrimaryDark">#FFDE03</item>
-        <item name="colorAccent">#FFDE03</item>
+        <item name="colorPrimaryDark">#FDECAB</item>
+        <item name="colorAccent">#FDECAB</item>
         <item name="android:textColor">#121212</item>
         <item name="colorControlActivated">@color/pink</item>
         <item name="backgroundColor">#ffffff</item>
+        <item name="android:textViewStyle">@style/customTextViewFontStyle</item>
+        <item name="android:buttonStyle">@style/customButtonFontStyle</item>
+        <item name="android:editTextStyle">@style/customEditTextFontStyle</item>
+        <item name="android:radioButtonStyle">@style/customRadioButtonFontStyle</item>
+        <item name="android:checkboxStyle">@style/customCheckboxFontStyle</item>
+    </style>
+
+    <style name="AppTheme4" parent="Theme.MaterialComponents.DayNight">
+        <!-- Customize your theme here. -->
+        <item name="colorPrimary">#FFFFFF</item>
+        <item name="colorPrimaryDark">#CFDD8E</item>
+        <item name="colorAccent">#CFDD8E</item>
+        <item name="android:textColor">#121212</item>
+        <item name="colorControlActivated">@color/pink</item>
+        <item name="backgroundColor">#ffffff</item>
+        <item name="android:textViewStyle">@style/customTextViewFontStyle</item>
+        <item name="android:buttonStyle">@style/customButtonFontStyle</item>
+        <item name="android:editTextStyle">@style/customEditTextFontStyle</item>
+        <item name="android:radioButtonStyle">@style/customRadioButtonFontStyle</item>
+        <item name="android:checkboxStyle">@style/customCheckboxFontStyle</item>
+    </style>
+
+    <style name="AppTheme5" parent="Theme.MaterialComponents.DayNight">
+        <!-- Customize your theme here. -->
+        <item name="colorPrimary">#FFFFFF</item>
+        <item name="colorPrimaryDark">#B1D3C5</item>
+        <item name="colorAccent">#B1D3C5</item>
+        <item name="android:textColor">#121212</item>
+        <item name="colorControlActivated">@color/pink</item>
+        <item name="backgroundColor">#ffffff</item>
+        <item name="android:textViewStyle">@style/customTextViewFontStyle</item>
+        <item name="android:buttonStyle">@style/customButtonFontStyle</item>
+        <item name="android:editTextStyle">@style/customEditTextFontStyle</item>
+        <item name="android:radioButtonStyle">@style/customRadioButtonFontStyle</item>
+        <item name="android:checkboxStyle">@style/customCheckboxFontStyle</item>
     </style>
 
     <style name="DarkTheme" parent="Theme.MaterialComponents.DayNight">
@@ -40,6 +86,11 @@
         <item name="colorControlActivated">#C2185B</item>
         <item name="android:textColorPrimary">#deffffff</item>
         <item name="backgroundColor">#121212</item>
+        <item name="android:textViewStyle">@style/customTextViewFontStyle</item>
+        <item name="android:buttonStyle">@style/customButtonFontStyle</item>
+        <item name="android:editTextStyle">@style/customEditTextFontStyle</item>
+        <item name="android:radioButtonStyle">@style/customRadioButtonFontStyle</item>
+        <item name="android:checkboxStyle">@style/customCheckboxFontStyle</item>
     </style>
 
     <style name="MyDialogTheme" parent="Theme.AppCompat.Light.Dialog.Alert">
@@ -74,6 +125,25 @@
 
     <style name="MyButtonStyle" parent="android:Widget.Button">
         <item name="android:textColor">@android:color/black</item>
+    </style>
+
+    <style name="customTextViewFontStyle" parent="@android:style/Widget.DeviceDefault.TextView">
+        <item name="android:fontFamily">@font/cafe24oneprettynight</item>
+    </style>
+    <style name="customButtonFontStyle" parent="@android:style/Widget.DeviceDefault.Button.Borderless">
+        <item name="android:fontFamily">@font/cafe24oneprettynight</item>
+    </style>
+
+    <style name="customEditTextFontStyle" parent="@android:style/Widget.DeviceDefault.EditText">
+        <item name="android:fontFamily">@font/cafe24oneprettynight</item>
+    </style>
+
+    <style name="customRadioButtonFontStyle" parent="@android:style/Widget.DeviceDefault.CompoundButton.RadioButton">
+        <item name="android:fontFamily">@font/cafe24oneprettynight</item>
+    </style>
+
+    <style name="customCheckboxFontStyle" parent="@android:style/Widget.DeviceDefault.CompoundButton.CheckBox">
+        <item name="android:fontFamily">@font/cafe24oneprettynight</item>
     </style>
 
 </resources>

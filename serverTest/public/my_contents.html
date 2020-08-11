@@ -59,7 +59,7 @@
       <th>title</th>
     </tr>
     <script type="text/javascript">
-      const db = firebase.firestore().collection('All');
+      const db = firebase.firestore().collection('Show');
       firebase.auth().onAuthStateChanged(function(user) {
         var email = user.email;
         db.where('id', '==', email).get().then(function(querySnapshot) {

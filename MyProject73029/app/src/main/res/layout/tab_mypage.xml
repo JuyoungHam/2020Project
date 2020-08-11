@@ -48,7 +48,9 @@
                 android:layout_height="wrap_content"
                 android:text="내가 쓴 리뷰"
                 android:textColor="#000000"
-                app:backgroundTint="?attr/colorAccent" />
+                app:backgroundTint="?attr/colorAccent"
+                android:fontFamily="@font/cafe24oneprettynight"
+                android:textStyle="bold"/>
 
             <Button
                 android:id="@+id/button_favorite"
@@ -56,7 +58,9 @@
                 android:layout_height="wrap_content"
                 android:text="좋아요"
                 android:textColor="#000000"
-                app:backgroundTint="?attr/colorAccent" />
+                app:backgroundTint="?attr/colorAccent"
+                android:fontFamily="@font/cafe24oneprettynight"
+                android:textStyle="bold"/>
 
             <Button
                 android:id="@+id/button_login_control"
@@ -64,19 +68,22 @@
                 android:layout_height="wrap_content"
                 android:text="계정 관리"
                 android:textColor="#000000"
-                app:backgroundTint="?attr/colorAccent" />
+                app:backgroundTint="?attr/colorAccent"
+                android:fontFamily="@font/cafe24oneprettynight"
+                android:textStyle="bold"/>
 
             <TextView
                 android:id="@+id/textView8"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:layout_margin="8dp"
-                android:text="테마 선택" />
+                android:text="테마 선택"
+                android:textSize="18sp" />
 
             <LinearLayout
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:background="#FFFFFF"
+                android:background="#0000"
                 android:padding="4dp">
 
                 <Button
@@ -86,7 +93,7 @@
                     android:layout_marginLeft="4dp"
                     android:layout_marginRight="4dp"
                     android:layout_weight="1"
-                    app:backgroundTint="#E91E63"
+                    app:backgroundTint="#E4BEB3"
                     app:cornerRadius="0dp" />
 
                 <Button
@@ -96,7 +103,7 @@
                     android:layout_marginLeft="4dp"
                     android:layout_marginRight="4dp"
                     android:layout_weight="1"
-                    app:backgroundTint="#FF5722"
+                    app:backgroundTint="#FFD0A6"
                     app:cornerRadius="0dp" />
 
                 <Button
@@ -106,9 +113,9 @@
                     android:layout_marginLeft="4dp"
                     android:layout_marginRight="4dp"
                     android:layout_weight="1"
-                    app:backgroundTint="#FDD835"
+                    app:backgroundTint="#FDECAB"
                     app:cornerRadius="0dp"
-                    app:iconTint="#FFB300" />
+                    app:iconTint="#FDECAB" />
 
                 <Button
                     android:id="@+id/theme4"
@@ -117,7 +124,7 @@
                     android:layout_marginLeft="4dp"
                     android:layout_marginRight="4dp"
                     android:layout_weight="1"
-                    app:backgroundTint="#4CAF50"
+                    app:backgroundTint="#CFDD8E"
                     app:cornerRadius="0dp" />
 
                 <Button
@@ -127,7 +134,7 @@
                     android:layout_marginLeft="4dp"
                     android:layout_marginRight="4dp"
                     android:layout_weight="1"
-                    app:backgroundTint="#2196F3"
+                    app:backgroundTint="#B1D3C5"
                     app:cornerRadius="0dp" />
 
                 <Button

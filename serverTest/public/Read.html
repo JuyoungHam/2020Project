@@ -83,7 +83,7 @@
       } else {
         db.update({
             poster: (document.getElementById('poster').value != "" ? document.getElementById('poster').value : null),
-            creator: document.getElementById('creator').value != "" ? document.getElementById('creator').value : null),
+            creator: (document.getElementById('creator').value != "" ? document.getElementById('creator').value : null),
           title: document.getElementById('title').value,
           venue: document.getElementById('venue').value != "" ? document.getElementById('venue').value : null,
           description: document.getElementById('description').value != "" ? document.getElementById('description').value : null,
@@ -98,7 +98,7 @@
         alert("수정 실패");
       });
     }
-    }
+  }
 
 
     function Logout() {

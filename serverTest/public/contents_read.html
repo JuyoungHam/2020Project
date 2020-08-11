@@ -40,7 +40,7 @@
 
     var url = decodeURI(location.href);
     url = url.split('=')[1];
-    var db = firebase.firestore().collection('All').doc(url);
+    var db = firebase.firestore().collection('Show').doc(url);
     db.get().then(function(doc) {
       if (doc.exists) {
         var data = doc.data();
