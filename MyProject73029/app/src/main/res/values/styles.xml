@@ -3,8 +3,8 @@
     <style name="AppTheme" parent="Theme.MaterialComponents.DayNight">
         <!-- Customize your theme here. -->
         <item name="colorPrimary">#FFFFFF</item>
-        <item name="colorPrimaryDark">@color/colorPrimaryDark</item>
-        <item name="colorAccent">#FFDE03</item>
+        <item name="colorPrimaryDark">#E91E63</item>
+        <item name="colorAccent">#E91E63</item>
         <item name="android:textColor">#121212</item>
         <item name="colorControlActivated">@color/pink</item>
         <item name="backgroundColor">#ffffff</item>
@@ -12,11 +12,21 @@
 
     <style name="AppTheme2" parent="Theme.MaterialComponents.DayNight">
         <!-- Customize your theme here. -->
-        <item name="colorPrimary">@color/colorPrimary</item>
-        <item name="colorPrimaryDark">#5E35B1</item>
-        <item name="colorAccent">#00897B</item>
+        <item name="colorPrimary">#FFFFFF</item>
+        <item name="colorPrimaryDark">#FF5722</item>
+        <item name="colorAccent">#FF5722</item>
         <item name="colorControlActivated">@color/pink</item>
         <item name="android:textColor">#121212</item>
+        <item name="backgroundColor">#ffffff</item>
+    </style>
+
+    <style name="AppTheme3" parent="Theme.MaterialComponents.DayNight">
+        <!-- Customize your theme here. -->
+        <item name="colorPrimary">#FFFFFF</item>
+        <item name="colorPrimaryDark">#FFDE03</item>
+        <item name="colorAccent">#FFDE03</item>
+        <item name="android:textColor">#121212</item>
+        <item name="colorControlActivated">@color/pink</item>
         <item name="backgroundColor">#ffffff</item>
     </style>
 
