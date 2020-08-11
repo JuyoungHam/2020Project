@@ -145,7 +145,7 @@
         cate = 102;
       }
 
-      const db = firebase.firestore().collection('Show').doc(document.getElementById('title').value);
+      const db = firebase.firestore().collection('All').doc(document.getElementById('title').value);
 
       firebase.auth().onAuthStateChanged(function(user) {
         var addData = {
