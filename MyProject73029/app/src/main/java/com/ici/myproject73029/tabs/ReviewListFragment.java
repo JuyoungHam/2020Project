@@ -1,7 +1,10 @@
 package com.ici.myproject73029.tabs;
 
+import android.content.res.AssetManager;
+import android.graphics.Typeface;
 import android.os.Bundle;
 import android.util.Log;
+import android.view.Gravity;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -38,7 +41,7 @@ import com.ici.myproject73029.items.Review;
 
 import java.util.List;
 
-public class ReviewListFragment extends Fragment implements AdapterView.OnItemSelectedListener{
+public class ReviewListFragment extends Fragment implements AdapterView.OnItemSelectedListener {
     private RecyclerView recyclerView;
     private MainActivity mainActivity = null;
     String title;
@@ -77,9 +80,33 @@ public class ReviewListFragment extends Fragment implements AdapterView.OnItemSe
                 false);
         rootView = (ViewGroup) binding.getRoot();
 
+        final AssetManager assetManager = this.getContext().getAssets();
         Spinner spinner = rootView.findViewById(R.id.review_list_spinner);
-        ArrayAdapter<String> spinner_adapter = new ArrayAdapter<>(getContext(), android.R.layout.simple_spinner_item,
-                Constant.REVIEW_LIST_SPINNER);
+        ArrayAdapter<String> spinner_adapter = new ArrayAdapter<String>(getContext(),
+                android.R.layout.simple_spinner_item,
+                Constant.REVIEW_LIST_SPINNER) {
+            @NonNull
+            @Override
+            public View getView(int position, @Nullable View convertView, @NonNull ViewGroup parent) {
+                View v = super.getView(position, convertView, parent);
+                Typeface externalFont = Typeface.createFromAsset(assetManager,
+                        "font/Cafe24Oneprettynight.ttf");
+                ((TextView) v).setTypeface(externalFont);
+                ((TextView) v).setTextSize(15);
+                return v;
+            }
+
+            @Override
+            public View getDropDownView(int position, @Nullable View convertView, @NonNull ViewGroup parent) {
+                View v = super.getView(position, convertView, parent);
+                Typeface externalFont = Typeface.createFromAsset(assetManager,
+                        "font/Cafe24Oneprettynight.ttf");
+                ((TextView) v).setTypeface(externalFont);
+                ((TextView) v).setTextSize(18);
+                v.setPadding(30, 30, 30, 30);
+                return v;
+            }
+        };
         spinner_adapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
         spinner.setAdapter(spinner_adapter);
         spinner.setOnItemSelectedListener(this);

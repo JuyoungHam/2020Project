@@ -21,6 +21,7 @@
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_gravity="end"
+        android:fontFamily="@font/cafe24oneprettynight"
         android:text="사진 변경"
         android:textColor="#000000"
         app:backgroundTint="?attr/colorAccent" />
@@ -28,13 +29,16 @@
     <TextView
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:text="nickname" />
+        android:fontFamily="@font/cafe24oneprettynight"
+        android:text="nickname"
+        android:textAppearance="@style/TextAppearance.AppCompat.Medium" />
 
     <EditText
         android:id="@+id/nickname_edittext"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:ems="10"
+        android:fontFamily="@font/cafe24oneprettynight"
         android:inputType="textPersonName" />
 
 </LinearLayout>

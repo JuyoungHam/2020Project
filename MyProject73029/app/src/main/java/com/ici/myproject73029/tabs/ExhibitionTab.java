@@ -1,5 +1,7 @@
 package com.ici.myproject73029.tabs;
 
+import android.content.res.AssetManager;
+import android.graphics.Typeface;
 import android.os.Bundle;
 import android.util.Log;
 import android.view.LayoutInflater;
@@ -11,6 +13,7 @@ import android.widget.ArrayAdapter;
 import android.widget.FrameLayout;
 import android.widget.ScrollView;
 import android.widget.Spinner;
+import android.widget.TextView;
 
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
@@ -104,9 +107,33 @@ public class ExhibitionTab extends Fragment implements SwipeRefreshLayout.OnRefr
         Firebase firebase = new Firebase();
         db = firebase.startFirebase();
 
+        final AssetManager assetManager = this.getContext().getAssets();
         spinner = rootView.findViewById(R.id.spinner);
-        spinner_adapter = new ArrayAdapter<>(getContext(), android.R.layout.simple_spinner_item,
-                Constant.EXHIBITION_TAGS);
+        spinner_adapter = new ArrayAdapter<String>(getContext(),
+                android.R.layout.simple_spinner_item,
+                Constant.EXHIBITION_TAGS) {
+            @NonNull
+            @Override
+            public View getView(int position, @Nullable View convertView, @NonNull ViewGroup parent) {
+                View v = super.getView(position, convertView, parent);
+                Typeface externalFont = Typeface.createFromAsset(assetManager,
+                        "font/Cafe24Oneprettynight.ttf");
+                ((TextView) v).setTypeface(externalFont);
+                ((TextView) v).setTextSize(20);
+                return v;
+            }
+
+            @Override
+            public View getDropDownView(int position, @Nullable View convertView, @NonNull ViewGroup parent) {
+                View v = super.getView(position, convertView, parent);
+                Typeface externalFont = Typeface.createFromAsset(assetManager,
+                        "font/Cafe24Oneprettynight.ttf");
+                ((TextView) v).setTypeface(externalFont);
+                ((TextView) v).setTextSize(20);
+                v.setPadding(30, 30, 30, 30);
+                return v;
+            }
+        };
         spinner_adapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
         spinner.setAdapter(spinner_adapter);
         spinner.setOnItemSelectedListener(this);

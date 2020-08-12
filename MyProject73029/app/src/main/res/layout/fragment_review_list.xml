@@ -26,6 +26,7 @@
                 android:layout_height="match_parent"
                 android:layout_marginLeft="16dp"
                 android:layout_marginRight="16dp"
+                android:gravity="center_vertical"
                 android:text="리뷰"
                 android:textAppearance="@style/TextAppearance.AppCompat.Medium"
                 android:textSize="14sp" />

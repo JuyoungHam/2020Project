@@ -17,6 +17,7 @@
             android:id="@+id/update_profile"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
+            android:fontFamily="@font/cafe24oneprettynight"
             android:text="프로필 변경"
             android:textColor="#000000"
             app:backgroundTint="?attr/colorAccent"
@@ -50,6 +51,7 @@
                 android:id="@+id/logout"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
+                android:fontFamily="@font/cafe24oneprettynight"
                 android:text="로그아웃"
                 android:textColor="#000000"
                 app:backgroundTint="?attr/colorAccent" />
@@ -63,6 +65,7 @@
                 android:id="@+id/unregister"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
+                android:fontFamily="@font/cafe24oneprettynight"
                 android:text="회원탈퇴"
                 android:textColor="#000000"
                 app:backgroundTint="?attr/colorAccent" />
