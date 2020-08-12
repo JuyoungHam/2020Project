@@ -5,6 +5,7 @@ import android.content.Context;
 import android.content.Intent;
 import android.content.pm.PackageManager;
 import android.content.pm.ResolveInfo;
+import android.content.res.AssetManager;
 import android.graphics.Color;
 import android.graphics.Typeface;
 import android.location.Address;
@@ -104,6 +105,7 @@ public class ItemFragment extends Fragment implements View.OnClickListener,
     private ChipGroup chipGroup;
     private TextView rating_score;
     private FrameLayout review_list;
+    private AssetManager assetManager;
 
     public ItemFragment(FundamentalItem item) {
         this.item = item;
@@ -133,6 +135,8 @@ public class ItemFragment extends Fragment implements View.OnClickListener,
         mainActivity.isActionBarVisible(true);
         mainActivity.setActionBarTitle(title);
         mainActivity.setActionBarOption(ActionBar.DISPLAY_HOME_AS_UP | ActionBar.DISPLAY_SHOW_TITLE);
+
+        assetManager = this.getContext().getAssets();
 
         img_poster = rootView.findViewById(R.id.item_poster);
         img_poster.setOnClickListener(this);
@@ -168,8 +172,8 @@ public class ItemFragment extends Fragment implements View.OnClickListener,
         item_period.setVisibility(View.GONE);
         ImageButton go_to_url = rootView.findViewById(R.id.go_to_url);
 
-        TextView item=rootView.findViewById(R.id.item_title);
-        Typeface tf=Typeface.createFromAsset(getContext().getAssets(),"font/Cafe24Oneprettynight.ttf");
+        TextView item = rootView.findViewById(R.id.item_title);
+        Typeface tf = Typeface.createFromAsset(getContext().getAssets(), "font/Cafe24Oneprettynight.ttf");
         item.setTypeface(tf);
 
         if (FirebaseAuth.getInstance().getCurrentUser() == null) {
@@ -267,6 +271,9 @@ public class ItemFragment extends Fragment implements View.OnClickListener,
                                         chip.setChipIconSize(50);
                                         chip.setChipBackgroundColorResource(R.color.colorAccent);
                                         chip.setTextColor(Color.WHITE);
+                                        Typeface externalFont = Typeface.createFromAsset(assetManager,
+                                                "font/Cafe24Oneprettynight.ttf");
+                                        chip.setTypeface(externalFont);
                                         chipGroup.addView(chip);
                                     }
                                 }
