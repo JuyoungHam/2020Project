@@ -105,6 +105,7 @@
         <item name="android:background">?attr/backgroundColor</item>
         <item name="android:popupBackground">?attr/backgroundColor</item>
         <item name="titleTextColor">?android:attr/textColor</item>
+        <item name="android:fontFamily">@font/cafe24oneprettynight</item>
     </style>
 
     <style name="NegativeButtonStyle" parent="Widget.MaterialComponents.Button.TextButton.Dialog">
