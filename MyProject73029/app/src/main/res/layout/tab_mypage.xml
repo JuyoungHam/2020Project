@@ -146,7 +146,7 @@
                     android:layout_weight="1"
                     app:backgroundTint="#121212"
                     app:cornerRadius="0dp"
-                    app:strokeColor="#FFFFFF"
+                    app:strokeColor="#E3FFFFFF"
                     app:strokeWidth="2dp" />
 
             </LinearLayout>
