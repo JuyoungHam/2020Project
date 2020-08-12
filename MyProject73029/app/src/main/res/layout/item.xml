@@ -16,7 +16,8 @@
         android:layout_height="match_parent"
         android:layout_margin="4dp"
         android:orientation="vertical"
-        android:visibility="visible">
+        android:visibility="visible"
+        android:background="@drawable/borer">
 
         <TextView
             android:id="@+id/title_list"
@@ -42,7 +43,8 @@
         android:layout_margin="8dp"
         android:gravity="center|center_horizontal|center_vertical"
         android:orientation="vertical"
-        android:visibility="gone">
+        android:visibility="gone"
+        android:background="@drawable/borer">
 
         <ImageView
             android:id="@+id/image_gird"
