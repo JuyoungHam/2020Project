@@ -1,0 +1,50 @@
+<vector xmlns:android="http://schemas.android.com/apk/res/android"
+    android:width="160dp"
+    android:height="120dp"
+    android:viewportWidth="640"
+    android:viewportHeight="480">
+  <path
+      android:pathData="M31,135h571v159h-571z"
+      android:strokeWidth="0"
+      android:fillColor="?attr/colorPrimaryDark" />
+  <path
+      android:pathData="M23,187h77v29h-77z"
+      android:strokeWidth="0"
+      android:fillColor="?attr/colorPrimaryDark" />
+  <path
+      android:pathData="M495,135h129v63h-129z"
+      android:strokeWidth="0"
+      android:fillColor="?attr/colorPrimaryDark" />
+  <path
+      android:pathData="M5,240h94v36h-94z"
+      android:strokeWidth="0"
+      android:fillColor="?attr/colorPrimaryDark" />
+  <path
+      android:pathData="M13,216h79v29h-79z"
+      android:strokeWidth="0"
+      android:fillColor="?attr/colorPrimaryDark" />
+  <path
+      android:pathData="M545,162h76v11h-76z"
+      android:strokeWidth="0"
+      android:fillColor="?attr/colorPrimaryDark" />
+  <path
+      android:pathData="M567,166h50v26h-50z"
+      android:strokeWidth="0"
+      android:fillColor="?attr/colorPrimaryDark" />
+  <path
+      android:pathData="M563,195h54v30h-54z"
+      android:strokeWidth="0"
+      android:fillColor="?attr/colorPrimaryDark" />
+  <path
+      android:pathData="M26,241h43v35h-43z"
+      android:strokeWidth="0"
+      android:fillColor="?attr/colorPrimaryDark" />
+  <path
+      android:pathData="M18,275h57v15h-57z"
+      android:strokeWidth="0"
+      android:fillColor="?attr/colorPrimaryDark" />
+  <path
+      android:pathData="M12,274h37v22h-37z"
+      android:strokeWidth="0"
+      android:fillColor="?attr/colorPrimaryDark" />
+</vector>
