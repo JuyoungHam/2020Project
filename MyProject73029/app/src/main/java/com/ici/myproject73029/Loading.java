@@ -1,22 +1,16 @@
 package com.ici.myproject73029;
 
-import androidx.appcompat.app.AppCompatActivity;
-
 import android.content.Intent;
 import android.os.Bundle;
 import android.os.Handler;
-import android.view.View;
-import android.view.Window;
-import android.view.WindowManager;
 
-import com.ici.myproject73029.mypage.ThemeChanger;
+import androidx.annotation.Nullable;
+import androidx.appcompat.app.AppCompatActivity;
 
 public class Loading extends AppCompatActivity {
 
     @Override
-    protected void onCreate(Bundle savedInstanceState) {
-        ThemeChanger.createPreference(getApplicationContext());
-        ThemeChanger.onActivityCreateSetTheme(this);
+    protected void onCreate(@Nullable Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_loading);
         Handler handler = new Handler();
@@ -24,10 +18,10 @@ public class Loading extends AppCompatActivity {
         getSupportActionBar().hide();
     }
 
-    public class startLoading implements Runnable{
+    public class startLoading implements Runnable {
         @Override
         public void run() {
-            Intent intent=new Intent(getApplicationContext(),MainActivity.class);
+            Intent intent = new Intent(getApplicationContext(), MainActivity.class);
             startActivity(intent);
             Loading.this.finish();
         }
