@@ -151,8 +151,5 @@
     <style name="customCheckboxFontStyle" parent="@android:style/Widget.DeviceDefault.CompoundButton.CheckBox">
         <item name="android:fontFamily">@font/cafe24oneprettynight</item>
     </style>
-    <style name="splashTheme" parent="Theme.AppCompat.NoActionBar">
-        <item name="android:windowBackground">@drawable/loading</item>
-    </style>
 
 </resources>

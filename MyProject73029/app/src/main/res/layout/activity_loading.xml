@@ -6,6 +6,7 @@
     android:layout_height="match_parent"
     android:background="?attr/colorPrimaryDark"
     tools:context=".Loading">
+
     <ImageView
         android:id="@+id/imageView3"
         android:layout_width="156dp"
