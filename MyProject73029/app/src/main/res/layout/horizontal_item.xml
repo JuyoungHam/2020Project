@@ -14,8 +14,7 @@
         android:layout_height="match_parent"
         android:layout_margin="8dp"
         android:gravity="center|center_horizontal|center_vertical"
-        android:orientation="vertical"
-        android:background="@drawable/borer">
+        android:orientation="vertical">
 
         <ImageView
             android:id="@+id/image_gird"
