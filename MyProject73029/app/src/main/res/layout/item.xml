@@ -42,7 +42,7 @@
         android:layout_margin="8dp"
         android:gravity="center|center_horizontal|center_vertical"
         android:orientation="vertical"
-        android:visibility="gone">
+        android:visibility="visible">
 
         <ImageView
             android:id="@+id/image_gird"
@@ -61,6 +61,7 @@
             android:layout_margin="4dp"
             android:layout_marginTop="8dp"
             android:layout_marginBottom="8dp"
+            android:background="@drawable/asdfasdf"
             android:gravity="center"
             android:textAppearance="@style/TextAppearance.AppCompat.Large"
             android:textSize="18sp" />
