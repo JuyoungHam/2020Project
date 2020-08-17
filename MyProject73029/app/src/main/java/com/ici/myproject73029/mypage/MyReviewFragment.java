@@ -97,7 +97,9 @@ public class MyReviewFragment extends Fragment implements MainActivity.onBackPre
             public void onComplete(@NonNull Task<DocumentSnapshot> task) {
                 if (task.isSuccessful()) {
                     DocumentSnapshot result = task.getResult();
-                    review_item_title.setText(result.get("title").toString());
+                    if (result.get("title") != null) {
+                        review_item_title.setText(result.get("title").toString());
+                    }
                     if (result.get("description") != null) {
                         review_item_description.setText(Html.fromHtml(result.get("description").toString()));
                         review_item_description.setVisibility(View.VISIBLE);
