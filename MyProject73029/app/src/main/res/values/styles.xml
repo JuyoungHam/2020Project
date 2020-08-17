@@ -4,7 +4,6 @@
         <!-- Customize your theme here. -->
         <item name="colorPrimary">#FBFBFB</item>
         <item name="colorPrimaryDark">#E4BEB3</item>
-        <item name="colorControlHighlight">#4DE4BEB3</item>
         <item name="colorAccent">#E4BEB3</item>
         <item name="android:textColor">#121212</item>
         <item name="colorControlActivated">@color/pink</item>
@@ -21,7 +20,6 @@
         <!-- Customize your theme here. -->
         <item name="colorPrimary">#FFFFFF</item>
         <item name="colorPrimaryDark">#FFD0A6</item>
-        <item name="colorControlHighlight">#4DFFD0A6</item>
         <item name="colorAccent">#FFD0A6</item>
         <item name="colorControlActivated">@color/pink</item>
         <item name="android:textColor">#121212</item>
@@ -37,7 +35,6 @@
         <!-- Customize your theme here. -->
         <item name="colorPrimary">#FFFFFF</item>
         <item name="colorPrimaryDark">#FDECAB</item>
-        <item name="colorControlHighlight">#4DFDECAB</item>
         <item name="colorAccent">#FDECAB</item>
         <item name="android:textColor">#121212</item>
         <item name="colorControlActivated">@color/pink</item>
@@ -53,7 +50,6 @@
         <!-- Customize your theme here. -->
         <item name="colorPrimary">#FFFFFF</item>
         <item name="colorPrimaryDark">#CFDD8E</item>
-        <item name="colorControlHighlight">#4DCFDD8E</item>
         <item name="colorAccent">#CFDD8E</item>
         <item name="android:textColor">#121212</item>
         <item name="colorControlActivated">@color/pink</item>
@@ -69,7 +65,6 @@
         <!-- Customize your theme here. -->
         <item name="colorPrimary">#FFFFFF</item>
         <item name="colorPrimaryDark">#B1D3C5</item>
-        <item name="colorControlHighlight">#4DB1D3C5</item>
         <item name="colorAccent">#B1D3C5</item>
         <item name="android:textColor">#121212</item>
         <item name="colorControlActivated">@color/pink</item>
@@ -85,7 +80,6 @@
         <!-- Customize your theme here. -->
         <item name="colorPrimary">#121212</item>
         <item name="colorPrimaryDark">#121212</item>
-        <item name="colorControlHighlight">#33FFFFFF</item>
         <item name="colorAccent">#DEFFFFFF</item>
         <item name="android:textColor">#DEFFFFFF</item>
         <item name="colorControlNormal">#deffffff</item>
@@ -156,6 +150,9 @@
 
     <style name="customCheckboxFontStyle" parent="@android:style/Widget.DeviceDefault.CompoundButton.CheckBox">
         <item name="android:fontFamily">@font/cafe24oneprettynight</item>
+    </style>
+    <style name="splashTheme" parent="Theme.AppCompat.NoActionBar">
+        <item name="android:windowBackground">@drawable/loading</item>
     </style>
 
 </resources>
