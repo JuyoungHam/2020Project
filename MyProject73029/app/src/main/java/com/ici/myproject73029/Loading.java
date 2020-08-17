@@ -13,16 +13,12 @@ public class Loading extends AppCompatActivity {
 
     @Override
     protected void onCreate(@Nullable Bundle savedInstanceState) {
-        ThemeChanger.createPreference(getApplicationContext());
         ThemeChanger.onActivityCreateSetTheme(this);
         super.onCreate(savedInstanceState);
-      //  setContentView(R.layout.activity_loading);
+        setContentView(R.layout.activity_loading);
         Handler handler = new Handler();
         handler.postDelayed(new startLoading(), 1000);
         getSupportActionBar().hide();
-        Intent intent = new Intent(getApplicationContext(), MainActivity.class);
-        startActivity(intent);
-        Loading.this.finish();
     }
 
     public class startLoading implements Runnable {
