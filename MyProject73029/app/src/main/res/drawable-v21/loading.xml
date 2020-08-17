@@ -1,18 +1,12 @@
 <?xml version="1.0" encoding="utf-8"?>
-<layer-list xmlns:app="http://schemas.android.com/apk/res-auto"
-    xmlns:android="http://schemas.android.com/apk/res/android">
+<layer-list xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto">
     <item
-        android:drawable="?attr/colorPrimaryDark"
         android:width="1080dp"
-<<<<<<< HEAD
-        android:height="1920dp"></item>
-    <item>
-        <vector xmlns:android="http://schemas.android.com/apk/res/android"
-=======
-        android:height="1920dp"/>
+        android:height="1920dp"
+        android:drawable="?attr/colorPrimaryDark" />
     <item android:gravity="center">
         <vector
->>>>>>> c4533af9a1b430ea7654f983b793c684afd0f1bf
             android:width="512dp"
             android:height="512dp"
             android:viewportWidth="512"
