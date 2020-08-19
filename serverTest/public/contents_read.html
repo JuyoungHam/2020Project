@@ -26,6 +26,12 @@
     };
     firebase.initializeApp(firebaseConfig);
     firebase.analytics();
+    firebase.auth().onAuthStateChanged(function(user) {
+      if (!user) {
+        alert("로그인 후 이용할 수 있는 페이지입니다");
+        location.href = 'index.html';
+      }
+    });
 
     function Logout() {
       firebase.auth().signOut().then(function() {
@@ -40,7 +46,7 @@
 
     var url = decodeURI(location.href);
     url = url.split('=')[1];
-    var db = firebase.firestore().collection('Show').doc(url);
+    var db = firebase.firestore().collection('All').doc(url);
     db.get().then(function(doc) {
       if (doc.exists) {
         var data = doc.data();

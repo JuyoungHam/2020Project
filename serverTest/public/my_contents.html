@@ -27,6 +27,12 @@
     firebase.analytics();
     var admin2 = 'subin931024@gmail.com';
     var admin1 = 'hamjuyoung11@gmail.com';
+    firebase.auth().onAuthStateChanged(function(user) {
+      if (!user) {
+        alert("로그인 후 이용할 수 있는 페이지입니다");
+        location.href = 'index.html';
+      }
+    });
 
     function Logout() {
       firebase.auth().signOut().then(function() {
@@ -59,7 +65,7 @@
       <th>title</th>
     </tr>
     <script type="text/javascript">
-      const db = firebase.firestore().collection('Show');
+      const db = firebase.firestore().collection('All');
       firebase.auth().onAuthStateChanged(function(user) {
         var email = user.email;
         db.where('id', '==', email).get().then(function(querySnapshot) {
